@@ -1,2 +1,5 @@
 # bestnid
-Trabajo de Ingeniería de Software II
+Grupo 1
+- Botteri Lucas
+- Coria Juan Manuel
+- Durán Manuel
