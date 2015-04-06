@@ -1,5 +1,4 @@
-# bestnid
-Grupo 1
+# Grupo 1
 - Botteri Lucas
 - Coria Juan Manuel
 - Durán Manuel
