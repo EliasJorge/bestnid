@@ -3,12 +3,13 @@
 <% include partials/head.ejs %>
 <body>
 	<% include partials/nav.ejs %>
-	
+	<% info.forEach(function(datos) { %> 
 	<ul class="list-group">
-  		<li class="list-group-item">Usuario: <%= info.nombre_usuario %></li>
-  		<li class="list-group-item">Email: <%= info.email %></li>
-  		<li class="list-group-item">Registrado el: <%=info.created_at %></li>
+  		<li class="list-group-item">Usuario: <%= datos.nombre_usuario %></li>
+  		<li class="list-group-item">Email: <%= datos.email %></li>
+  		<li class="list-group-item">Registrado el: <%=datos.created_at %></li>
 	</ul>
+	<% }); %>
 	<% include partials/footer.ejs %>
 	
 </body>

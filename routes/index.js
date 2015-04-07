@@ -31,7 +31,7 @@ router.post("/insertar_usr", function(req,res){
         if(typeof datos !== 'undefined'){
             res.redirect("/usuario/" + datos.idInsertado);//redirecciona la pa pagina localhost:3000/usuario/elid
         }else{
-            res.json(500,{"msg":"Error"});
+            res.render("error",{message:"No se ha podido registrar"});
         }
     });
 });
@@ -46,13 +46,13 @@ router.get('/usuario/:id', function(req, res){
                 res.render("perfil",{info : datos});
             }
             else {
-                res.json(404, {"msg":"noExiste"});
+                res.render("error",{message:"No existe el usuario"});
             }
         });
     }
     //si el id no es numerico
     else {
-        res.json(404,{"msg":"noExiste"});
+        res.render("error",{message:"No existe el usuario"});
     }
 
 });
@@ -72,6 +72,9 @@ router.post("/verificar_usuario", function(req, res){
             sess = req.session;
             sess.usuario = resultado;
             res.redirect("index");
+        }else
+        {
+            res.render("error",{message:"Usuario o contraseña incorrecta"});
         }
     });
 });
@@ -84,7 +87,7 @@ router.get("/usuarios", function(req, res){
             res.render('usuarios',{usuarios : resultado});
         }
         else{
-            res.json(404, {"msg":"notExist"});
+            res.render("error",{message:"error"});
         }
     });
 });
