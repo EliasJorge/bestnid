@@ -28,7 +28,7 @@ router.post("/insertar_usr", function(req,res){
     };
     modeloUsuario.insertarUsuario(nuevoUsuario, function(error, datos){
         //si el usuario fue insertado correctamente
-        if((typeof datos !== 'undefined') && datos.length > 0){
+        if(typeof datos !== 'undefined'){
             res.redirect("/usuario/" + datos.idInsertado);//redirecciona la pa pagina localhost:3000/usuario/elid
         }else{
             res.json(500,{"msg":"Error"});
