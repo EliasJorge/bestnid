@@ -13,73 +13,10 @@ connection = mysql.createConnection(
 //creamos un objeto para ir almacenando todo lo que necesitemos
 var modeloUsuario = {};
 
-
-//////EJEMPLOS DE OPERACIONES A LA BASE DE DATOS//////
-//obtenemos todos los usuarios
-modeloUsuario.getUsers = function(callback)
-{
-    if (connection) 
-    {
-        connection.query('SELECT * FROM usuarios ORDER BY id', function(error, rows) {
-            if(error)
-            {
-                throw error;
-            }
-            else
-            {
-                callback(null, rows);
-            }
-        });
-    }
-}
-
- //obtenemos un usuario por su id
-modeloUsuario.getUser = function(id,callback)
-{
-    if (connection) 
-    {
-        var sql = 'SELECT * FROM usuarios WHERE id = ' + connection.escape(id);
-        connection.query(sql, function(error, row) 
-        {
-            if(error)
-            {
-                throw error;
-            }
-            else
-            {
-                callback(null, row);
-            }
-        });
-    }
-}
-
-//obtenemos un usuario por su nombre de usuario y contraseña (para el login)
-modeloUsuario.getUserByLogin = function(nombre_usuario, password ,callback)
-{
-    if (connection) 
-    {
-        var sql = 'SELECT * FROM usaurios WHERE nombre_usuario = ' + connection.escape(nombre_usuario) + 'AND pass =' + connection.escape(password);
-        connection.query(sql, function(error, row) 
-        {
-            if(error)
-            {
-                throw error;
-            }
-            else
-            {
-                callback(null, row);
-            }
-        });
-    }
-}
-
-//añadir un nuevo usuario
-modeloUsuario.insertUser = function(userData,callback)
-{
-    if (connection) 
-    {
-        connection.query('INSERT INTO usuarios SET ?', userData, function(error, result) 
-        {
+//se inserta un usuario nuevo IMPORTANTE falta verificar q no exista ya uno con ese nombre
+modeloUsuario.insertarUsuario = function(nuevoUsuario, callback){
+    if (connection) {
+        connection.query('INSERT INTO usuarios SET ?', nuevoUsuario, function(error, resultado){
             if(error)
             {
                 throw error;
@@ -87,13 +24,54 @@ modeloUsuario.insertUser = function(userData,callback)
             else
             {
                 //devolvemos la última id insertada
-                callback(null,{"insertId" : result.insertId});
+                callback(null,{"idInsertado" : resultado.insertId});
+            }      
+        });
+    }
+}
+
+//se obtiene la informacion del usuario con id del parametro
+modeloUsuario.getUsuario = function(id, callback){
+    if (connection) {
+        var sql = 'SELECT * FROM usuarios WHERE id =' + connection.escape(id);
+        connection.query(sql, function(error, resultado){
+            if (error) {
+                throw error;
+            }
+            else {
+                callback(null, resultado);
             }
         });
     }
 }
-///////TENGO MAS EJEMPLOS , DESPUES VEMOS /////
 
+//se obtienen todos los usuarios
+modeloUsuario.getUsuarios = function(callback){
+    if (connection) {
+        connection.query('SELECT * FROM usuarios ORDER BY id', function(error, resultado){
+            if (error) {
+                throw error;
+            }
+            else
+            {
+                callback(null, resultado);
+            }
+        });
+    }
+}
 
-//exportamos el objeto para tenerlo disponible en la zona de rutas
+//se verifica q exista el usuario con ese nombre y esa pass
+modeloUsuario.loginUsuario = function(nombre_usuario, pass, callback){
+    if (connection) {
+        var sql = 'SELECT * FROM usuarios WHERE nombre_usuario = ' + connection.escape(nombre_usuario) + 'AND pass = ' + connection.escape(pass);
+        connection.query(sql, function(error, resultado){
+            if(error){
+                throw error;
+            }
+            else{
+                callback(null, resultado);
+            }
+        });
+    }
+}
 module.exports = modeloUsuario;
