@@ -16,7 +16,7 @@ var modeloUsuario = {};
 
 //////EJEMPLOS DE OPERACIONES A LA BASE DE DATOS//////
 //obtenemos todos los usuarios
-userModel.getUsers = function(callback)
+modeloUsuario.getUsers = function(callback)
 {
     if (connection) 
     {
@@ -34,7 +34,7 @@ userModel.getUsers = function(callback)
 }
 
  //obtenemos un usuario por su id
-userModel.getUser = function(id,callback)
+modeloUsuario.getUser = function(id,callback)
 {
     if (connection) 
     {
@@ -54,11 +54,11 @@ userModel.getUser = function(id,callback)
 }
 
 //obtenemos un usuario por su nombre de usuario y contraseña (para el login)
-userModel.getUserByLogin = function(usuario, password ,callback)
+modeloUsuario.getUserByLogin = function(nombre_usuario, password ,callback)
 {
     if (connection) 
     {
-        var sql = 'SELECT * FROM usaurios WHERE nombre_usuario = ' + connection.escape(usuario) + 'AND pass =' + connection.escape(password);
+        var sql = 'SELECT * FROM usaurios WHERE nombre_usuario = ' + connection.escape(nombre_usuario) + 'AND pass =' + connection.escape(password);
         connection.query(sql, function(error, row) 
         {
             if(error)
@@ -74,7 +74,7 @@ userModel.getUserByLogin = function(usuario, password ,callback)
 }
 
 //añadir un nuevo usuario
-userModel.insertUser = function(userData,callback)
+modeloUsuario.insertUser = function(userData,callback)
 {
     if (connection) 
     {
@@ -96,4 +96,4 @@ userModel.insertUser = function(userData,callback)
 
 
 //exportamos el objeto para tenerlo disponible en la zona de rutas
-module.exports = userModel;
+module.exports = modeloUsuario;

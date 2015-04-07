@@ -6,16 +6,17 @@ var UserModel = require('../models/usuario');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index');
 });
 
 module.exports = router;
 
 
 
-///////////////EJEMPLOS DE COMO USAR LOS METODOS DEL MODELS/USUARIOS, NO ESTAN LAS VIEWS Y ESTAN HECHAS ASI NOMAS , MAÑANA LAS HAGO /////////////////////////
 
-/* Creamos un nuevo usuario */
+/*
+///////////////EJEMPLOS DE COMO USAR LOS METODOS DEL MODELS/USUARIOS, NO ESTAN LAS VIEWS Y ESTAN HECHAS ASI NOMAS , MAÑANA LAS HAGO /////////////////////////
+// Creamos un nuevo usuario 
 router.post("/user", function(req,res)
 {
     //creamos un objeto con los datos a insertar del usuario
@@ -40,7 +41,7 @@ router.post("/user", function(req,res)
     });
 });
 
-/* Obtenemos un usuario por su id y lo mostramos en un formulario para editar */
+// Obtenemos un usuario por su id y lo mostramos en un formulario para editar 
 router.get('/user/:id', function(req, res) 
 {
     var id = req.params.id;//pide el parametro id q se mando en la url (por get)
@@ -96,3 +97,4 @@ router.post("/login", function(req,res)
 
 });
 //////////////////FIN EJEMPLOS///////////////////////////////////////
+*/
