@@ -3,14 +3,14 @@
 <% include partials/head.ejs %>
 <body>
 	<% include partials/nav.ejs %>
-	<% info.forEach(function(datos) { %> 
-	<ul class="list-group">
-  		<li class="list-group-item">Usuario: <%= datos.nombre_usuario %></li>
-  		<li class="list-group-item">Email: <%= datos.email %></li>
-  		<li class="list-group-item">Registrado el: <%=datos.created_at %></li>
-	</ul>
+	<% info.forEach(function(datos) { %>
+		<ul class="list-group">
+	  		<li class="list-group-item">Usuario: <%= datos.nombre_usuario %></li>
+	  		<li class="list-group-item">Email: <%= datos.email %></li>
+	  		<li class="list-group-item">Registrado el: <%=datos.created_at %></li>
+		</ul>
 	<% }); %>
 	<% include partials/footer.ejs %>
-	
+
 </body>
 </html>

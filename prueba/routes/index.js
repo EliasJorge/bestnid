@@ -29,7 +29,7 @@ router.post("/insertar_usr", function(req,res){
     modeloUsuario.insertarUsuario(nuevoUsuario, function(error, datos){
         //si el usuario fue insertado correctamente
         if(typeof datos !== 'undefined'){
-            res.redirect("/usuario/" + datos.idInsertado);//redirecciona la pa pagina localhost:3000/usuario/elid
+            res.redirect("/usuario/" + datos.idInsertado);//redirecciona la pagina localhost:3000/usuario/elid
         }else{
             res.render("error",{message:"No se ha podido registrar"});
         }
@@ -63,7 +63,7 @@ router.get("/log_in",function(req, res){
 });
 
 
-//cuando se hace login se el form tiene como accion esta ruta, se verifica q exista el usuario y se guarda el el arreglo de sesiones
+//cuando se hace login el form tiene como accion esta ruta, se verifica q exista el usuario y se guarda el arreglo de sesiones
 router.post("/verificar_usuario", function(req, res){
     var nombre_usuario = req.body.nombre_usuario;
     var pass = req.body.pass;
@@ -72,8 +72,7 @@ router.post("/verificar_usuario", function(req, res){
             sess = req.session;
             sess.usuario = resultado;
             res.redirect("index");
-        }else
-        {
+        } else {
             res.render("error",{message:"Usuario o contraseña incorrecta"});
         }
     });
