@@ -104,6 +104,7 @@ CREATE TABLE `publicacion` (
   `foto` varchar(200) NOT NULL,
   `fechaInicio` date NOT NULL,
   `fechaFin` date NOT NULL,
+  `visible` tinyint(1) NOT NULL DEFAULT 1,
   `idOfertaGanadora` int(11) DEFAULT NULL,
   `idCategoria` int(11) NOT NULL,
   `idUsuario` int(11) NOT NULL,

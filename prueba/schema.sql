@@ -2,6 +2,7 @@ CREATE DATABASE IF NOT EXISTS `bestnid`;
 
 USE `bestnid`;
 
+DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nombre_usuario` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
