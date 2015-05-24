@@ -17,7 +17,7 @@ modeloUsuario.insertar = function(nuevoUsuario, callback){
 			nuevoUsuario.esAdmin + ')';
 		conn.query(query, function(error, resultado){
 			if (error) {
-				throw error;
+				callback(error);
 			} else {
 				//devolvemos la última id insertada
                 callback(null,{"idInsertado" : resultado.insertId});

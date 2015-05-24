@@ -16,21 +16,19 @@ router.get('/registro', function(req, res, next){
 
 router.post('/insertarUsuario', function(req, res, next){
 	var usuario = {
-		idUsuario:null,
 		nombre:req.body.nombre,
 		apellido:req.body.apellido,
 		nombreUsuario:req.body.nombreUsuario,
 		password:req.body.pass,
 		ingresos:0,
 		mail:req.body.mail,
-		fechaRegistro:"CURRENT_DATE",
 		esAdmin:0,
 	};
 	dbUsuario.insertar(usuario, function(error, respuesta){
 		if (error) {
-			throw error;
+			res.render('error', { mensaje:'El nombre de usuario elegido ya existe' });
 		} else {
-			res.render('index', { title: 'Bestnid' });
+			res.render('exito', { mensaje:'Usted ha sido registrado correctamente' });
 		};
 	});
 });
