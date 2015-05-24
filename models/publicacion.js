@@ -4,7 +4,7 @@ var modeloPublicacion = {};
 
 modeloPublicacion.getPublicaciones = function(callback){
 	if (conn){
-		conn.query('SELECT * FROM publicacion ORDER BY idPublicacion', function(error, resultado){
+		conn.query('SELECT * FROM publicacion  WHERE visible = 1 ORDER BY fechaInicio DESC', function(error, resultado){
 			if (error) {
 				throw error;
 			}
