@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../models/usuario');
+var dbUsuario = require('../models/usuario');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
- 	res.render('index', { title: 'Express' });
+ 	res.render('index', { title: 'Bestnid' });
 });
 
 router.get('/registro', function(req, res, next){
@@ -20,16 +20,14 @@ router.post('/insertarUsuario', function(req, res, next){
 		password:req.body.pass,
 		ingresos:0,
 		mail:req.body.mail,
-		foto:null,
 		fechaRegistro:"CURRENT_DATE",
 		esAdmin:0,
-		tarjeta:null
 	};
-	db.insertar(usuario, function(error, res){
+	dbUsuario.insertar(usuario, function(error, respuesta){
 		if (error) {
 			throw error;
 		} else {
-			res.render('/');
+			res.render('index', { title: 'Bestnid' });
 		};
 	});
 });
