@@ -1,10 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var dbUsuario = require('../models/usuario');
+var dbPublicacion = require('../models/publicacion');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
- 	res.render('index', { title: 'Bestnid' });
+router.get('/', function(req, res, next) { 
+	dbPublicacion.getPublicaciones(function(error, resultado){
+		res.render('index', {publicaciones : resultado});
+	})
 });
 
 router.get('/registro', function(req, res, next){
