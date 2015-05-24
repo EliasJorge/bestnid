@@ -14,6 +14,16 @@ router.get('/registro', function(req, res, next){
 	res.render('registro');
 });
 
+router.get('/buscar', function(req, res, next){
+	dbPublicacion.getPublicacionesByNombre(req.body.nombrePublicacion, function(error, resultado){
+		if (error) {
+			res.render('error', { mensaje:'Hubo un error en la búsqueda, por favor intente de nuevo' })
+		} else{
+			res.render('index', { publicaciones:resultado });
+		};
+	});
+});
+
 router.post('/insertarUsuario', function(req, res, next){
 	var usuario = {
 		nombre:req.body.nombre,
