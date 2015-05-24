@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<% include partials/head.ejs %>
+<body>
+	<% include partials/nav.ejs %>
+    <form method="POST" action="/insertarUsuario">
+		<div class="col-sm-6 col-md-offset-3">
+	        <h4>Por favor llene los campos:</h4>
+	        <div class="panel panel-default">
+	            <div class="panel-body form-horizontal payment-form">
+ 
+	            	<div class="form-group">
+	                    <label for="nombreUsuario" class="col-sm-3 control-label">Nombre de Usuario</label>
+	                    <div class="col-sm-9">
+	                        <input type="text" class="form-control" placeholder="JonSnow" id="nombreUsuario" name="nombreUsuario" required>
+	                    </div>
+	                </div>
+
+	                <div class="form-group">
+	                    <label for="nombre" class="col-sm-3 control-label">Nombre</label>
+	                    <div class="col-sm-9">
+	                        <input type="text" class="form-control" placeholder="Jon" id="nombre" name="nombre" required>
+	                    </div>
+	                </div> 
+
+	                <div class="form-group">
+	                    <label for="apellido" class="col-sm-3 control-label">Apellido</label>
+	                    <div class="col-sm-9">
+	                        <input type="text" class="form-control" placeholder="Snow" id="apellido" name="apellido" required>
+	                    </div>
+	                </div> 
+ 
+	                <div class="form-group">
+	                    <label for="email" class="col-sm-3 control-label">Email</label>
+	                    <div class="col-sm-9">
+	                        <input type="email" class="form-control" placeholder="snowjon@castleblack.got" id="mail" name="mail" required>
+	                    </div>
+	                </div>
+ 
+	                <div class="form-group">
+	                    <label for="pass" class="col-sm-3 control-label">Password</label>
+	                    <div class="col-sm-9">
+	                        <input type="password" class="form-control" minlength="8" maxlength="16" placeholder="entre 8 y 16 caracteres" id="pass" name="pass" required>
+	                    </div>
+	                </div>
+	                
+	                <div class="form-group">
+	                    <div class="col-sm-12 text-right">
+	                        <button type="submit" class="btn btn-primary preview-add-button">
+	                            Registrarse
+	                        </button>
+	                        <a href="/" class="btn btn-danger" role="button">
+	                        	Cancelar
+	                        </a>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>            
+	    </div> <!-- / panel preview -->
+	</form>
+	<% include partials/footer.ejs %>
+	
+</body>
+</html>
