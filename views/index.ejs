@@ -23,7 +23,7 @@
                 <% publicaciones.forEach(function(datos) { %>
                 <div class="col-sm-4 col-lg-4 col-md-4">
                     <div class="thumbnail">
-                        <img class="img-responsive" src="<% datos.foto %>" alt="">
+                        <img class="img-responsive" src ="<%=datos.foto%>" style="width: 18em; height: 12em;"alt="">
                         <div class="caption-full">
                             <h4><a href="producto/<%=datos.idPublicacion%>"><%= datos.titulo %></a>
                             </h4>
