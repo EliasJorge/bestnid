@@ -7,15 +7,16 @@ var dbPublicacion = require('../models/publicacion');
 router.get('/', function(req, res, next) { 
 	dbPublicacion.getPublicaciones(function(error, resultado){
 		res.render('index', {publicaciones : resultado});
-	})
+	});
 });
 
 router.get('/registro', function(req, res, next){
 	res.render('registro');
 });
 
-router.get('/buscar', function(req, res, next){
+router.post('/buscar', function(req, res, next){
 	dbPublicacion.getPublicacionesByNombre(req.body.nombrePublicacion, function(error, resultado){
+		console.log(req.body.nombrePublicacion);
 		if (error) {
 			res.render('error', { mensaje:'Hubo un error en la búsqueda, por favor intente de nuevo' })
 		} else{

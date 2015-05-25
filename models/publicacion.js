@@ -15,11 +15,11 @@ modeloPublicacion.getPublicaciones = function(callback){
 	}
 };
 
-modeloPublicacion.getPublicacionByNombre = function(string, callback){
+modeloPublicacion.getPublicacionesByNombre = function(string, callback){
 	if (conn){
 		conn.query("SELECT * FROM publicacion WHERE visible = 1 AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio DESC" , function(error, resultado){
-			ig (error){
-				throw error;
+			if (error){
+				callback(error);
 			}
 			else{
 				callback(null, resultado);

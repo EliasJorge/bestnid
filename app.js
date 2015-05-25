@@ -40,8 +40,7 @@ if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
-      message: err.message,
-      error: err
+      mensaje : "Error 404: no se encontro la pagina :'("
     });
   });
 }
@@ -51,8 +50,7 @@ if (app.get('env') === 'development') {
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
-    message: err.message,
-    error: {}
+    mensaje : "Error 404: no se encontro la pagina :'("
   });
 });
 
