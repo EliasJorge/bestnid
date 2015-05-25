@@ -5,12 +5,21 @@ var dbPublicacion = require('../models/publicacion');
 
 /* GET home page. */
 router.get('/', function(req, res, next) { 
-	// aca abria que hacer el req session, si no hay nada queda en null o undefined no se cual entonces la barra tiene los botones ingresar e iniciar sesion
-	//caso contrario , es decir hay una sesion activa la barra cambia con un menu desplegable con la opcion de ver perfil y cerrar sesion, ademas de un 
-	//boton de notificaciones
+	/*
+	Codigo para probar que funciona, 
+	req.session.usuario = {
+		nombreUsuario : "lucas"
+	};
+	*/
+	// si la sesion no tiene un atributo que sea usuario es porque no tiene una sesion activa
+	//entonces pongo sesionUsuario en null para que en la barra solo aparezca iniciar sesion y registarse
+	//en caso de que tenga una sesion activa la barra aparecera con el nombre de usuario, notif y cerrar sesion
 	var sesionUsuario = null
+	if (req.session.hasOwnProperty('usuario')){
+		sesionUsuario = req.session.usuario;
+	}
 	dbPublicacion.getPublicaciones(function(error, resultado){
-		res.render('index', {publicaciones : resultado, sesionUsuario : usuario});
+		res.render('index', {publicaciones : resultado, sesionUsuario : sesionUsuario});
 	});
 });
 
