@@ -22,12 +22,13 @@
             <% if (publicaciones.length) { %>
                 <% publicaciones.forEach(function(datos) { %>
                 <div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail">
-                        <img class="img-responsive" src ="<%=datos.foto%>" style="width: 18em; height: 12em;"alt="">
+                    <div class="thumbnail" style="height: 20em;  word-wrap: break-word;">
+                    <a href="producto/<%=datos.idPublicacion%>">
+                        <img class="img-responsive" src ="<%=datos.foto%>" style="width: 18em; height: 12em;" alt="" >
+                    </a>
                         <div class="caption-full">
-                            <h4><a href="producto/<%=datos.idPublicacion%>"><%= datos.titulo %></a>
-                            </h4>
-                            <p><%= datos.descripcion %></p>
+                            <h4><a href="producto/<%=datos.idPublicacion%>"><%= datos.titulo.substring(0,45) %></a></h4>
+                            <p  style="font-size: 0.9em;"><%= datos.descripcion.replace("\n"," ").substring(0,40)%></p>
                         </div>
                     </div>
                 </div>
