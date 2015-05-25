@@ -144,7 +144,7 @@ CREATE TABLE `usuario` (
   `mail` varchar(100) NOT NULL,
   `foto` varchar(45),
   `fechaRegistro` date NOT NULL,
-  `esAdmin` tinyint(1) NOT NULL,
+  `esAdmin` tinyint(1) NOT NULL DEFAULT 0,
   `tarjeta` varchar(20) DEFAULT NULL,
   `visible` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`idUsuario`),

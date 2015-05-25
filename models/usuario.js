@@ -5,16 +5,13 @@ var modeloUsuario = {};
 modeloUsuario.insertar = function(nuevoUsuario, callback){
 	if (conn) {
 		var query = 'INSERT INTO usuario (nombre, apellido, nombreUsuario, password, ' +
-			'ingresos, mail, foto, fechaRegistro, esAdmin) VALUES (' +
+			'mail, foto, fechaRegistro) VALUES (' +
 			"'" + nuevoUsuario.nombre + "', " +
 			"'" + nuevoUsuario.apellido + "', " +
 			"'" + nuevoUsuario.nombreUsuario + "', " +
 			"'" + nuevoUsuario.password + "', " +
-			nuevoUsuario.ingresos + ", " +
 			"'" + nuevoUsuario.mail + "', " +
-			"null, " +
-			"CURRENT_DATE(), " +
-			nuevoUsuario.esAdmin + ')';
+			"null, CURRENT_DATE())";
 		conn.query(query, function(error, resultado){
 			if (error) {
 				callback(error);
