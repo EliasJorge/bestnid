@@ -16,7 +16,6 @@ router.get('/registro', function(req, res, next){
 
 router.post('/buscar', function(req, res, next){
 	dbPublicacion.getPublicacionesByNombre(req.body.nombrePublicacion, function(error, resultado){
-		console.log(req.body.nombrePublicacion);
 		if (error) {
 			res.render('error', { mensaje:'Hubo un error en la búsqueda, por favor intente de nuevo' })
 		} else{
@@ -31,9 +30,7 @@ router.post('/insertarUsuario', function(req, res, next){
 		apellido:req.body.apellido,
 		nombreUsuario:req.body.nombreUsuario,
 		password:req.body.pass,
-		ingresos:0,
-		mail:req.body.mail,
-		esAdmin:0,
+		mail:req.body.mail
 	};
 	dbUsuario.insertar(usuario, function(error, respuesta){
 		if (error) {
