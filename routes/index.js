@@ -4,9 +4,22 @@ var dbUsuario = require('../models/usuario');
 var dbPublicacion = require('../models/publicacion');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res, next) { 
+	/*
+	Codigo para probar que funciona, 
+	req.session.usuario = {
+		nombreUsuario : "lucas"
+	};
+	*/
+	// si la sesion no tiene un atributo que sea usuario es porque no tiene una sesion activa
+	//entonces pongo sesionUsuario en null para que en la barra solo aparezca iniciar sesion y registarse
+	//en caso de que tenga una sesion activa la barra aparecera con el nombre de usuario, notif y cerrar sesion
+	var sesionUsuario = null
+	if (req.session.hasOwnProperty('usuario')){
+		sesionUsuario = req.session.usuario;
+	}
 	dbPublicacion.getPublicaciones(function(error, resultado){
-		res.render('index', { publicaciones:resultado });
+		res.render('index', {publicaciones : resultado, sesionUsuario : sesionUsuario});
 	});
 });
 
