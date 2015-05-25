@@ -14,6 +14,10 @@ router.get('/registro', function(req, res, next){
 	res.render('registro');
 });
 
+router.get('/ingreso', function(req, res, next){
+	res.render('ingreso')
+});
+
 router.post('/buscar', function(req, res, next){
 	dbPublicacion.getPublicacionesByNombre(req.body.nombrePublicacion, function(error, resultado){
 		if (error) {
