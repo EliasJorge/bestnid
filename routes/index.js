@@ -6,7 +6,7 @@ var dbPublicacion = require('../models/publicacion');
 /* GET home page. */
 router.get('/', function(req, res, next) { 
 	dbPublicacion.getPublicaciones(function(error, resultado){
-		res.render('index', {publicaciones : resultado});
+		res.render('index', {publicaciones : resultado, sesionUsuario : usuario});
 	});
 });
 
@@ -15,7 +15,7 @@ router.get('/registro', function(req, res, next){
 });
 
 router.get('/ingreso', function(req, res, next){
-	res.render('ingreso')
+	res.render('ingreso');
 });
 
 router.post('/buscar', function(req, res, next){
