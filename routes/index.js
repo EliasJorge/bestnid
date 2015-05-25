@@ -5,12 +5,6 @@ var dbPublicacion = require('../models/publicacion');
 
 /* GET home page. */
 router.get('/', function(req, res, next) { 
-	/*
-	Codigo para probar que funciona, 
-	req.session.usuario = {
-		nombreUsuario : "lucas"
-	};
-	*/
 	// si la sesion no tiene un atributo que sea usuario es porque no tiene una sesion activa
 	//entonces pongo sesionUsuario en null para que en la barra solo aparezca iniciar sesion y registarse
 	//en caso de que tenga una sesion activa la barra aparecera con el nombre de usuario, notif y cerrar sesion
@@ -24,19 +18,31 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/registro', function(req, res, next){
-	res.render('registro');
+	if (req.session.hasOwnProperty('usuario')){
+		res.redirect('/');
+	} else {
+		res.render('registro');
+	};
 });
 
 router.get('/ingreso', function(req, res, next){
-	res.render('ingreso');
+	if (req.session.hasOwnProperty('usuario')){
+		res.redirect('/');
+	} else {
+		res.render('ingreso');
+	};
 });
 
 router.post('/buscar', function(req, res, next){
+	var sesionUsuario = null
+	if (req.session.hasOwnProperty('usuario')){
+		sesionUsuario = req.session.usuario;
+	}
 	dbPublicacion.getPublicacionesByNombre(req.body.nombrePublicacion, function(error, resultado){
 		if (error) {
-			res.render('error', { mensaje:'Hubo un error en la búsqueda, por favor intente de nuevo' })
+			res.render('error', { mensaje:'Hubo un error en la búsqueda, por favor intente de nuevo', sesionUsuario:sesionUsuario })
 		} else{
-			res.render('index', { publicaciones:resultado });
+			res.render('index', { publicaciones:resultado, sesionUsuario:sesionUsuario });
 		};
 	});
 });

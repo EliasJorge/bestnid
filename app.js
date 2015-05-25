@@ -40,9 +40,14 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    var sesionUsuario = null
+    if (req.session.hasOwnProperty('usuario')){
+      sesionUsuario = req.session.usuario;
+    }
     res.status(err.status || 500);
     res.render('error', {
-      mensaje : "Error 404: no se encontro la pagina :'("
+      mensaje : "Error 404: no se encontro la pagina :'(",
+      sesionUsuario:sesionUsuario
     });
   });
 }
@@ -50,9 +55,14 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
+  var sesionUsuario = null
+  if (req.session.hasOwnProperty('usuario')){
+    sesionUsuario = req.session.usuario;
+  }
   res.status(err.status || 500);
   res.render('error', {
-    mensaje : "Error 404: no se encontro la pagina :'("
+    mensaje : "Error 404: no se encontro la pagina :'(",
+    sesionUsuario:sesionUsuario
   });
 });
 
