@@ -30,10 +30,6 @@ router.get('/ingreso', function(req, res, next){
 });
 
 router.post('/buscar', function(req, res, next){
-	var sesionUsuario = null
-	if (req.session.hasOwnProperty('usuario')){
-		sesionUsuario = req.session.usuario;
-	}
 	dbPublicacion.getPublicacionesByNombre(req.body.nombrePublicacion, function(error, resultado){
 		if (error) {
 			res.render('error', { mensaje:'Hubo un error en la búsqueda, por favor intente de nuevo', sesionUsuario:req.session.usuario })
