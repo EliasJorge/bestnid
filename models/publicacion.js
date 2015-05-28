@@ -7,7 +7,7 @@ modeloPublicacion.getPublicaciones = function(desc, callback){
 		if (desc == 1) {
 			conn.query('SELECT * FROM publicacion  WHERE visible = 1 ORDER BY fechaInicio ASC', function(error, resultado){
 				if (error) {
-					callback(error, null);
+					callback(error);
 				}
 				else{
 					callback(null, resultado);
