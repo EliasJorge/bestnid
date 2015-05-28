@@ -9,7 +9,6 @@ router.get('/', function(req, res, next) {
 	// si la sesion no tiene un atributo que sea usuario es porque no tiene una sesion activa
 	//entonces pongo sesionUsuario en null para que en la barra solo aparezca iniciar sesion y registarse
 	//en caso de que tenga una sesion activa la barra aparecera con el nombre de usuario, notif y cerrar sesion
-
 	//listo las ultimas publicaciones y las categorias
 	var aux={};
 	dbPublicacion.getPublicaciones(req.query.desc, function(errorP, resultadoP){

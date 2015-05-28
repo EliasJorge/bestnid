@@ -17,14 +17,13 @@ modeloPublicacion.getPublicaciones = function(desc, callback){
 		else{
 			conn.query('SELECT * FROM publicacion  WHERE visible = 1 ORDER BY fechaInicio DESC', function(error, resultado){
 				if (error) {
-					callback(error, resultado);
+					callback(error);
 				}
 				else{
 					callback(null, resultado);
 				};
 			});	
 		}
-		
 	}
 };
 
@@ -32,6 +31,20 @@ modeloPublicacion.getPublicaciones = function(desc, callback){
 modeloPublicacion.getPublicacionesByNombre = function(string, callback){
 	if (conn){
 		conn.query("SELECT * FROM publicacion WHERE visible = 1 AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio DESC" , function(error, resultado){
+			if (error){
+				callback(error);
+			}
+			else{
+				callback(null, resultado);
+			};
+		});
+	}
+};
+
+
+modeloPublicacion.getPublicacionesByCategoria = function(idCategoria, callback){
+	if (conn){
+		conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "'", function(error, resultado){
 			if (error){
 				callback(error);
 			}

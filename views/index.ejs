@@ -11,9 +11,13 @@
             <div class="col-md-3">
                 <p class="lead">Categorías</p>
                 <div class="list-group">
-                    <a href="#" class="list-group-item">Electronica</a>
-                    <a href="#" class="list-group-item">Indumentaria</a>
-                    <a href="#" class="list-group-item">Muebles</a>
+                    <% if (categorias.length) { %>
+                        <% categorias.forEach(function(datos) { %>
+                            <a href="/categoria/<%=datos.idCategoria%>" class="list-group-item"><%= datos.nombre %></a>
+                        <% }) %>
+                    <% } else { %>
+                        <p style="font-size: 0.9em;">No hay categorias disponibles</p>
+                    <% } %>
                 </div>
             </div>
              <div class="dropdown pull-right">
