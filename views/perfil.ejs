@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<% include partials/head.ejs %>
+<body>
+	<% include partials/nav.ejs %>
+	<div class="container">
+        <section style="padding-bottom: 3em; padding-top: 3em;">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="col-md-10 text-right" style="margin-bottom:3em">
+                    <img src="<%= sesionUsuario.foto %>" class="img-rounded img-responsive" style="width: 20em; height: 20em;" alt="" />
+                    	<a href="#" class="btn btn-success glyphicon glyphicon-pencil"> Editar</a>
+                    </div>
+                    <form method="POST" action="/actualizarInfo/<%=sesionUsuario.idUsuario%>">
+	                    <label for="nombreUsuario" class="control-label">Nombre de Usuario</label>
+	                    <input type="text" class="form-control" maxlength="30" placeholder="<%= sesionUsuario.nombreUsuario %>" id="nombreUsuario" name="nombreUsuario">
+	                    <br>
+	                    <label for="nombre" class="control-label">Nombre</label>
+	                    <input type="text" class="form-control" maxlength="30" placeholder="<%= sesionUsuario.nombre %>" id="nombre" name="nombre">
+	                    <br>
+	                    <label for="nombre" class="control-label">Apellido</label>
+	                    <input type="text" class="form-control" maxlength="30" placeholder="<%= sesionUsuario.apellido %>" id="apellido" name="apellido">
+	                    <br>
+	                    <label for="nombre" class="control-label">E-Mail</label>
+	                    <input type="email" class="form-control" maxlength="50" placeholder="<%= sesionUsuario.mail %>" id="mail" name="mail">
+	                    <br>
+	                    <br>
+	                    <div class="form-group">
+		                    <div class="col-sm-16 text-right">
+	                    		<button type="submit" class="btn btn-success">Actualizar Datos</button>
+	                    	</div>
+	                    </div>
+                    </form>
+                    <br>
+                    <form method="POST" action="/actualizarPassword/<%=sesionUsuario.idUsuario%>">
+	                    <div class="form-group col-md-16">
+	                        <br />
+	                        <label>Antigua Contraseña</label>
+	                        <input type="password" class="form-control" minlength="8" maxlength="16" placeholder="entre 8 y 16 caracteres" id="oldPass" name="oldPass">
+	                        <br />
+	                        <label>Nueva Contraseña</label>
+	                        <input type="password" class="form-control" minlength="8" maxlength="16" placeholder="entre 8 y 16 caracteres" id="newPass" name="newPass">
+	                        <br><br>
+	                        <div class="form-group">
+		                    	<div class="col-sm-16 text-right">
+	                        		<button type="submit" class="btn btn-warning">Cambiar Contraseña</button>
+	                        	</div>
+	                        </div>
+	                    </div>
+                    </form>
+                    <br /><br/>
+                </div>
+                <div class="col-md-8">
+                	<div class="col-md-12">
+	                    <div class="alert alert-info">
+	                        <h2>Información: </h2>
+	                        <br>
+	                        <% if (sesionUsuario.esAdmin == 1) { %>
+	                        	<h4>Usuario Administrador</h4>
+	                        <% } else { %>
+	                        	<h4>Usuario Regular</h4>
+	                        <% } %>
+	                        <h4>Ingresos: <%= '$' + parseInt(sesionUsuario.ingresos) %> </h4>
+	                        <h4>Fecha de Registro: <%= sesionUsuario.fechaRegistro %> </h4>
+	                    </div>
+	                    <div >
+	                        <a href="/perfil/<%=sesionUsuario.idUsuario%>/publicaciones" class="btn btn-primary" role="button">Mis Publicaciones</a>
+	                        <a href="/perfil/<%=sesionUsuario.idUsuario%>/ofertas" class="btn btn-info" role="button">Mis Ofertas</a>
+	                        <a href="/perfil/<%=sesionUsuario.idUsuario%>/preguntas" class="btn btn-info" role="button">Mis Preguntas</a>
+	                        <% if (sesionUsuario.esAdmin) { %>
+	                        	<a href="/perfil/<%=sesionUsuario.idUsuario%>/estadisticas" class="btn btn-info" role="button">Estadísticas</a>
+	                        <% } %>
+	                    </div>
+	                </div>
+                </div>
+            </div>
+            <!-- ROW END -->
+
+
+        </section>
+        <!-- SECTION END -->
+    </div>
+    <!-- CONATINER END -->
+	<% include partials/footer.ejs %>
+
+</body>
+</html>

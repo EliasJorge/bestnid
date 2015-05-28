@@ -7,6 +7,7 @@ connection = mysql.createConnection(
         user: 'root',  
         password: '', 
         database: 'bestnid',
+        dateStrings: 'date'
     }
 );
 

@@ -57,8 +57,18 @@ router.get('/categoria/:id', function(req,res,next){
 			});
 		};
 	});
-})
+});
 
+router.get('/perfil/:id/:mostrar', function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
+		res.render('perfil', {
+			sesionUsuario: req.session.usuario,
+			mostrar: req.params.mostrar
+		});
+	} else {
+		res.redirect('/');
+	};
+});
 
 router.get('/registro', function(req, res, next){
 	if (req.session.usuario != null){
@@ -123,6 +133,9 @@ router.post('/insertarUsuario', function(req, res, next){
 				} else {
 					if (typeof resultado !== 'undefined' && resultado.length > 0) {
 						req.session.usuario = resultado[0];
+						//Corto la fecha para darle otro formato
+						var arregloFecha = req.session.usuario.fechaRegistro.split('-');
+						req.session.usuario.fechaRegistro = arregloFecha[2] + '/' + arregloFecha[1] + '/' + arregloFecha[0];
 						res.redirect('/');
 					} else {
 						res.render('error', { mensaje:'Usuario o contraseña incorrecta' });
@@ -140,6 +153,9 @@ router.post('/iniciarSesion', function(req, res, next){
 		} else {
 			if (typeof resultado !== 'undefined' && resultado.length > 0) {
 				req.session.usuario = resultado[0];
+				//Corto la fecha para darle otro formato
+				var arregloFecha = req.session.usuario.fechaRegistro.split('-');
+				req.session.usuario.fechaRegistro = arregloFecha[2] + '/' + arregloFecha[1] + '/' + arregloFecha[0];
 				res.redirect('/');
 			} else {
 				res.render('error', { mensaje:'Usuario o contraseña incorrecta' });

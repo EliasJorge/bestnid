@@ -11,7 +11,7 @@ modeloUsuario.insertar = function(nuevoUsuario, callback){
 			"'" + nuevoUsuario.nombreUsuario + "', " +
 			"'" + nuevoUsuario.password + "', " +
 			"'" + nuevoUsuario.mail + "', " +
-			"null, CURRENT_DATE())";
+			"'/imagenes/perfilDefault.png', CURRENT_DATE())";
 		conn.query(query, function(error, resultado){
 			if (error) {
 				callback(error);
