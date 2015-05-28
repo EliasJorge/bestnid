@@ -22,10 +22,11 @@ router.get('/', function(req, res, next) {
 				} else {
 					res.render('index', 
 						{
-							publicaciones : aux.publicaciones, 
-							categorias:resultadoC, 
-							sesionUsuario : req.session.usuario,
-							url:req.originalUrl
+							publicaciones: aux.publicaciones, 
+							categorias: resultadoC, 
+							sesionUsuario: req.session.usuario,
+							url: req.originalUrl,
+							categoriaActiva: null
 						});
 				}
 			});
@@ -49,7 +50,8 @@ router.get('/categoria/:id', function(req,res,next){
 							publicaciones : aux.publicaciones, 
 							categorias:resultadoC, 
 							sesionUsuario : req.session.usuario,
-							url:req.originalUrl
+							url:req.originalUrl,
+							categoriaActiva: req.params.id
 						});
 				};
 			});
@@ -89,7 +91,8 @@ router.get('/buscar/:busqueda', function(req, res, next){
 						publicaciones : aux.publicaciones, 
 						categorias:resultadoC, 
 						sesionUsuario : req.session.usuario,
-						url:req.originalUrl
+						url:req.originalUrl,
+						categoriaActiva: null
 					});
 				};
 			});
