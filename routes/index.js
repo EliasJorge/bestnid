@@ -20,7 +20,13 @@ router.get('/', function(req, res, next) {
 				if (errorC){
 					res.render('error', { mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo', sesionUsuario:req.session.usuario })
 				} else {
-					res.render('index', {publicaciones : aux.publicaciones, categorias:resultadoC, sesionUsuario : req.session.usuario});
+					res.render('index', 
+						{
+							publicaciones : aux.publicaciones, 
+							categorias:resultadoC, 
+							sesionUsuario : req.session.usuario,
+							url:req.originalUrl
+						});
 				}
 			});
 		};
@@ -29,7 +35,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/categoria/:id', function(req,res,next){
 	var aux={};
-	dbPublicacion.getPublicacionesByCategoria(req.params.id, function(errorP,resultadoP){
+	dbPublicacion.getPublicacionesByCategoria(req.params.id, req.query.desc, function(errorP,resultadoP){
 		if (errorP){
 			res.render('error', { mensaje:'Hubo un error al cargar las publicaciones, por favor intente de nuevo', sesionUsuario:req.session.usuario })
 		} else {
@@ -38,7 +44,13 @@ router.get('/categoria/:id', function(req,res,next){
 				if (errorC){
 					res.render('error', { mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo', sesionUsuario:req.session.usuario })
 				} else {
-					res.render('index', {publicaciones : aux.publicaciones, categorias:resultadoC, sesionUsuario : req.session.usuario});
+					res.render('index', 
+						{
+							publicaciones : aux.publicaciones, 
+							categorias:resultadoC, 
+							sesionUsuario : req.session.usuario,
+							url:req.originalUrl
+						});
 				};
 			});
 		};
@@ -62,13 +74,9 @@ router.get('/ingreso', function(req, res, next){
 	};
 });
 
-router.post('/buscar', function(req, res, next){
-	var sesionUsuario = null
+router.get('/buscar/:busqueda', function(req, res, next){
 	var aux={};
-	if (req.session.hasOwnProperty('usuario')){
-		sesionUsuario = req.session.usuario;
-	}
-	dbPublicacion.getPublicacionesByNombre(req.body.nombrePublicacion, function(errorP, resultadoP){
+	dbPublicacion.getPublicacionesByNombre(req.params.busqueda, req.query.desc, function(errorP, resultadoP){
 		if (errorP) {
 			res.render('error', { mensaje:'Hubo un error en la búsqueda, por favor intente de nuevo', sesionUsuario:req.session.usuario })
 		} else{
@@ -77,11 +85,24 @@ router.post('/buscar', function(req, res, next){
 				if (errorC){
 					res.render('error', { mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo', sesionUsuario:req.session.usuario })
 				} else {
-					res.render('index', {publicaciones : aux.publicaciones, categorias:resultadoC, sesionUsuario : req.session.usuario});
+					res.render('index', {
+						publicaciones : aux.publicaciones, 
+						categorias:resultadoC, 
+						sesionUsuario : req.session.usuario,
+						url:req.originalUrl
+					});
 				};
 			});
 		};
 	});
+});
+
+
+
+
+
+router.post('/buscar', function(req, res, next){
+	res.redirect('/buscar/' + req.body.nombrePublicacion);
 });
 
 router.post('/insertarUsuario', function(req, res, next){

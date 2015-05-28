@@ -28,8 +28,35 @@ modeloPublicacion.getPublicaciones = function(desc, callback){
 };
 
 
-modeloPublicacion.getPublicacionesByNombre = function(string, callback){
+
+
+modeloPublicacion.getPublicacionesByNombre = function(string, desc, callback){
 	if (conn){
+		if (desc == 1) {
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio ASC", function(error, resultado){
+				if (error) {
+					callback(error);
+				}
+				else{
+					callback(null, resultado);
+				};
+			});
+		}
+		else{
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio DESC", function(error, resultado){
+				if (error) {
+					callback(error);
+				}
+				else{
+					callback(null, resultado);
+				};
+			});	
+		}
+	}
+};
+
+
+	/*if (conn){
 		conn.query("SELECT * FROM publicacion WHERE visible = 1 AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio DESC" , function(error, resultado){
 			if (error){
 				callback(error);
@@ -40,9 +67,34 @@ modeloPublicacion.getPublicacionesByNombre = function(string, callback){
 		});
 	}
 };
+*/
 
+modeloPublicacion.getPublicacionesByCategoria = function(idCategoria, desc, callback){
+	if (conn){
+		if (desc == 1) {
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "' ORDER BY fechaInicio ASC", function(error, resultado){
+				if (error) {
+					callback(error);
+				}
+				else{
+					callback(null, resultado);
+				};
+			});
+		}
+		else{
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "' ORDER BY fechaInicio DESC", function(error, resultado){
+				if (error) {
+					callback(error);
+				}
+				else{
+					callback(null, resultado);
+				};
+			});	
+		}
+	}
+};
 
-modeloPublicacion.getPublicacionesByCategoria = function(idCategoria, callback){
+	/*
 	if (conn){
 		conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "'", function(error, resultado){
 			if (error){
@@ -54,5 +106,6 @@ modeloPublicacion.getPublicacionesByCategoria = function(idCategoria, callback){
 		});
 	}
 };
+*/
 
 module.exports = modeloPublicacion;

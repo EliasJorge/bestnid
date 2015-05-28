@@ -4,7 +4,7 @@ var modeloCategoria = {};
 
 modeloCategoria.getCategorias = function(callback){
 	if (conn){
-		conn.query('SELECT * FROM categoria WHERE visible=1', function(error, resultado){
+		conn.query('SELECT * FROM categoria WHERE visible=1 ORDER BY nombre', function(error, resultado){
 			if (error) {
 				callback(error);
 			}
