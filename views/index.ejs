@@ -16,9 +16,19 @@
                     <a href="#" class="list-group-item">Muebles</a>
                 </div>
             </div>
+             <div class="dropdown pull-right">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                Ordenar por
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/">Más nuevos</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/?desc=1">Más viejos</a></li>
+              </ul>
+            </div>
 
             <div class="col-md-9">
-            	
+            <br/>
             <% if (publicaciones.length) { %>
                 <% publicaciones.forEach(function(datos) { %>
                 <div class="col-sm-4 col-lg-4 col-md-4">
@@ -28,15 +38,15 @@
                     </a>
                         <div class="caption-full">
                             <h4><a href="producto/<%=datos.idPublicacion%>">
-                                <% if (datos.titulo.length > 45) { %>
-                                    <%= datos.titulo.substring(0,43) + '...' %>
+                                <% if (datos.titulo.length > 37) { %>
+                                    <%= datos.titulo.substring(0,35) + '...' %>
                                 <% } else { %>
                                     <%= datos.titulo %>
                                 <% } %>
                             </a></h4>
                             <p  style="font-size: 0.9em;">
-                            <% if (datos.descripcion.length > 50) { %>
-                                <%= datos.descripcion.replace("\n"," ").substring(0,47) + '...' %>
+                            <% if (datos.descripcion.length > 78) { %>
+                                <%= datos.descripcion.replace("\n"," ").substring(0,75) + '...' %>
                             <% } else { %>
                                 <%= datos.descripcion.replace("\n"," ") %>
                             <% } %>

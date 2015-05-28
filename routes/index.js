@@ -8,10 +8,12 @@ router.get('/', function(req, res, next) {
 	// si la sesion no tiene un atributo que sea usuario es porque no tiene una sesion activa
 	//entonces pongo sesionUsuario en null para que en la barra solo aparezca iniciar sesion y registarse
 	//en caso de que tenga una sesion activa la barra aparecera con el nombre de usuario, notif y cerrar sesion
-	dbPublicacion.getPublicaciones(function(error, resultado){
+	console.log(req.query.desc);
+	dbPublicacion.getPublicaciones(req.query.desc, function(error, resultado){
 		res.render('index', {publicaciones : resultado, sesionUsuario : req.session.usuario});
 	});
 });
+
 
 router.get('/registro', function(req, res, next){
 	if (req.session.hasOwnProperty('usuario')){
