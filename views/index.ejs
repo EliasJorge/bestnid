@@ -31,8 +31,20 @@
                         <img class="img-responsive" src ="<%=datos.foto%>" style="width: 18em; height: 12em;" alt="" >
                     </a>
                         <div class="caption-full">
-                            <h4><a href="producto/<%=datos.idPublicacion%>"><%= datos.titulo.substring(0,45) %></a></h4>
-                            <p  style="font-size: 0.9em;"><%= datos.descripcion.replace("\n"," ").substring(0,40)%></p>
+                            <h4><a href="producto/<%=datos.idPublicacion%>">
+                                <% if (datos.titulo.length > 45) { %>
+                                    <%= datos.titulo.substring(0,43) + '...' %>
+                                <% } else { %>
+                                    <%= datos.titulo %>
+                                <% } %>
+                            </a></h4>
+                            <p  style="font-size: 0.9em;">
+                            <% if (datos.descripcion.length > 50) { %>
+                                <%= datos.descripcion.replace("\n"," ").substring(0,47) + '...' %>
+                            <% } else { %>
+                                <%= datos.descripcion.replace("\n"," ") %>
+                            <% } %>
+                            </p>
                         </div>
                     </div>
                 </div>
