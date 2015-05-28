@@ -5,8 +5,9 @@ connection = mysql.createConnection(
     { 
         host: 'localhost', 
         user: 'root',  
-        password: '', 
-        database: 'bestnid'
+        password: 'root', 
+        database: 'bestnid',
+        port: 3306
     }
 );
 
