@@ -101,9 +101,6 @@ router.get('/buscar/:busqueda', function(req, res, next){
 });
 
 
-
-
-
 router.post('/buscar', function(req, res, next){
 	res.redirect('/buscar/' + req.body.nombrePublicacion);
 });
@@ -120,7 +117,18 @@ router.post('/insertarUsuario', function(req, res, next){
 		if (error) {
 			res.render('error', { mensaje:'El nombre de usuario elegido ya existe' });
 		} else {
-			res.render('exito', { mensaje:'Usted ha sido registrado correctamente' });
+			dbUsuario.getLogin(req.body.nombreUsuario, req.body.pass, function(error, resultado){
+				if (error) {
+					res.render('error', { mensaje:'Hubo un error en el inicio de sesión, por favor intente de nuevo' });
+				} else {
+					if (typeof resultado !== 'undefined' && resultado.length > 0) {
+						req.session.usuario = resultado[0];
+						res.redirect('/');
+					} else {
+						res.render('error', { mensaje:'Usuario o contraseña incorrecta' });
+					};
+				};
+			});
 		};
 	});
 });
