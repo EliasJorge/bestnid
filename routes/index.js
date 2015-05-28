@@ -59,6 +59,10 @@ router.get('/categoria/:id', function(req,res,next){
 	});
 })
 
+router.get('/publicacion', function(req, res){
+	res.render('publicacion');
+});
+
 
 router.get('/registro', function(req, res, next){
 	if (req.session.usuario != null){
