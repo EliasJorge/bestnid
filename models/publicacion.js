@@ -27,7 +27,18 @@ modeloPublicacion.getPublicaciones = function(desc, callback){
 	}
 };
 
-
+modeloPublicacion.getPublicacionesByUsuario = function(id, callback){
+	if (conn) {
+		conn.query("SELECT * FROM publicacion WHERE idUsuario = " + id + " ORDER BY fechaInicio DESC", function(error, resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null, resultado);
+			};
+		});
+	};
+};
 
 
 modeloPublicacion.getPublicacionesByNombre = function(string, desc, callback){

@@ -60,17 +60,55 @@ router.get('/categoria/:id', function(req,res,next){
 });
 
 
-router.get('/perfil/:id/:mostrar', function(req, res, next){
+router.get('/perfil/:id/publicaciones', function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
-		res.render('perfil', {
-			sesionUsuario: req.session.usuario,
-			mostrar: req.params.mostrar
+		dbPublicacion.getPublicacionesByUsuario(req.params.id, function(error, resultado){
+			if (error) {
+				res.render('error', { mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo' });
+			} else {
+				res.render('perfil', {
+					sesionUsuario: req.session.usuario,
+					publicaciones: resultado,
+					tipoContenido: 'publicaciones'
+				});
+			};
 		});
 	} else {
 		res.redirect('/');
 	};
 });
 
+//////////////////////////////////////////////////////////////////////
+/////////////// PARA PROBAR EL PERFIL, DESP LLENAR ///////////////////
+//////////////////////////////////////////////////////////////////////
+
+router.get('/perfil/:id/ofertas', function(req, res, next){
+	res.render('perfil', {
+		sesionUsuario: req.session.usuario,
+		publicaciones: [],
+		tipoContenido: 'ofertas'
+	});
+});
+
+router.get('/perfil/:id/preguntas', function(req, res, next){
+	res.render('perfil', {
+		sesionUsuario: req.session.usuario,
+		publicaciones: [],
+		tipoContenido: 'preguntas'
+	});
+});
+
+router.get('/perfil/:id/estadisticas', function(req, res, next){
+	res.render('perfil', {
+		sesionUsuario: req.session.usuario,
+		publicaciones: [],
+		tipoContenido: 'estadisticas'
+	});
+});
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
 router.get('/publicacion', function(req, res){
 	res.render('publicacion');
