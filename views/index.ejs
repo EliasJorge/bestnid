@@ -50,7 +50,10 @@
                         <img class="img-responsive" src ="<%=datos.foto%>" style="width: 18em; height: 12em;" alt="" >
                     </a>
                         <div class="caption-full">
-                            <h4><a href="producto/<%=datos.idPublicacion%>">
+                        <h4 class="pull-right" style="font-size: 0.8em;">
+                        <%=datos.fechaInicio.split('-')[2] + '/' + datos.fechaInicio.split('-')[1] + '/' + datos.fechaInicio.split('-')[0]%>
+                        </h4>
+                            <h10><a href="producto/<%=datos.idPublicacion%>">
                                 <% if (datos.titulo.length > 37) { %>
                                     <%= datos.titulo.substring(0,35) + '...' %>
                                 <% } else { %>
