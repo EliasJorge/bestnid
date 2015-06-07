@@ -13,12 +13,22 @@ router.get('/', function(req, res, next) {
 	var aux={};
 	dbPublicacion.getPublicaciones(req.query.desc, function(errorP, resultadoP){
 		if (errorP){
-			res.render('error', { mensaje:'Hubo un error al cargar las publicaciones, por favor intente de nuevo', sesionUsuario:req.session.usuario })
+			res.render('error', {
+				mensaje:'Hubo un error al cargar las publicaciones, por favor intente de nuevo',
+				sesionUsuario:req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
 		} else {
 			aux.publicaciones=resultadoP;
 			dbCategoria.getCategorias(function(errorC,resultadoC){
 				if (errorC){
-					res.render('error', { mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo', sesionUsuario:req.session.usuario })
+					res.render('error', {
+						mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo',
+						sesionUsuario:req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl
+					});
 				} else {
 					res.render('index', 
 						{
@@ -38,12 +48,22 @@ router.get('/categoria/:id', function(req,res,next){
 	var aux={};
 	dbPublicacion.getPublicacionesByCategoria(req.params.id, req.query.desc, function(errorP,resultadoP){
 		if (errorP){
-			res.render('error', { mensaje:'Hubo un error al cargar las publicaciones, por favor intente de nuevo', sesionUsuario:req.session.usuario })
+			res.render('error', {
+				mensaje:'Hubo un error al cargar las publicaciones, por favor intente de nuevo',
+				sesionUsuario:req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
 		} else {
 			aux.publicaciones=resultadoP;
 			dbCategoria.getCategorias(function(errorC,resultadoC){
 				if (errorC){
-					res.render('error', { mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo', sesionUsuario:req.session.usuario })
+					res.render('error', {
+						mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo',
+						sesionUsuario:req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl
+					});
 				} else {
 					res.render('index', 
 						{
@@ -63,12 +83,22 @@ router.get('/categoria/:id/buscar/:busqueda', function(req,res,next){
 	var aux={};
 	dbPublicacion.getPublicacionesByCategoriaAndNombre(req.params.id, req.params.busqueda, req.query.desc, function(errorP,resultadoP){
 		if (errorP){
-			res.render('error', { mensaje:'Hubo un error al cargar las publicaciones, por favor intente de nuevo', sesionUsuario:req.session.usuario })
+			res.render('error', {
+				mensaje:'Hubo un error al cargar las publicaciones, por favor intente de nuevo',
+				sesionUsuario:req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
 		} else {
 			aux.publicaciones=resultadoP;
 			dbCategoria.getCategorias(function(errorC,resultadoC){
 				if (errorC){
-					res.render('error', { mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo', sesionUsuario:req.session.usuario })
+					res.render('error', {
+						mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo',
+						sesionUsuario:req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl
+					});
 				} else {
 					res.render('index', 
 						{
@@ -88,10 +118,17 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
 		dbPublicacion.getPublicacionesByUsuario(req.params.id, function(error, resultado){
 			if (error) {
-				res.render('error', { mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo' });
+				res.render('error', {
+					mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
 			} else {
 				res.render('perfil', {
 					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl,
 					publicaciones: resultado,
 					tipoContenido: 'publicaciones'
 				});
@@ -109,6 +146,8 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 router.get('/perfil/:id/ofertas', function(req, res, next){
 	res.render('perfil', {
 		sesionUsuario: req.session.usuario,
+		categoriaActiva: null,
+		url:req.originalUrl,
 		publicaciones: [],
 		tipoContenido: 'ofertas'
 	});
@@ -117,6 +156,8 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 router.get('/perfil/:id/preguntas', function(req, res, next){
 	res.render('perfil', {
 		sesionUsuario: req.session.usuario,
+		categoriaActiva: null,
+		url:req.originalUrl,
 		publicaciones: [],
 		tipoContenido: 'preguntas'
 	});
@@ -125,6 +166,8 @@ router.get('/perfil/:id/preguntas', function(req, res, next){
 router.get('/perfil/:id/estadisticas', function(req, res, next){
 	res.render('perfil', {
 		sesionUsuario: req.session.usuario,
+		categoriaActiva: null,
+		url:req.originalUrl,
 		publicaciones: [],
 		tipoContenido: 'estadisticas'
 	});
@@ -135,14 +178,26 @@ router.get('/perfil/:id/estadisticas', function(req, res, next){
 //////////////////////////////////////////////////////////////////////
 
 router.get('/publicacion', function(req, res){
-	res.render('publicacion');
+	res.render('publicacion', {
+		sesionUsuario: req.session.usuario,
+		categoriaActiva: null,
+		url:req.originalUrl,
+	});
 });
 
 router.get('/registro', function(req, res, next){
 	if (req.session.usuario != null){
 		res.redirect('/');
 	} else {
-		res.render('registro');
+		res.render('registro', {
+			categoriaActiva: null,
+			url:req.originalUrl,
+			usuarioExistente: false,
+			nombreUsuario: '',
+			nombre: '',
+			apellido: '',
+			mail: '',
+		});
 	};
 });
 
@@ -150,7 +205,12 @@ router.get('/ingreso', function(req, res, next){
 	if (req.session.usuario != null){
 		res.redirect('/');
 	} else {
-		res.render('ingreso');
+		res.render('ingreso', {
+			categoriaActiva: null,
+			url:req.originalUrl,
+			usuarioExistente: false,
+			nombreUsuario: ''
+		});
 	};
 });
 
@@ -158,12 +218,22 @@ router.get('/buscar/:busqueda', function(req, res, next){
 	var aux={};
 	dbPublicacion.getPublicacionesByNombre(req.params.busqueda, req.query.desc, function(errorP, resultadoP){
 		if (errorP) {
-			res.render('error', { mensaje:'Hubo un error en la búsqueda, por favor intente de nuevo', sesionUsuario:req.session.usuario })
+			res.render('error', {
+				mensaje:'Hubo un error en la búsqueda, por favor intente de nuevo',
+				sesionUsuario:req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl,
+			});
 		} else{
 			aux.publicaciones=resultadoP;
 			dbCategoria.getCategorias(function(errorC,resultadoC){
 				if (errorC){
-					res.render('error', { mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo', sesionUsuario:req.session.usuario })
+					res.render('error', {
+						mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo',
+						sesionUsuario:req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl,
+					});
 				} else {
 					res.render('index', {
 						publicaciones : aux.publicaciones, 
@@ -199,11 +269,24 @@ router.post('/insertarUsuario', function(req, res, next){
 	};
 	dbUsuario.insertar(usuario, function(error, respuesta){
 		if (error) {
-			res.render('error', { mensaje:'El nombre de usuario elegido ya existe' });
+			res.render('registro', {
+				categoriaActiva: null,
+				url:req.originalUrl,
+				usuarioExistente: true,
+				nombreUsuario: usuario.nombreUsuario,
+				nombre: usuario.nombre,
+				apellido: usuario.apellido,
+				mail: usuario.mail,
+			});
 		} else {
 			dbUsuario.getLogin(req.body.nombreUsuario, req.body.pass, function(error, resultado){
 				if (error) {
-					res.render('error', { mensaje:'Hubo un error en el inicio de sesión, por favor intente de nuevo' });
+					res.render('error', {
+						mensaje:'Hubo un error en el inicio de sesión, por favor intente de nuevo',
+						sesionUsuario: req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl
+					});
 				} else {
 					if (typeof resultado !== 'undefined' && resultado.length > 0) {
 						req.session.usuario = resultado[0];
@@ -212,7 +295,12 @@ router.post('/insertarUsuario', function(req, res, next){
 						req.session.usuario.fechaRegistro = arregloFecha[2] + '/' + arregloFecha[1] + '/' + arregloFecha[0];
 						res.redirect('/');
 					} else {
-						res.render('error', { mensaje:'Usuario o contraseña incorrecta' });
+						res.render('error', {
+							mensaje:'Usuario o contraseña incorrecta',
+							sesionUsuario: req.session.usuario,
+							categoriaActiva: null,
+							url:req.originalUrl
+						});
 					};
 				};
 			});
@@ -223,7 +311,12 @@ router.post('/insertarUsuario', function(req, res, next){
 router.post('/iniciarSesion', function(req, res, next){
 	dbUsuario.getLogin(req.body.nombreUsuario, req.body.password, function(error, resultado){
 		if (error) {
-			res.render('error', { mensaje:'Hubo un error en el inicio de sesión, por favor intente de nuevo' });
+			res.render('error', {
+				mensaje:'Hubo un error en el inicio de sesión, por favor intente de nuevo',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
 		} else {
 			if (typeof resultado !== 'undefined' && resultado.length > 0) {
 				req.session.usuario = resultado[0];
@@ -232,7 +325,12 @@ router.post('/iniciarSesion', function(req, res, next){
 				req.session.usuario.fechaRegistro = arregloFecha[2] + '/' + arregloFecha[1] + '/' + arregloFecha[0];
 				res.redirect('/');
 			} else {
-				res.render('error', { mensaje:'Usuario o contraseña incorrecta' });
+				res.render('ingreso', {
+					categoriaActiva: null,
+					url:req.originalUrl,
+					usuarioExistente: true,
+					nombreUsuario: req.body.nombreUsuario
+				});
 			};
 		};
 	});
