@@ -59,6 +59,30 @@ router.get('/categoria/:id', function(req,res,next){
 	});
 });
 
+router.get('/categoria/:id/buscar/:busqueda', function(req,res,next){
+	var aux={};
+	dbPublicacion.getPublicacionesByCategoriaAndNombre(req.params.id, req.params.busqueda, req.query.desc, function(errorP,resultadoP){
+		if (errorP){
+			res.render('error', { mensaje:'Hubo un error al cargar las publicaciones, por favor intente de nuevo', sesionUsuario:req.session.usuario })
+		} else {
+			aux.publicaciones=resultadoP;
+			dbCategoria.getCategorias(function(errorC,resultadoC){
+				if (errorC){
+					res.render('error', { mensaje:'Hubo un error al cargar las categorias, por favor intente de nuevo', sesionUsuario:req.session.usuario })
+				} else {
+					res.render('index', 
+						{
+							publicaciones : aux.publicaciones, 
+							categorias:resultadoC, 
+							sesionUsuario : req.session.usuario,
+							url:req.originalUrl,
+							categoriaActiva: req.params.id
+						});
+				};
+			});
+		};
+	});
+});
 
 router.get('/perfil/:id/publicaciones', function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
@@ -156,7 +180,13 @@ router.get('/buscar/:busqueda', function(req, res, next){
 
 
 router.post('/buscar', function(req, res, next){
-	res.redirect('/buscar/' + req.body.nombrePublicacion);
+	if (req.query.categoriaActiva == '') {
+		res.redirect('/buscar/' + req.body.nombrePublicacion);
+	}
+	else {
+		console.log('/categoria/' + req.query.categoriaActiva  + '/buscar/' + req.body.nombrePublicacion);
+		res.redirect('/categoria/' + req.query.categoriaActiva  + '/buscar/' + req.body.nombrePublicacion);
+	}
 });
 
 router.post('/insertarUsuario', function(req, res, next){

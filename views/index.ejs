@@ -44,32 +44,32 @@
             <br/>
             <% if (publicaciones.length) { %>
                 <% publicaciones.forEach(function(datos) { %>
-                <div class="col-sm-4 col-lg-4 col-md-4">
-                    <div class="thumbnail" style="height: 20em;  word-wrap: break-word;">
-                    <a href="/producto/<%=datos.idPublicacion%>">
-                        <img class="img-responsive" src ="<%=datos.foto%>" style="width: 18em; height: 12em;" alt="" >
-                    </a>
-                        <div class="caption-full">
-                        <h4 class="pull-right" style="font-size: 0.8em;">
-                        <%=datos.fechaInicio.split('-')[2] + '/' + datos.fechaInicio.split('-')[1] + '/' + datos.fechaInicio.split('-')[0]%>
-                        </h4>
-                            <h10><a href="producto/<%=datos.idPublicacion%>">
-                                <% if (datos.titulo.length > 37) { %>
-                                    <%= datos.titulo.substring(0,35) + '...' %>
+                    <div class="col-sm-4 col-lg-4 col-md-4">
+                        <div class="thumbnail" style="height: 20em;  word-wrap: break-word;">
+                        <a href="/producto/<%=datos.idPublicacion%>">
+                            <img class="img-responsive" src ="<%=datos.foto%>" style="width: 18em; height: 12em;" alt="" >
+                        </a>
+                            <div class="caption-full">
+                            <h4 class="pull-right" style="font-size: 0.8em;">
+                            <%=datos.fechaInicio.split('-')[2] + '/' + datos.fechaInicio.split('-')[1] + '/' + datos.fechaInicio.split('-')[0]%>
+                            </h4>
+                                <h10><a href="producto/<%=datos.idPublicacion%>">
+                                    <% if (datos.titulo.length > 37) { %>
+                                        <%= datos.titulo.substring(0,35) + '...' %>
+                                    <% } else { %>
+                                        <%= datos.titulo %>
+                                    <% } %>
+                                </a></h4>
+                                <p  style="font-size: 0.9em;">
+                                <% if (datos.descripcion.length > 78) { %>
+                                    <%= datos.descripcion.replace("\n"," ").substring(0,75) + '...' %>
                                 <% } else { %>
-                                    <%= datos.titulo %>
+                                    <%= datos.descripcion.replace("\n"," ") %>
                                 <% } %>
-                            </a></h4>
-                            <p  style="font-size: 0.9em;">
-                            <% if (datos.descripcion.length > 78) { %>
-                                <%= datos.descripcion.replace("\n"," ").substring(0,75) + '...' %>
-                            <% } else { %>
-                                <%= datos.descripcion.replace("\n"," ") %>
-                            <% } %>
-                            </p>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
                 <%})%>
             <% } else {%>
                 <div class="alert alert-danger">No hay publicaciones disponibles</div>

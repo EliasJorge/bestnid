@@ -66,20 +66,6 @@ modeloPublicacion.getPublicacionesByNombre = function(string, desc, callback){
 	}
 };
 
-
-	/*if (conn){
-		conn.query("SELECT * FROM publicacion WHERE visible = 1 AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio DESC" , function(error, resultado){
-			if (error){
-				callback(error);
-			}
-			else{
-				callback(null, resultado);
-			};
-		});
-	}
-};
-*/
-
 modeloPublicacion.getPublicacionesByCategoria = function(idCategoria, desc, callback){
 	if (conn){
 		if (desc == 1) {
@@ -105,18 +91,29 @@ modeloPublicacion.getPublicacionesByCategoria = function(idCategoria, desc, call
 	}
 };
 
-	/*
+modeloPublicacion.getPublicacionesByCategoriaAndNombre = function(idCategoria, string, desc, callback){
 	if (conn){
-		conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "'", function(error, resultado){
-			if (error){
-				callback(error);
-			}
-			else{
-				callback(null, resultado);
-			};
-		});
+		if (desc == 1) {
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "'AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio ASC", function(error, resultado){
+				if (error) {
+					callback(error);
+				}
+				else{
+					callback(null, resultado);
+				};
+			});
+		}
+		else{
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "'AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio DESC", function(error, resultado){
+				if (error) {
+					callback(error);
+				}
+				else{
+					callback(null, resultado);
+				};
+			});	
+		}
 	}
 };
-*/
 
 module.exports = modeloPublicacion;
