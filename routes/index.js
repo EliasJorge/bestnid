@@ -130,7 +130,12 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 					categoriaActiva: null,
 					url:req.originalUrl,
 					publicaciones: resultado,
-					tipoContenido: 'publicaciones'
+					tipoContenido: 'publicaciones',
+					usuarioExistente: false,
+					nombreUsuario: '',
+					nombre: '',
+					apellido: '',
+					mail: ''
 				});
 			};
 		});
@@ -149,7 +154,12 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 		categoriaActiva: null,
 		url:req.originalUrl,
 		publicaciones: [],
-		tipoContenido: 'ofertas'
+		tipoContenido: 'ofertas',
+		usuarioExistente: false,
+		nombreUsuario: '',
+		nombre: '',
+		apellido: '',
+		mail: ''
 	});
 });
 
@@ -159,7 +169,12 @@ router.get('/perfil/:id/preguntas', function(req, res, next){
 		categoriaActiva: null,
 		url:req.originalUrl,
 		publicaciones: [],
-		tipoContenido: 'preguntas'
+		tipoContenido: 'preguntas',
+		usuarioExistente: false,
+		nombreUsuario: '',
+		nombre: '',
+		apellido: '',
+		mail: ''
 	});
 });
 
@@ -169,13 +184,126 @@ router.get('/perfil/:id/estadisticas', function(req, res, next){
 		categoriaActiva: null,
 		url:req.originalUrl,
 		publicaciones: [],
-		tipoContenido: 'estadisticas'
+		tipoContenido: 'estadisticas',
+		usuarioExistente: false,
+		nombreUsuario: '',
+		nombre: '',
+		apellido: '',
+		mail: ''
 	});
 });
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
+
+router.post('/actualizarInfo/:id', function(req, res, next){
+	//Verifico que haya una sesion activa
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
+		//Creo un array con los datos que se van a modificar
+		var datosModificar = {};
+		//Si hay que modificar el nombre de usuario
+		if (req.body.nombreUsuario != '') {
+			//Me fijo si existe un usuario con el nombre elegido
+			dbUsuario.getUsuarioByNombre(req.body.nombreUsuario, function(error, resultado){
+				if (error) {
+					//Hubo un error al buscar usuarios
+					res.render('error', {
+						mensaje:'Hubo un error al conectarse a la base de datos, por favor intente de nuevo',
+						sesionUsuario:req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl,
+					});
+				} else {
+					//No hubo error
+					//Encontre alguno con ese nombre?
+					if (typeof resultado !== 'undefined' && resultado.length > 0) {
+						//Como encontre uno, pido las publicaciones para recargar la vista de perfil con el msj de error
+						dbPublicacion.getPublicacionesByUsuario(req.params.id, function(errorP, resultadoP){
+							if (errorP) {
+								res.render('error', {
+									mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
+									sesionUsuario: req.session.usuario,
+									categoriaActiva: null,
+									url:req.originalUrl
+								});
+							} else {
+								res.render('perfil', {
+									sesionUsuario: req.session.usuario,
+									categoriaActiva: null,
+									url:req.originalUrl,
+									publicaciones: resultadoP,
+									tipoContenido: 'publicaciones',
+									usuarioExistente: true,
+									nombreUsuario: req.body.nombreUsuario,
+									nombre: req.body.nombre,
+									apellido: req.body.apellido,
+									mail: req.body.mail
+								});
+							};
+						});
+					} else {
+						//No hay nadie con ese nombre, modifico
+						datosModificar.nombreUsuario = req.body.nombreUsuario;
+						if (req.body.nombre != '') {
+							datosModificar.nombre = req.body.nombre;
+						};
+						if (req.body.apellido != '') {
+							datosModificar.apellido = req.body.apellido;
+						};
+						if (req.body.mail != '') {
+							datosModificar.mail = req.body.mail;
+						};
+						dbUsuario.modificarUsuario(req.params.id, datosModificar, function(errorM, resultadoM){
+							if (errorM) {
+								//Hubo un error al modificar los datos
+								res.render('error', {
+									mensaje:'Hubo un error al modificar sus datos, por favor intente de nuevo',
+									sesionUsuario: req.session.usuario,
+									categoriaActiva: null,
+									url:req.originalUrl
+								});
+							} else {
+								for (var attr in datosModificar) {
+									req.session.usuario[attr] = datosModificar[attr];
+								};
+								res.redirect('/perfil/' + req.params.id + '/publicaciones');
+							};
+						});
+					};
+				};
+			});
+		} else {
+			if (req.body.nombre != '') {
+				datosModificar.nombre = req.body.nombre;
+			};
+			if (req.body.apellido != '') {
+				datosModificar.apellido = req.body.apellido;
+			};
+			if (req.body.mail != '') {
+				datosModificar.mail = req.body.mail;
+			};
+			dbUsuario.modificarUsuario(req.params.id, datosModificar, function(errorM, resultadoM){
+				if (errorM) {
+					//Hubo un error al modificar los datos
+					res.render('error', {
+						mensaje:'Hubo un error al modificar sus datos, por favor intente de nuevo',
+						sesionUsuario: req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl
+					});
+				} else {
+					for (var attr in datosModificar) {
+						req.session.usuario[attr] = datosModificar[attr];
+					};
+					res.redirect('/perfil/' + req.params.id + '/publicaciones');
+				};
+			});
+		};
+	} else {
+		res.redirect('/');
+	};
+});
 
 router.get('/publicacion', function(req, res){
 	res.render('publicacion', {

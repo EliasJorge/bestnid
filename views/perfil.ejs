@@ -13,16 +13,23 @@
                     </div>
                     <form method="POST" action="/actualizarInfo/<%=sesionUsuario.idUsuario%>">
 	                    <label for="nombreUsuario" class="control-label">Nombre de Usuario</label>
-	                    <input type="text" class="form-control" maxlength="30" placeholder="<%= sesionUsuario.nombreUsuario %>" id="nombreUsuario" name="nombreUsuario">
+	                    <input type="text" class="form-control" maxlength="30" placeholder="<%= sesionUsuario.nombreUsuario %>" id="nombreUsuario" value="<%=nombreUsuario%>" name="nombreUsuario">
+	                    <% if (usuarioExistente) { %>
+	                        <div class="col-md-14">
+			            		<div class="alert alert-danger">
+			            			<span>El nombre de usuario elegido ya existe :(</span>
+			            		</div>
+			            	</div>
+			            <% } %>
 	                    <br>
 	                    <label for="nombre" class="control-label">Nombre</label>
-	                    <input type="text" class="form-control" maxlength="30" placeholder="<%= sesionUsuario.nombre %>" id="nombre" name="nombre">
+	                    <input type="text" class="form-control" maxlength="30" placeholder="<%= sesionUsuario.nombre %>" id="nombre" value="<%=nombre%>" name="nombre">
 	                    <br>
 	                    <label for="nombre" class="control-label">Apellido</label>
-	                    <input type="text" class="form-control" maxlength="30" placeholder="<%= sesionUsuario.apellido %>" id="apellido" name="apellido">
+	                    <input type="text" class="form-control" maxlength="30" placeholder="<%= sesionUsuario.apellido %>" id="apellido" value="<%=apellido%>" name="apellido">
 	                    <br>
 	                    <label for="nombre" class="control-label">E-Mail</label>
-	                    <input type="email" class="form-control" maxlength="50" placeholder="<%= sesionUsuario.mail %>" id="mail" name="mail">
+	                    <input type="email" class="form-control" maxlength="50" placeholder="<%= sesionUsuario.mail %>" id="mail" value="<%=mail%>" name="mail">
 	                    <br>
 	                    <br>
 	                    <div class="form-group">
