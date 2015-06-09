@@ -20,7 +20,7 @@
 
             <!--barra de busqueda-->
                 <form class="navbar-form navbar-left" method="POST" 
-                action="<%url%>/buscar?categoriaActiva=<% if (categoriaActiva == 'undefined') {%><%=categoriaActiva%><%}else{%><=%''%><%}%>">
+                action="<%url%>/buscar?categoriaActiva=<% if(typeof(categoriaActiva) === 'undefined') {%><%=''%><%}else{%><=%categoriaActiva%><%}%>">
                     <div class="form-group">
                         <input id="nombrePublicacion" name="nombrePublicacion" type="text" class="form-control" placeholder="Buscar" required>
                     </div>
