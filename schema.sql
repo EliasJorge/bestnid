@@ -143,7 +143,7 @@ CREATE TABLE `usuario` (
   `password` varchar(16) NOT NULL,
   `ingresos` float unsigned zerofill NOT NULL DEFAULT '000000000000',
   `mail` varchar(100) NOT NULL,
-  `foto` varchar(45),
+  `foto` varchar(512),
   `fechaRegistro` date NOT NULL,
   `esAdmin` tinyint(1) NOT NULL DEFAULT 0,
   `tarjeta` varchar(20) DEFAULT NULL,

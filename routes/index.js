@@ -1,4 +1,5 @@
 var express = require('express');
+var multer = require('multer');
 var router = express.Router();
 var dbUsuario = require('../models/usuario');
 var dbPublicacion = require('../models/publicacion');
@@ -132,6 +133,8 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 					publicaciones: resultado,
 					tipoContenido: 'publicaciones',
 					usuarioExistente: false,
+					passwordIncorrecta: false,
+					passwordCambiada: false,
 					nombreUsuario: '',
 					nombre: '',
 					apellido: '',
@@ -156,6 +159,8 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 		publicaciones: [],
 		tipoContenido: 'ofertas',
 		usuarioExistente: false,
+		passwordIncorrecta: false,
+		passwordCambiada: false,
 		nombreUsuario: '',
 		nombre: '',
 		apellido: '',
@@ -171,6 +176,8 @@ router.get('/perfil/:id/preguntas', function(req, res, next){
 		publicaciones: [],
 		tipoContenido: 'preguntas',
 		usuarioExistente: false,
+		passwordIncorrecta: false,
+		passwordCambiada: false,
 		nombreUsuario: '',
 		nombre: '',
 		apellido: '',
@@ -186,6 +193,8 @@ router.get('/perfil/:id/estadisticas', function(req, res, next){
 		publicaciones: [],
 		tipoContenido: 'estadisticas',
 		usuarioExistente: false,
+		passwordIncorrecta: false,
+		passwordCambiada: false,
 		nombreUsuario: '',
 		nombre: '',
 		apellido: '',
@@ -235,6 +244,8 @@ router.post('/actualizarInfo/:id', function(req, res, next){
 									publicaciones: resultadoP,
 									tipoContenido: 'publicaciones',
 									usuarioExistente: true,
+									passwordIncorrecta: false,
+									passwordCambiada: false,
 									nombreUsuario: req.body.nombreUsuario,
 									nombre: req.body.nombre,
 									apellido: req.body.apellido,
@@ -304,6 +315,107 @@ router.post('/actualizarInfo/:id', function(req, res, next){
 		res.redirect('/');
 	};
 });
+
+router.post('/actualizarPassword/:id', function(req, res, next){
+	//Si hay una cuenta iniciada
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
+		//Si la contraseña antigua no coincide con la existente
+		if (req.body.oldPass != req.session.usuario.password) {
+			dbPublicacion.getPublicacionesByUsuario(req.params.id, function(errorP, resultadoP){
+				if (errorP) {
+					res.render('error', {
+						mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
+						sesionUsuario: req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl
+					});
+				} else {
+					res.render('perfil', {
+						sesionUsuario: req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl,
+						publicaciones: resultadoP,
+						tipoContenido: 'publicaciones',
+						usuarioExistente: false,
+						passwordIncorrecta: true,
+						passwordCambiada: false,
+						nombreUsuario: req.body.nombreUsuario,
+						nombre: req.body.nombre,
+						apellido: req.body.apellido,
+						mail: req.body.mail
+					});
+				};
+			});
+		} else {
+			datosNuevos = { password: req.body.newPass };
+			dbUsuario.modificarUsuario(req.params.id, datosNuevos, function(errorM, resultadoM){
+				if (errorM) {
+					//Hubo un error al modificar los datos
+					res.render('error', {
+						mensaje:'Hubo un error al modificar sus datos, por favor intente de nuevo',
+						sesionUsuario: req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl
+					});
+				} else {
+					req.session.usuario.password = datosNuevos.password;
+					dbPublicacion.getPublicacionesByUsuario(req.params.id, function(errorP, resultadoP){
+						if (errorP) {
+							res.render('error', {
+								mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
+								sesionUsuario: req.session.usuario,
+								categoriaActiva: null,
+								url:req.originalUrl
+							});
+						} else {
+							res.render('perfil', {
+								sesionUsuario: req.session.usuario,
+								categoriaActiva: null,
+								url:req.originalUrl,
+								publicaciones: resultadoP,
+								tipoContenido: 'publicaciones',
+								usuarioExistente: false,
+								passwordIncorrecta: false,
+								passwordCambiada: true,
+								nombreUsuario: req.body.nombreUsuario,
+								nombre: req.body.nombre,
+								apellido: req.body.apellido,
+								mail: req.body.mail
+							});
+						};
+					});
+				};
+			});
+		};
+	} else {
+		res.redirect('/');
+	};
+});
+
+router.post('/actualizarImagen/:id', [ multer({ dest: './public/imagenes/'}), function(req, res, next){
+	//Si hay una cuenta iniciada
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
+		if (req.files.pic !== undefined) {
+			req.session.usuario.foto = req.files.pic.path.substring(6,req.files.pic.path.length);
+		    dbUsuario.modificarUsuario(req.params.id, { foto:req.session.usuario.foto }, function(error, resultado){
+		    	if (error) {
+		    		res.render('error', {
+						mensaje:'Hubo un error al actualizar su foto de perfil, por favor intente de nuevo',
+						sesionUsuario:req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl,
+					});
+		    	} else {
+		    		res.redirect('/perfil/' + req.params.id + '/publicaciones');
+		    	};
+		    });
+		} else {
+			res.redirect('/perfil/' + req.params.id + '/publicaciones');
+		};
+	} else {
+		res.redirect('/');
+	}
+}]);
 
 router.get('/publicacion', function(req, res){
 	res.render('publicacion', {

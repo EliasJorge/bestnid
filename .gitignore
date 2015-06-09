@@ -2,3 +2,4 @@ node_modules/*
 npm-debug.log
 public/foto
 /node_modules/
+public/imagenes/*

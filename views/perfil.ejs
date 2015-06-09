@@ -7,9 +7,18 @@
         <section style="padding-bottom: 2em; padding-top: 2em;">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="col-md-10 text-right" style="margin-bottom:3em">
-                    <img src="<%= sesionUsuario.foto %>" class="img-rounded img-responsive" style="width: 20em; height: 20em;" alt="" />
-                    	<a href="#" type="file" class="file btn btn-success glyphicon glyphicon-pencil"> Editar</a>
+                    <div class="col-md-10 text-center" style="margin-bottom:3em">
+                    <img src="<%= sesionUsuario.foto %>" class="img-circle img-responsive" style="width: 20em; height: 20em;" alt="" />
+                    <form method="POST" action="/actualizarImagen/<%=sesionUsuario.idUsuario%>" enctype="multipart/form-data">
+                	    <div class="col-sm-14" style="margin-top:0.5em; margin-bottom:0.5em">
+		                    <span class="btn btn-success btn-file">
+		                        Cambiar&hellip; <input type="file" name="pic" accept="image/*">
+		                    </span>
+                	    </div>
+                	    <div class="col-sm-14">
+                	    	<button type="submit" class="btn btn-success">Confirmar</button>
+                	    </div>
+					</form>
                     </div>
                     <form method="POST" action="/actualizarInfo/<%=sesionUsuario.idUsuario%>">
 	                    <label for="nombreUsuario" class="control-label">Nombre de Usuario</label>
@@ -43,11 +52,26 @@
 	                    <div class="form-group col-md-16">
 	                        <br />
 	                        <label>Antigua Contraseña</label>
-	                        <input type="password" class="form-control" minlength="8" maxlength="16" placeholder="entre 8 y 16 caracteres" id="oldPass" name="oldPass">
+	                        <input type="password" class="form-control" pattern="[A-Za-z0-9]{8,16}" title="La contraseña debe tener al menos 8 caracteres" maxlength="16" placeholder="entre 8 y 16 caracteres" id="oldPass" name="oldPass" required>
+	                        <% if (passwordIncorrecta) { %>
+		                        <div class="col-md-14">
+				            		<div class="alert alert-danger">
+				            			<span>La contraseña ingresada es incorrecta</span>
+				            		</div>
+				            	</div>
+				            <% } %>
 	                        <br />
 	                        <label>Nueva Contraseña</label>
-	                        <input type="password" class="form-control" minlength="8" maxlength="16" placeholder="entre 8 y 16 caracteres" id="newPass" name="newPass">
-	                        <br><br>
+	                        <input type="password" class="form-control" pattern="[A-Za-z0-9]{8,16}" title="La contraseña debe tener al menos 8 caracteres" maxlength="16" placeholder="entre 8 y 16 caracteres" id="newPass" name="newPass" required>
+	                    	<br>
+	                    	<% if (passwordCambiada) { %>
+		                        <div class="col-md-14">
+				            		<div class="alert alert-success">
+				            			<span>La contraseña se ha actualizado correctamente</span>
+				            		</div>
+				            	</div>
+				            <% } %>
+	                    	<br>
 	                        <div class="form-group">
 		                    	<div class="col-sm-16 text-right">
 	                        		<button type="submit" class="btn btn-warning">Cambiar Contraseña</button>
@@ -132,7 +156,7 @@
 			                <%})%>
 			            <% } else {%>
 			            	<div class="col-md-12">
-			            		<div class="alert alert-danger"><span>No hay publicaciones disponibles</span></div>
+			            		<div class="alert alert-danger"><span>No hay datos disponibles</span></div>
 			            	</div>
 			            <% } %>
 			        </div>
