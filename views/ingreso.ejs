@@ -8,11 +8,19 @@
 	        <h4>Por favor llene los campos:</h4>
 	        <div class="panel panel-default">
 	            <div class="panel-body form-horizontal payment-form">
- 
+
+                    <% if (usuarioExistente) { %>
+                        <div class="col-md-14">
+		            		<div class="alert alert-danger">
+		            			<span>Usuario o contraseña incorrecto</span>
+		            		</div>
+		            	</div>
+		            <% } %>
+
 	            	<div class="form-group">
 	                    <label for="nombreUsuario" class="col-sm-3 control-label">Nombre de Usuario</label>
 	                    <div class="col-sm-9">
-	                        <input type="text" class="form-control" maxlength="30" placeholder="JonSnow" id="nombreUsuario" name="nombreUsuario" required>
+	                        <input type="text" class="form-control" maxlength="30" placeholder="JonSnow" id="nombreUsuario" name="nombreUsuario" value="<%=nombreUsuario%>" required>
 	                    </div>
 	                </div>
  

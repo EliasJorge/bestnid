@@ -8,32 +8,39 @@
 	        <h4>Por favor llene los campos:</h4>
 	        <div class="panel panel-default">
 	            <div class="panel-body form-horizontal payment-form">
- 
+
 	            	<div class="form-group">
 	                    <label for="nombreUsuario" class="col-sm-3 control-label">Nombre de Usuario</label>
 	                    <div class="col-sm-9">
-	                        <input type="text" class="form-control" maxlength="30" placeholder="JonSnow" id="nombreUsuario" name="nombreUsuario" required>
+	                        <input type="text" class="form-control" maxlength="30" placeholder="JonSnow" id="nombreUsuario" name="nombreUsuario" value="<%=nombreUsuario%>" required>
+	                        <% if (usuarioExistente) { %>
+		                        <div class="col-md-14">
+				            		<div class="alert alert-danger">
+				            			<span>El nombre de usuario elegido ya existe :(</span>
+				            		</div>
+				            	</div>
+				            <% } %>
 	                    </div>
 	                </div>
 
 	                <div class="form-group">
 	                    <label for="nombre" class="col-sm-3 control-label">Nombre</label>
 	                    <div class="col-sm-9">
-	                        <input type="text" class="form-control" maxlength="30" placeholder="Jon" id="nombre" name="nombre" required>
+	                        <input type="text" class="form-control" maxlength="30" placeholder="Jon" id="nombre" name="nombre" value="<%=nombre%>" required>
 	                    </div>
 	                </div> 
 
 	                <div class="form-group">
 	                    <label for="apellido" class="col-sm-3 control-label">Apellido</label>
 	                    <div class="col-sm-9">
-	                        <input type="text" class="form-control" maxlength="30" placeholder="Snow" id="apellido" name="apellido" required>
+	                        <input type="text" class="form-control" maxlength="30" placeholder="Snow" id="apellido" name="apellido" value="<%=apellido%>" required>
 	                    </div>
 	                </div> 
  
 	                <div class="form-group">
 	                    <label for="email" class="col-sm-3 control-label">E-Mail</label>
 	                    <div class="col-sm-9">
-	                        <input type="email" class="form-control" maxlength="50" placeholder="snowjon@castleblack.got" id="mail" name="mail" required>
+	                        <input type="email" class="form-control" maxlength="50" placeholder="snowjon@castleblack.got" id="mail" name="mail" value="<%=mail%>" required>
 	                    </div>
 	                </div>
  
