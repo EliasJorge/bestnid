@@ -67,7 +67,7 @@ CREATE TABLE `oferta` (
   `idOferta` int(11) NOT NULL AUTO_INCREMENT,
   `texto` varchar(100) NOT NULL,
   `monto` float unsigned zerofill NOT NULL,
-  `fecha` date NOT NULL,
+  `fechaOferta` date NOT NULL,
   `idPublicacion` int(11) NOT NULL,
   PRIMARY KEY (`idOferta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -82,8 +82,8 @@ DROP TABLE IF EXISTS `pregunta`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pregunta` (
   `idPregunta` int(11) NOT NULL AUTO_INCREMENT,
-  `texto` varchar(100) NOT NULL,
-  `fecha` date NOT NULL,
+  `textoPregunta` varchar(100) NOT NULL,
+  `fechaPregunta` date NOT NULL,
   `idUsuario` int(11) NOT NULL,
   `idPublicacion` int(11) NOT NULL,
   `idRespuesta` int(11) DEFAULT NULL,
@@ -122,8 +122,8 @@ DROP TABLE IF EXISTS `respuesta`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `respuesta` (
   `idRespuesta` int(11) NOT NULL AUTO_INCREMENT,
-  `texto` varchar(100) NOT NULL,
-  `fecha` date NOT NULL,
+  `textoRespuesta` varchar(100) NOT NULL,
+  `fechaRespuesta` date NOT NULL,
   PRIMARY KEY (`idRespuesta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
