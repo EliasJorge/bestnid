@@ -116,4 +116,34 @@ modeloPublicacion.getPublicacionesByCategoriaAndNombre = function(idCategoria, s
 	}
 };
 
+modeloPublicacion.getPublicacionByID = function(id, callback){
+	if (conn) {
+		conn.query("SELECT * FROM publicacion WHERE idPublicacion = " + id, function(error, resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null, resultado[0]);
+			};
+		});
+	};
+};
+
+
+modeloPublicacion.getPreguntasYRespuestasDePublicacion = function(publicacion ,callback){
+	if (conn) {
+		conn.query(
+		"select * from pregunta p left join respuesta r ON p.idRespuesta = r.idRespuesta WHERE p.idPregunta IN ( select pr.idPregunta from publicacion pu inner join pregunta pr on pr.idPublicacion = pu.idPublicacion where pu.idPublicacion =  '" + publicacion.idPublicacion + "')", 
+		function(error, resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null, resultado, publicacion);
+			};
+		});
+	};	
+};
+
+
 module.exports = modeloPublicacion;
