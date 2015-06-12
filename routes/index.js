@@ -45,6 +45,42 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+
+router.get('/publicacion/:id', function(req, res, next){
+	dbPublicacion.getPublicacionByID(req.params.id, 
+	function(errorPublicacion, datosPublicacion){
+		if (errorPublicacion){
+			res.render('error', {
+				mensaje:'Hubo un error al cargar la publicacion, por favor intente de nuevo',
+				sesionUsuario:req.session.usuario,
+				url:req.originalUrl
+			});
+		}
+		else{
+			dbPublicacion.getPreguntasYRespuestasDePublicacion(datosPublicacion,
+			function(errorPYR, preguntasYRespuestas, publicacion){
+				if (errorPYR) {
+					res.render('error', {
+						mensaje:'Hubo un error al cargar la publicacion, por favor intente de nuevo',
+						sesionUsuario:req.session.usuario,
+						url:req.originalUrl
+					});
+				}
+				else{
+					console.log(Object.keys(preguntasYRespuestas[0]));
+					res.render('publicacion', {
+						sesionUsuario: req.session.usuario,
+						publicacion:publicacion,
+						preguntasYRespuestas:preguntasYRespuestas,
+						url:req.originalUrl
+					});
+				}
+			}
+			);
+		}
+	});
+});
+
 router.get('/categoria/:id', function(req,res,next){
 	var aux={};
 	dbPublicacion.getPublicacionesByCategoria(req.params.id, req.query.desc, function(errorP,resultadoP){
@@ -416,14 +452,6 @@ router.post('/actualizarImagen/:id', [ multer({ dest: './public/imagenes/'}), fu
 		res.redirect('/');
 	}
 }]);
-
-router.get('/publicacion', function(req, res){
-	res.render('publicacion', {
-		sesionUsuario: req.session.usuario,
-		categoriaActiva: null,
-		url:req.originalUrl,
-	});
-});
 
 router.get('/registro', function(req, res, next){
 	if (req.session.usuario != null){
