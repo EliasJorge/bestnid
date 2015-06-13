@@ -33,87 +33,34 @@
                 </div>
 
                 <div class="well">
-                     <h4>3 preguntas</h4>
+                     <h4><%=preguntasYRespuestas.length%> preguntas</h4>
                     <div class="text-right">
-                        <a class="btn btn-success">Preguntar</a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Preguntar</button>
                         <a class="btn btn-success">Ofertar</a>
                     </div>
 
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Preguntar 2</button>
-
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="exampleModalLabel">¿Tienes una duda de este producto?</h4>
-                          </div>
-                          <div class="modal-body">
-                            <form>
-                              <div class="form-group">
-                                <label for="message-text" class="control-label">Pregunta:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
-                              </div>
-                            </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary">Enviar</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                     <hr>
 
                     <% preguntasYRespuestas.forEach(function(datos) { %>
                     <div class="row">
                         <div class="col-md-12">
                             <span class="pull-right"><%=datos.fechaPregunta.split('-')[2] + '/' + datos.fechaPregunta.split('-')[1] + '/' + datos.fechaPregunta.split('-')[0]%></span>
-                            <p>P: <%= datos.textoPregunta %></p>
-                            <%if (typeof (datos.idRespuesta) !== 'undefined' || datos.idRespuesta != null ){%>
+                            <p>
+                                <span class="glyphicon glyphicon-question-sign"></span>
+                                <%= datos.textoPregunta %>
+                            </p>
+                            <%if (datos.idRespuesta != null ){%>
                                 <div class="comment-content">
-                                    <p>R: no entiendo disculpa<p>
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                    <p>R: <%= datos.textoRespuesta%><p>
                                 </div>
                             <%}%>
                         </div>
                     </div>
+                    <hr>
                     <% }); %>
-                    <hr>
-
-                    <div class="row">
-                        <div class="col-md-12"> 
-                            <span class="pull-right">12 days ago</span>
-                            <p>
-                                 <span class="glyphicon glyphicon-question-sign"></span>
-                                P: I've alredy ordered another one!
-                            </p>
-                            <div class="comment-content">
-                                <p>
-                                    <span class="glyphicon glyphicon-chevron-right"></span>
-                                    R: y a mi me parece q sos un pelotudo
-                                <p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="row">
-                        <div class="col-md-12 ">
-                            <span class="pull-right">15 days ago</span>
-                            <p>                             
-                                <span class="glyphicon glyphicon-question-sign"></span>
-                                I've seen some better than this, but not at this price. I definitely recommend this item.
-                                </p>
-                            <div class="alert alert-info" role="alert">
-                                <p>
-                                <span class="glyphicon glyphicon-chevron-right"></span>
-                                    R: no se ingles pirata , anda a robar islas a otro lado
-                                <p>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                 </div>
 
@@ -132,6 +79,33 @@
         </div>
 
     </div>
+
+
+    <!--modal fade para ofertar-->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="exampleModalLabel">¿Tienes una duda de este producto?</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="message-text" class="control-label">Pregunta:</label>
+                <textarea class="form-control" id="message-text"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 	<% include partials/footer.ejs %>
 </body>
