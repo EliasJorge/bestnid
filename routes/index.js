@@ -67,7 +67,6 @@ router.get('/publicacion/:id', function(req, res, next){
 					});
 				}
 				else{
-					console.log(Object.keys(preguntasYRespuestas[0]));
 					res.render('publicacion', {
 						sesionUsuario: req.session.usuario,
 						publicacion:publicacion,
