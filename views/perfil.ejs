@@ -83,6 +83,13 @@
 		            		</div>
 		            	</div>
 		            <% } %>
+		            <% if (datosCambiados) { %>
+                        <div id="dataChangedDiv" class="col-md-12">
+		            		<div class="alert alert-success">
+		            			<span>Sus datos personales se han actualizado correctamente</span>
+		            		</div>
+		            	</div>
+		            <% } %>
                 	<div class="col-md-12" style="margin-bottom:2em">
 	                    <div class="alert alert-info">
 	                        <h2>Información: </h2>
@@ -177,7 +184,8 @@
 <script>
 	$(function() {
 	    setTimeout(function() {
-	        $("#passChangedDiv").slideUp('fast')
+	        $("#passChangedDiv").slideUp('fast');
+	        $("#dataChangedDiv").slideUp('fast');
 	    }, 3000);
 	});
 </script>

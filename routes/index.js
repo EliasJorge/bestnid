@@ -170,6 +170,7 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 					usuarioExistente: false,
 					passwordIncorrecta: false,
 					passwordCambiada: false,
+					datosCambiados: false,
 					nombreUsuario: '',
 					nombre: '',
 					apellido: '',
@@ -196,6 +197,7 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 		usuarioExistente: false,
 		passwordIncorrecta: false,
 		passwordCambiada: false,
+		datosCambiados: false,
 		nombreUsuario: '',
 		nombre: '',
 		apellido: '',
@@ -213,6 +215,7 @@ router.get('/perfil/:id/preguntas', function(req, res, next){
 		usuarioExistente: false,
 		passwordIncorrecta: false,
 		passwordCambiada: false,
+		datosCambiados: false,
 		nombreUsuario: '',
 		nombre: '',
 		apellido: '',
@@ -230,6 +233,7 @@ router.get('/perfil/:id/estadisticas', function(req, res, next){
 		usuarioExistente: false,
 		passwordIncorrecta: false,
 		passwordCambiada: false,
+		datosCambiados: false,
 		nombreUsuario: '',
 		nombre: '',
 		apellido: '',
@@ -281,6 +285,7 @@ router.post('/actualizarInfo/:id', function(req, res, next){
 									usuarioExistente: true,
 									passwordIncorrecta: false,
 									passwordCambiada: false,
+									datosCambiados: false,
 									nombreUsuario: req.body.nombreUsuario,
 									nombre: req.body.nombre,
 									apellido: req.body.apellido,
@@ -313,7 +318,32 @@ router.post('/actualizarInfo/:id', function(req, res, next){
 								for (var attr in datosModificar) {
 									req.session.usuario[attr] = datosModificar[attr];
 								};
-								res.redirect('/perfil/' + req.params.id + '/publicaciones');
+								dbPublicacion.getPublicacionesByUsuario(req.params.id, function(errorP, resultadoP){
+									if (errorP) {
+										res.render('error', {
+											mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
+											sesionUsuario: req.session.usuario,
+											categoriaActiva: null,
+											url:req.originalUrl
+										});
+									} else {
+										res.render('perfil', {
+											sesionUsuario: req.session.usuario,
+											categoriaActiva: null,
+											url:req.originalUrl,
+											publicaciones: resultadoP,
+											tipoContenido: 'publicaciones',
+											usuarioExistente: false,
+											passwordIncorrecta: false,
+											passwordCambiada: false,
+											datosCambiados: true,
+											nombreUsuario: '',
+											nombre: '',
+											apellido: '',
+											mail: ''
+										});
+									};
+								});
 							};
 						});
 					};
@@ -342,7 +372,32 @@ router.post('/actualizarInfo/:id', function(req, res, next){
 					for (var attr in datosModificar) {
 						req.session.usuario[attr] = datosModificar[attr];
 					};
-					res.redirect('/perfil/' + req.params.id + '/publicaciones');
+					dbPublicacion.getPublicacionesByUsuario(req.params.id, function(errorP, resultadoP){
+						if (errorP) {
+							res.render('error', {
+								mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
+								sesionUsuario: req.session.usuario,
+								categoriaActiva: null,
+								url:req.originalUrl
+							});
+						} else {
+							res.render('perfil', {
+								sesionUsuario: req.session.usuario,
+								categoriaActiva: null,
+								url:req.originalUrl,
+								publicaciones: resultadoP,
+								tipoContenido: 'publicaciones',
+								usuarioExistente: false,
+								passwordIncorrecta: false,
+								passwordCambiada: false,
+								datosCambiados: true,
+								nombreUsuario: '',
+								nombre: '',
+								apellido: '',
+								mail: ''
+							});
+						};
+					});
 				};
 			});
 		};
@@ -374,6 +429,7 @@ router.post('/actualizarPassword/:id', function(req, res, next){
 						usuarioExistente: false,
 						passwordIncorrecta: true,
 						passwordCambiada: false,
+						datosCambiados: false,
 						nombreUsuario: req.body.nombreUsuario,
 						nombre: req.body.nombre,
 						apellido: req.body.apellido,
@@ -412,6 +468,7 @@ router.post('/actualizarPassword/:id', function(req, res, next){
 								usuarioExistente: false,
 								passwordIncorrecta: false,
 								passwordCambiada: true,
+								datosCambiados: false,
 								nombreUsuario: req.body.nombreUsuario,
 								nombre: req.body.nombre,
 								apellido: req.body.apellido,
