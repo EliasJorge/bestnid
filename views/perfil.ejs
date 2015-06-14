@@ -64,13 +64,7 @@
 	                        <label>Nueva Contraseña</label>
 	                        <input type="password" class="form-control" pattern="[A-Za-z0-9]{8,16}" title="La contraseña debe tener al menos 8 caracteres" maxlength="16" placeholder="entre 8 y 16 caracteres" id="newPass" name="newPass" required>
 	                    	<br>
-	                    	<% if (passwordCambiada) { %>
-		                        <div class="col-md-14">
-				            		<div class="alert alert-success">
-				            			<span>La contraseña se ha actualizado correctamente</span>
-				            		</div>
-				            	</div>
-				            <% } %>
+	                    	
 	                    	<br>
 	                        <div class="form-group">
 		                    	<div class="col-sm-16 text-right">
@@ -82,6 +76,13 @@
                     <br /><br/>
                 </div>
                 <div class="col-md-8">
+                	<% if (passwordCambiada) { %>
+                        <div id="passChangedDiv" class="col-md-12">
+		            		<div class="alert alert-success">
+		            			<span>La contraseña se ha actualizado correctamente</span>
+		            		</div>
+		            	</div>
+		            <% } %>
                 	<div class="col-md-12" style="margin-bottom:2em">
 	                    <div class="alert alert-info">
 	                        <h2>Información: </h2>
@@ -132,11 +133,11 @@
 			                <% publicaciones.forEach(function(datos) { %>
 			                <div class="col-sm-4 col-lg-4 col-md-4">
 			                    <div class="thumbnail" style="height: 20em;  word-wrap: break-word;">
-			                    <a href="/producto/<%=datos.idPublicacion%>">
+			                    <a href="/publicacion/<%=datos.idPublicacion%>">
 			                        <img class="img-responsive" src ="<%=datos.foto%>" style="width: 18em; height: 12em;" alt="" >
 			                    </a>
 			                        <div class="caption-full">
-			                            <h4><a href="producto/<%=datos.idPublicacion%>">
+			                            <h4><a href="/publicacion/<%=datos.idPublicacion%>">
 			                                <% if (datos.titulo.length > 37) { %>
 			                                    <%= datos.titulo.substring(0,35) + '...' %>
 			                                <% } else { %>
@@ -172,4 +173,13 @@
 	<% include partials/footer.ejs %>
 
 </body>
+
+<script>
+	$(function() {
+	    setTimeout(function() {
+	        $("#passChangedDiv").slideUp('fast')
+	    }, 3000);
+	});
+</script>
+
 </html>
