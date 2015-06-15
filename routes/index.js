@@ -150,7 +150,7 @@ router.get('/categoria/:id/buscar/:busqueda', function(req,res,next){
 	});
 });
 
-router.get('/perfil/:id/publicaciones', function(req, res, next){
+router.get('/perfil/:id', function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
 		dbPublicacion.getPublicacionesByUsuario(req.params.id, function(error, resultado){
 			if (error) {
@@ -181,6 +181,92 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 	} else {
 		res.redirect('/');
 	};
+});
+
+router.get('/perfil/:id/publicaciones', function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
+		dbPublicacion.getPublicacionesByUsuario(req.params.id, function(error, resultado){
+			if (error) {
+				var errorHTML = '<div class="col-md-12">' +
+		           	'<div class="alert alert-danger"><span>Hubo un error al cargar sus publicaciones, por favor intente más tarde</span></div>' +
+		            '</div>';
+				res.send(errorHTML);
+			} else {
+				var listadoHTML = '';
+				if (resultado.length > 0) {
+					for (var i = 0; i < resultado.length; i++) {
+	    				var tituloMostrar = '';
+	    				var descripcionMostrar = '';
+	    				if (resultado[i].titulo.length > 37) {
+	                        tituloMostrar = resultado[i].titulo.substring(0,35) + '...';
+	                    } else {
+	                        tituloMostrar = resultado[i].titulo;
+	                    }
+	                    if (resultado[i].descripcion.length > 78) {
+	                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ").substring(0,75) + '...';
+	                    } else {
+	                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ");
+	                    }
+	    				var thumbnail = '<div class="col-sm-4 col-lg-4 col-md-4">' +
+						                    '<div class="thumbnail" style="height: 20em;  word-wrap: break-word;">' +
+						                    '<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+						                        '<img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
+						                    '</a>' +
+						                        '<div class="caption-full">' +
+						                            '<h4><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+						                                tituloMostrar +
+						                            '</a></h4>' +
+						                            '<p style="font-size: 0.9em;">' +
+							                            descripcionMostrar +
+						                            '</p>' +
+						                        '</div>' +
+						                    '</div>' +
+						                '</div>';
+		                listadoHTML += thumbnail;
+	    			}
+				} else {
+					listadoHTML = '<div class="col-md-12">' +
+		           		'<div class="alert alert-danger"><span>No hay datos disponibles</span></div>' +
+		            	'</div>';
+				};
+				res.send(listadoHTML);
+			};
+		});
+	} else {
+		res.redirect('/');
+	};
+	/*
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
+		dbPublicacion.getPublicacionesByUsuario(req.params.id, function(error, resultado){
+			if (error) {
+				res.render('error', {
+					mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				res.render('perfil', {
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl,
+					publicaciones: resultado,
+					tipoContenido: 'publicaciones',
+					usuarioExistente: false,
+					passwordIncorrecta: false,
+					passwordCambiada: false,
+					datosCambiados: false,
+					nombreUsuario: '',
+					nombre: '',
+					apellido: '',
+					mail: ''
+				});
+			};
+		});
+	} else {
+		res.redirect('/');
+	};
+	*/
 });
 
 //////////////////////////////////////////////////////////////////////

@@ -103,70 +103,17 @@
 	                        <h4>Fecha de Registro: <%= sesionUsuario.fechaRegistro %> </h4>
 	                    </div>
 	                    <ul class="nav nav-pills">
-	                    	<% if (tipoContenido == 'publicaciones') { %>
-	                    		<li class="active"><a href="/perfil/<%=sesionUsuario.idUsuario%>/publicaciones">Mis Publicaciones</a></li>
-	                    		<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/ofertas">Mis Ofertas</a></li>
-	                    		<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/preguntas">Mis Preguntas</a></li>
-	                        	<% if (sesionUsuario.esAdmin) { %>
-	                        		<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/estadisticas">Estadísticas</a></li>
-	                        	<% } %>
-	                    	<% } else if (tipoContenido == 'ofertas') { %>
-	                    		<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/publicaciones">Mis Publicaciones</a></li>
-	                    		<li class="active"><a href="/perfil/<%=sesionUsuario.idUsuario%>/ofertas">Mis Ofertas</a></li>
-	                    		<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/preguntas">Mis Preguntas</a></li>
-		                        <% if (sesionUsuario.esAdmin) { %>
-		                        	<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/estadisticas">Estadísticas</a></li>
-		                        <% } %>
-	                    	<% } else if (tipoContenido == 'preguntas') { %>
-	                    		<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/publicaciones">Mis Publicaciones</a></li>
-	                    		<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/ofertas">Mis Ofertas</a></li>
-	                    		<li class="active"><a href="/perfil/<%=sesionUsuario.idUsuario%>/preguntas">Mis Preguntas</a></li>
-		                        <% if (sesionUsuario.esAdmin) { %>
-		                        	<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/estadisticas">Estadísticas</a></li>
-		                        <% } %>
-	                    	<% } else if (tipoContenido == 'estadisticas') { %>
-	                        	<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/publicaciones">Mis Publicaciones</a></li>
-	                    		<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/ofertas">Mis Ofertas</a></li>
-	                    		<li><a href="/perfil/<%=sesionUsuario.idUsuario%>/preguntas">Mis Preguntas</a></li>
-		                        <% if (sesionUsuario.esAdmin) { %>
-		                        	<li class="active"><a href="/perfil/<%=sesionUsuario.idUsuario%>/estadisticas">Estadísticas</a></li>
-		                        <% } %>
-	                        <% } %>
+	                    	<li id="bPublicaciones" data-userId="<%=sesionUsuario.idUsuario%>"><a href="#" onclick="return false;">Mis Publicaciones</a></li>
+                    		<li id="bOfertas"><a href="/perfil/<%=sesionUsuario.idUsuario%>/ofertas">Mis Ofertas</a></li>
+                    		<li id="bPreguntas"><a href="/perfil/<%=sesionUsuario.idUsuario%>/preguntas">Mis Preguntas</a></li>
+                        	<% if (sesionUsuario.esAdmin) { %>
+                        		<li id="bEstadisticas"><a href="/perfil/<%=sesionUsuario.idUsuario%>/estadisticas">Estadísticas</a></li>
+                        	<% } %>
 	                    </ul>
 	                </div>
-	                <div class="col-md-14">
+	                <div id="resultados" class="col-md-14">
 			            <br/>
-			            <% if (publicaciones.length) { %>
-			                <% publicaciones.forEach(function(datos) { %>
-			                <div class="col-sm-4 col-lg-4 col-md-4">
-			                    <div class="thumbnail" style="height: 20em;  word-wrap: break-word;">
-			                    <a href="/publicacion/<%=datos.idPublicacion%>">
-			                        <img class="img-responsive" src ="<%=datos.foto%>" style="width: 18em; height: 12em;" alt="" >
-			                    </a>
-			                        <div class="caption-full">
-			                            <h4><a href="/publicacion/<%=datos.idPublicacion%>">
-			                                <% if (datos.titulo.length > 37) { %>
-			                                    <%= datos.titulo.substring(0,35) + '...' %>
-			                                <% } else { %>
-			                                    <%= datos.titulo %>
-			                                <% } %>
-			                            </a></h4>
-			                            <p  style="font-size: 0.9em;">
-			                            <% if (datos.descripcion.length > 78) { %>
-			                                <%= datos.descripcion.replace("\n"," ").substring(0,75) + '...' %>
-			                            <% } else { %>
-			                                <%= datos.descripcion.replace("\n"," ") %>
-			                            <% } %>
-			                            </p>
-			                        </div>
-			                    </div>
-			                </div>
-			                <%})%>
-			            <% } else {%>
-			            	<div class="col-md-12">
-			            		<div class="alert alert-danger"><span>No hay datos disponibles</span></div>
-			            	</div>
-			            <% } %>
+			            <!-- Aca se cargan los resultados de las consultas -->
 			        </div>
                 </div>
             </div>
@@ -181,13 +128,6 @@
 
 </body>
 
-<script>
-	$(function() {
-	    setTimeout(function() {
-	        $("#passChangedDiv").slideUp('fast');
-	        $("#dataChangedDiv").slideUp('fast');
-	    }, 3000);
-	});
-</script>
+<script src="/javascript/perfil.js"></script>
 
 </html>
