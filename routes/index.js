@@ -152,31 +152,18 @@ router.get('/categoria/:id/buscar/:busqueda', function(req,res,next){
 
 router.get('/perfil/:id', function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
-		dbPublicacion.getPublicacionesByUsuario(req.params.id, function(error, resultado){
-			if (error) {
-				res.render('error', {
-					mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
-					sesionUsuario: req.session.usuario,
-					categoriaActiva: null,
-					url:req.originalUrl
-				});
-			} else {
-				res.render('perfil', {
-					sesionUsuario: req.session.usuario,
-					categoriaActiva: null,
-					url:req.originalUrl,
-					publicaciones: resultado,
-					tipoContenido: 'publicaciones',
-					usuarioExistente: false,
-					passwordIncorrecta: false,
-					passwordCambiada: false,
-					datosCambiados: false,
-					nombreUsuario: '',
-					nombre: '',
-					apellido: '',
-					mail: ''
-				});
-			};
+		res.render('perfil', {
+			sesionUsuario: req.session.usuario,
+			categoriaActiva: null,
+			url:req.originalUrl,
+			usuarioExistente: false,
+			passwordIncorrecta: false,
+			passwordCambiada: false,
+			datosCambiados: false,
+			nombreUsuario: '',
+			nombre: '',
+			apellido: '',
+			mail: ''
 		});
 	} else {
 		res.redirect('/');
@@ -235,42 +222,10 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 	} else {
 		res.redirect('/');
 	};
-	/*
-	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
-		dbPublicacion.getPublicacionesByUsuario(req.params.id, function(error, resultado){
-			if (error) {
-				res.render('error', {
-					mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
-					sesionUsuario: req.session.usuario,
-					categoriaActiva: null,
-					url:req.originalUrl
-				});
-			} else {
-				res.render('perfil', {
-					sesionUsuario: req.session.usuario,
-					categoriaActiva: null,
-					url:req.originalUrl,
-					publicaciones: resultado,
-					tipoContenido: 'publicaciones',
-					usuarioExistente: false,
-					passwordIncorrecta: false,
-					passwordCambiada: false,
-					datosCambiados: false,
-					nombreUsuario: '',
-					nombre: '',
-					apellido: '',
-					mail: ''
-				});
-			};
-		});
-	} else {
-		res.redirect('/');
-	};
-	*/
 });
 
 //////////////////////////////////////////////////////////////////////
-/////////////// PARA PROBAR EL PERFIL, DESP LLENAR ///////////////////
+/////////////////// RUTAS PARA AJAX DEL PERFIL ///////////////////////
 //////////////////////////////////////////////////////////////////////
 
 router.get('/perfil/:id/ofertas', function(req, res, next){
@@ -278,8 +233,6 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 		sesionUsuario: req.session.usuario,
 		categoriaActiva: null,
 		url:req.originalUrl,
-		publicaciones: [],
-		tipoContenido: 'ofertas',
 		usuarioExistente: false,
 		passwordIncorrecta: false,
 		passwordCambiada: false,
@@ -296,8 +249,6 @@ router.get('/perfil/:id/preguntas', function(req, res, next){
 		sesionUsuario: req.session.usuario,
 		categoriaActiva: null,
 		url:req.originalUrl,
-		publicaciones: [],
-		tipoContenido: 'preguntas',
 		usuarioExistente: false,
 		passwordIncorrecta: false,
 		passwordCambiada: false,
@@ -314,8 +265,6 @@ router.get('/perfil/:id/estadisticas', function(req, res, next){
 		sesionUsuario: req.session.usuario,
 		categoriaActiva: null,
 		url:req.originalUrl,
-		publicaciones: [],
-		tipoContenido: 'estadisticas',
 		usuarioExistente: false,
 		passwordIncorrecta: false,
 		passwordCambiada: false,
@@ -352,32 +301,18 @@ router.post('/actualizarInfo/:id', function(req, res, next){
 					//No hubo error
 					//Encontre alguno con ese nombre?
 					if (typeof resultado !== 'undefined' && resultado.length > 0) {
-						//Como encontre uno, pido las publicaciones para recargar la vista de perfil con el msj de error
-						dbPublicacion.getPublicacionesByUsuario(req.params.id, function(errorP, resultadoP){
-							if (errorP) {
-								res.render('error', {
-									mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
-									sesionUsuario: req.session.usuario,
-									categoriaActiva: null,
-									url:req.originalUrl
-								});
-							} else {
-								res.render('perfil', {
-									sesionUsuario: req.session.usuario,
-									categoriaActiva: null,
-									url:req.originalUrl,
-									publicaciones: resultadoP,
-									tipoContenido: 'publicaciones',
-									usuarioExistente: true,
-									passwordIncorrecta: false,
-									passwordCambiada: false,
-									datosCambiados: false,
-									nombreUsuario: req.body.nombreUsuario,
-									nombre: req.body.nombre,
-									apellido: req.body.apellido,
-									mail: req.body.mail
-								});
-							};
+						res.render('perfil', {
+							sesionUsuario: req.session.usuario,
+							categoriaActiva: null,
+							url:req.originalUrl,
+							usuarioExistente: true,
+							passwordIncorrecta: false,
+							passwordCambiada: false,
+							datosCambiados: false,
+							nombreUsuario: req.body.nombreUsuario,
+							nombre: req.body.nombre,
+							apellido: req.body.apellido,
+							mail: req.body.mail
 						});
 					} else {
 						//No hay nadie con ese nombre, modifico
@@ -404,31 +339,18 @@ router.post('/actualizarInfo/:id', function(req, res, next){
 								for (var attr in datosModificar) {
 									req.session.usuario[attr] = datosModificar[attr];
 								};
-								dbPublicacion.getPublicacionesByUsuario(req.params.id, function(errorP, resultadoP){
-									if (errorP) {
-										res.render('error', {
-											mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
-											sesionUsuario: req.session.usuario,
-											categoriaActiva: null,
-											url:req.originalUrl
-										});
-									} else {
-										res.render('perfil', {
-											sesionUsuario: req.session.usuario,
-											categoriaActiva: null,
-											url:req.originalUrl,
-											publicaciones: resultadoP,
-											tipoContenido: 'publicaciones',
-											usuarioExistente: false,
-											passwordIncorrecta: false,
-											passwordCambiada: false,
-											datosCambiados: true,
-											nombreUsuario: '',
-											nombre: '',
-											apellido: '',
-											mail: ''
-										});
-									};
+								res.render('perfil', {
+									sesionUsuario: req.session.usuario,
+									categoriaActiva: null,
+									url:req.originalUrl,
+									usuarioExistente: false,
+									passwordIncorrecta: false,
+									passwordCambiada: false,
+									datosCambiados: true,
+									nombreUsuario: '',
+									nombre: '',
+									apellido: '',
+									mail: ''
 								});
 							};
 						});
@@ -458,31 +380,18 @@ router.post('/actualizarInfo/:id', function(req, res, next){
 					for (var attr in datosModificar) {
 						req.session.usuario[attr] = datosModificar[attr];
 					};
-					dbPublicacion.getPublicacionesByUsuario(req.params.id, function(errorP, resultadoP){
-						if (errorP) {
-							res.render('error', {
-								mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
-								sesionUsuario: req.session.usuario,
-								categoriaActiva: null,
-								url:req.originalUrl
-							});
-						} else {
-							res.render('perfil', {
-								sesionUsuario: req.session.usuario,
-								categoriaActiva: null,
-								url:req.originalUrl,
-								publicaciones: resultadoP,
-								tipoContenido: 'publicaciones',
-								usuarioExistente: false,
-								passwordIncorrecta: false,
-								passwordCambiada: false,
-								datosCambiados: true,
-								nombreUsuario: '',
-								nombre: '',
-								apellido: '',
-								mail: ''
-							});
-						};
+					res.render('perfil', {
+						sesionUsuario: req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl,
+						usuarioExistente: false,
+						passwordIncorrecta: false,
+						passwordCambiada: false,
+						datosCambiados: true,
+						nombreUsuario: '',
+						nombre: '',
+						apellido: '',
+						mail: ''
 					});
 				};
 			});
@@ -497,31 +406,18 @@ router.post('/actualizarPassword/:id', function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
 		//Si la contraseña antigua no coincide con la existente
 		if (req.body.oldPass != req.session.usuario.password) {
-			dbPublicacion.getPublicacionesByUsuario(req.params.id, function(errorP, resultadoP){
-				if (errorP) {
-					res.render('error', {
-						mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
-						sesionUsuario: req.session.usuario,
-						categoriaActiva: null,
-						url:req.originalUrl
-					});
-				} else {
-					res.render('perfil', {
-						sesionUsuario: req.session.usuario,
-						categoriaActiva: null,
-						url:req.originalUrl,
-						publicaciones: resultadoP,
-						tipoContenido: 'publicaciones',
-						usuarioExistente: false,
-						passwordIncorrecta: true,
-						passwordCambiada: false,
-						datosCambiados: false,
-						nombreUsuario: req.body.nombreUsuario,
-						nombre: req.body.nombre,
-						apellido: req.body.apellido,
-						mail: req.body.mail
-					});
-				};
+			res.render('perfil', {
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl,
+				usuarioExistente: false,
+				passwordIncorrecta: true,
+				passwordCambiada: false,
+				datosCambiados: false,
+				nombreUsuario: '',
+				nombre: '',
+				apellido: '',
+				mail: ''
 			});
 		} else {
 			datosNuevos = { password: req.body.newPass };
@@ -536,31 +432,18 @@ router.post('/actualizarPassword/:id', function(req, res, next){
 					});
 				} else {
 					req.session.usuario.password = datosNuevos.password;
-					dbPublicacion.getPublicacionesByUsuario(req.params.id, function(errorP, resultadoP){
-						if (errorP) {
-							res.render('error', {
-								mensaje:'Hubo un error al cargar sus publicaciones, por favor intente de nuevo',
-								sesionUsuario: req.session.usuario,
-								categoriaActiva: null,
-								url:req.originalUrl
-							});
-						} else {
-							res.render('perfil', {
-								sesionUsuario: req.session.usuario,
-								categoriaActiva: null,
-								url:req.originalUrl,
-								publicaciones: resultadoP,
-								tipoContenido: 'publicaciones',
-								usuarioExistente: false,
-								passwordIncorrecta: false,
-								passwordCambiada: true,
-								datosCambiados: false,
-								nombreUsuario: req.body.nombreUsuario,
-								nombre: req.body.nombre,
-								apellido: req.body.apellido,
-								mail: req.body.mail
-							});
-						};
+					res.render('perfil', {
+						sesionUsuario: req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl,
+						usuarioExistente: false,
+						passwordIncorrecta: false,
+						passwordCambiada: true,
+						datosCambiados: false,
+						nombreUsuario: '',
+						nombre: '',
+						apellido: '',
+						mail: ''
 					});
 				};
 			});
@@ -584,11 +467,11 @@ router.post('/actualizarImagen/:id', [ multer({ dest: './public/imagenes/'}), fu
 						url:req.originalUrl,
 					});
 		    	} else {
-		    		res.redirect('/perfil/' + req.params.id + '/publicaciones');
+		    		res.redirect('/perfil/' + req.params.id);
 		    	};
 		    });
 		} else {
-			res.redirect('/perfil/' + req.params.id + '/publicaciones');
+			res.redirect('/perfil/' + req.params.id);
 		};
 	} else {
 		res.redirect('/');
