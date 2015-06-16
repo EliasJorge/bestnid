@@ -234,10 +234,6 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 	};
 });
 
-//////////////////////////////////////////////////////////////////////
-/////////////////// RUTAS PARA AJAX DEL PERFIL ///////////////////////
-//////////////////////////////////////////////////////////////////////
-
 router.get('/perfil/:id/ofertas', function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
 		dbOferta.getOfertasDeUsuario(req.session.usuario, function(error, resultado){
@@ -252,11 +248,15 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 	            	listadoHTML = '<div class="col-md-12" style="height: 10em;  word-wrap: break-word;">' +
 	            		'<div class="panel-group">';
 	            	for (var i = 0; i < resultado.length; i++) {
-	            		//if (resultado[i].) {} else{};
-	            		var panelHeading = '<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">';
-	            		listadoHTML += '<div class="panel panel-info" style="margin-bottom:2em">' +
-							panelHeading +
-							resultado[i].titulo + '</a></div>' +
+	            		var panelHeading = '<div class="panel panel-info" style="margin-bottom:2em">' +
+	            			'<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+	            			resultado[i].titulo + '</a></div>';
+	            		if (resultado[i].terminada == 1) {
+	            			panelHeading = '<div class="panel panel-default" style="margin-bottom:2em">' +
+	            				'<div class="panel-heading">' +
+	            				resultado[i].titulo + '</div>';
+	            		};
+	            		listadoHTML += panelHeading +
 					    	'<div class="panel-body">' +
 					    		'<p><b>Descripción</b></p>' +
 					    		'<p>' + resultado[i].texto + '</p>' +
@@ -280,6 +280,10 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 		res.send(errorHTML);
 	};
 });
+
+//////////////////////////////////////////////////////////////////////
+/////////////////// RUTAS PARA AJAX DEL PERFIL ///////////////////////
+//////////////////////////////////////////////////////////////////////
 
 router.get('/perfil/:id/preguntas', function(req, res, next){
 	res.render('perfil', {
