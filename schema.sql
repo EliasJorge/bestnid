@@ -66,9 +66,10 @@ DROP TABLE IF EXISTS `oferta`;
 CREATE TABLE `oferta` (
   `idOferta` int(11) NOT NULL AUTO_INCREMENT,
   `texto` varchar(100) NOT NULL,
-  `monto` float unsigned zerofill NOT NULL,
+  `monto` float unsigned NOT NULL,
   `fechaOferta` date NOT NULL,
   `idPublicacion` int(11) NOT NULL,
+  `idUsuario` int(11) NOT NULL,
   PRIMARY KEY (`idOferta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

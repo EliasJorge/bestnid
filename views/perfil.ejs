@@ -91,7 +91,7 @@
 		            	</div>
 		            <% } %>
                 	<div class="col-md-12" style="margin-bottom:2em">
-	                    <div class="alert alert-info">
+	                    <div class="jumbotron">
 	                        <h2>Información: </h2>
 	                        <br>
 	                        <% if (sesionUsuario.esAdmin == 1) { %>
@@ -104,7 +104,7 @@
 	                    </div>
 	                    <ul class="nav nav-pills">
 	                    	<li id="bPublicaciones" data-userId="<%=sesionUsuario.idUsuario%>"><a href="#" onclick="return false;">Mis Publicaciones</a></li>
-                    		<li id="bOfertas"><a href="/perfil/<%=sesionUsuario.idUsuario%>/ofertas">Mis Ofertas</a></li>
+                    		<li id="bOfertas" data-userId="<%=sesionUsuario.idUsuario%>"><a href="#" onclick="return false;">Mis Ofertas</a></li>
                     		<li id="bPreguntas"><a href="/perfil/<%=sesionUsuario.idUsuario%>/preguntas">Mis Preguntas</a></li>
                         	<% if (sesionUsuario.esAdmin) { %>
                         		<li id="bEstadisticas"><a href="/perfil/<%=sesionUsuario.idUsuario%>/estadisticas">Estadísticas</a></li>
@@ -114,6 +114,7 @@
 	                <div id="resultados" class="col-md-14">
 			            <br/>
 			            <!-- Aca se cargan los resultados de las consultas -->
+			            
 			        </div>
                 </div>
             </div>

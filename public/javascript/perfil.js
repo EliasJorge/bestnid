@@ -9,8 +9,8 @@ $(function() {
     //Carga por defecto las publicaciones del usuario
     //Deshabilitado por ahora. Usar cuando se use AJAX en cada boton
     
-    //$("#bPublicaciones").addClass("active");
-    //$("#resultados").load("/perfil/1/publicaciones");
+    $("#bPublicaciones").addClass("active");
+    $("#resultados").load("/perfil/1/publicaciones");
     
     //Eventos para cada boton
     $("#bOfertas").click(function(){
@@ -18,12 +18,17 @@ $(function() {
     	$("#bPreguntas").removeClass("active");
     	$("#bEstadisticas").removeClass("active");
     	$(this).addClass("active");
+    	//Limpio el div antes de cargarle datos nuevos
+    	$('#resultados').html("");
+    	$("#resultados").load("/perfil/" + $(this).attr("data-userId") + "/ofertas");
     });
     $("#bPublicaciones").click(function(){
     	$("#bPreguntas").removeClass("active");
     	$("#bOfertas").removeClass("active");
     	$("#bEstadisticas").removeClass("active");
     	$(this).addClass("active");
+    	//Limpio el div antes de cargarle datos nuevos
+    	$('#resultados').html("");
     	$("#resultados").load("/perfil/" + $(this).attr("data-userId") + "/publicaciones");
     });
     $("#bPreguntas").click(function(){

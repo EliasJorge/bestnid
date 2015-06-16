@@ -4,6 +4,13 @@ var router = express.Router();
 var dbUsuario = require('../models/usuario');
 var dbPublicacion = require('../models/publicacion');
 var dbCategoria = require('../models/categoria');
+var dbOferta = require('../models/oferta');
+
+function fechaFormatoLocal(fecha){
+	//Corto la fecha para darle otro formato
+	var arregloFecha = fecha.split('-');
+	return arregloFecha[2] + '/' + arregloFecha[1] + '/' + arregloFecha[0];
+};
 
 /* GET home page. */
 router.get('/', function(req, res, next) { 
@@ -229,19 +236,58 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 //////////////////////////////////////////////////////////////////////
 
 router.get('/perfil/:id/ofertas', function(req, res, next){
-	res.render('perfil', {
-		sesionUsuario: req.session.usuario,
-		categoriaActiva: null,
-		url:req.originalUrl,
-		usuarioExistente: false,
-		passwordIncorrecta: false,
-		passwordCambiada: false,
-		datosCambiados: false,
-		nombreUsuario: '',
-		nombre: '',
-		apellido: '',
-		mail: ''
-	});
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
+		dbOferta.getOfertasDeUsuario(req.session.usuario, function(error, resultado){
+			if (error) {
+				var errorHTML = '<div class="col-md-12">' +
+		           	'<div class="alert alert-danger"><span>Hubo un error al cargar sus ofertas, por favor intente más tarde</span></div>' +
+		            '</div>';
+				res.send(errorHTML);
+			} else {
+				/*
+				<div class="col-md-12" style="height: 10em;  word-wrap: break-word;">
+	            	<div class="panel-group">
+						<div class="panel panel-info" style="margin-bottom:2em">
+							<div class="panel-heading"><a href="#">Genius Mouse</a></div>
+					    	<div class="panel-body">
+					    		<p><b>Descripción</b></p>
+					    		<p>
+					    			Hola me gustaria tener este mouse porque soy un dislexico de mierda y me vendria barbaro para los parciales. Atte saculbott
+					    		</p>
+					    		<p><b>Monto:</b> $50</p>
+					    		<p><b>Fecha:</b> 12/5/2015</p>
+					    	</div>
+						</div>
+					</div>
+	            </div>
+				*/
+				var listadoHTML = '';
+	            if (resultado.length > 0) {
+	            	listadoHTML = '<div class="col-md-12" style="height: 10em;  word-wrap: break-word;">' +
+	            		'<div class="panel-group">';
+	            	for (var i = 0; i < resultado.length; i++) {
+	            		listadoHTML += '<div class="panel panel-info" style="margin-bottom:2em">' +
+							'<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+							resultado[i].titulo + '</a></div>' +
+					    	'<div class="panel-body">' +
+					    		'<p><b>Descripción</b></p>' +
+					    		'<p>' + resultado[i].texto + '</p>' +
+					    		'<p><b>Monto:</b> $' + resultado[i].monto + '</p>' +
+					    		'<p><b>Fecha:</b> ' + fechaFormatoLocal(resultado[i].fechaOferta) + '</p>' +
+					    	'</div></div>';
+	            	};
+	            	listadoHTML += '</div></div>';
+	            } else {
+	            	listadoHTML = '<div class="col-md-12">' +
+		           		'<div class="alert alert-danger"><span>No hay datos disponibles</span></div>' +
+		            	'</div>';
+	            };
+	            res.send(listadoHTML);
+			};
+		});
+	} else {
+		res.redirect('/');
+	};
 });
 
 router.get('/perfil/:id/preguntas', function(req, res, next){
@@ -583,9 +629,8 @@ router.post('/insertarUsuario', function(req, res, next){
 				} else {
 					if (typeof resultado !== 'undefined' && resultado.length > 0) {
 						req.session.usuario = resultado[0];
-						//Corto la fecha para darle otro formato
-						var arregloFecha = req.session.usuario.fechaRegistro.split('-');
-						req.session.usuario.fechaRegistro = arregloFecha[2] + '/' + arregloFecha[1] + '/' + arregloFecha[0];
+						//Le doy formato local a la fecha
+						req.session.usuario.fechaRegistro = fechaFormatoLocal(req.session.usuario.fechaRegistro);
 						res.redirect('/');
 					} else {
 						res.render('error', {
@@ -613,9 +658,8 @@ router.post('/iniciarSesion', function(req, res, next){
 		} else {
 			if (typeof resultado !== 'undefined' && resultado.length > 0) {
 				req.session.usuario = resultado[0];
-				//Corto la fecha para darle otro formato
-				var arregloFecha = req.session.usuario.fechaRegistro.split('-');
-				req.session.usuario.fechaRegistro = arregloFecha[2] + '/' + arregloFecha[1] + '/' + arregloFecha[0];
+				//Le doy formato local a la fecha
+				req.session.usuario.fechaRegistro = fechaFormatoLocal(req.session.usuario.fechaRegistro);
 				res.redirect('/');
 			} else {
 				res.render('ingreso', {
