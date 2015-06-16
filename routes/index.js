@@ -74,15 +74,28 @@ router.get('/publicacion/:id', function(req, res, next){
 					});
 				}
 				else{
-					res.render('publicacion', {
-						sesionUsuario: req.session.usuario,
-						publicacion:publicacion,
-						preguntasYRespuestas:preguntasYRespuestas,
-						url:req.originalUrl
-					});
+					if(req.session.usuario == null){
+						res.render('publicacion', {
+							sesionUsuario: req.session.usuario,
+							publicacion:publicacion,
+							preguntasYRespuestas:preguntasYRespuestas,
+							url:req.originalUrl
+						});
+					}
+					else{
+						dbOferta.getOfertasDePublicacion(publicacion,preguntasYRespuestas,
+						function(error,ofertas,publicacion, preguntasYRespuestas){
+							res.render('publicacion', {
+								sesionUsuario: req.session.usuario,
+								publicacion:publicacion,
+								preguntasYRespuestas:preguntasYRespuestas,
+								url:req.originalUrl,
+								ofertas:ofertas
+							});
+						});
+					}
 				}
-			}
-			);
+			});
 		}
 	});
 });
