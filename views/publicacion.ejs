@@ -33,6 +33,8 @@
 
                     <%if (typeof(sesionUsuario) != 'undefined' && ((sesionUsuario.idUsuario == publicacion.idUsuario && publicacion.terminada == true) || sesionUsuario.esAdmin == true)){%>
                         <hr>
+                        <h4><%= ofertas.length %> Ofertas:%></h4>
+                        <hr>
                         <% if (ofertas.length !== 0 ) { %>
                             <% ofertas.forEach(function(oferta) { %>
                             <div class="row">
