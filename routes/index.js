@@ -227,7 +227,10 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 			};
 		});
 	} else {
-		res.redirect('/');
+		var errorHTML = '<div class="col-md-12">' +
+           	'<div class="alert alert-danger"><span>Hubo un error al validar la sesión, por favor intente más tarde</span></div>' +
+            '</div>';
+		res.send(errorHTML);
 	};
 });
 
@@ -244,30 +247,15 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 		            '</div>';
 				res.send(errorHTML);
 			} else {
-				/*
-				<div class="col-md-12" style="height: 10em;  word-wrap: break-word;">
-	            	<div class="panel-group">
-						<div class="panel panel-info" style="margin-bottom:2em">
-							<div class="panel-heading"><a href="#">Genius Mouse</a></div>
-					    	<div class="panel-body">
-					    		<p><b>Descripción</b></p>
-					    		<p>
-					    			Hola me gustaria tener este mouse porque soy un dislexico de mierda y me vendria barbaro para los parciales. Atte saculbott
-					    		</p>
-					    		<p><b>Monto:</b> $50</p>
-					    		<p><b>Fecha:</b> 12/5/2015</p>
-					    	</div>
-						</div>
-					</div>
-	            </div>
-				*/
 				var listadoHTML = '';
 	            if (resultado.length > 0) {
 	            	listadoHTML = '<div class="col-md-12" style="height: 10em;  word-wrap: break-word;">' +
 	            		'<div class="panel-group">';
 	            	for (var i = 0; i < resultado.length; i++) {
+	            		//if (resultado[i].) {} else{};
+	            		var panelHeading = '<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">';
 	            		listadoHTML += '<div class="panel panel-info" style="margin-bottom:2em">' +
-							'<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+							panelHeading +
 							resultado[i].titulo + '</a></div>' +
 					    	'<div class="panel-body">' +
 					    		'<p><b>Descripción</b></p>' +
@@ -286,7 +274,10 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 			};
 		});
 	} else {
-		res.redirect('/');
+		var errorHTML = '<div class="col-md-12">' +
+           	'<div class="alert alert-danger"><span>Hubo un error al validar la sesión, por favor intente más tarde</span></div>' +
+            '</div>';
+		res.send(errorHTML);
 	};
 });
 

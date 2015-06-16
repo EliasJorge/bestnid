@@ -7,10 +7,9 @@ $(function() {
     }, 3000);
 
     //Carga por defecto las publicaciones del usuario
-    //Deshabilitado por ahora. Usar cuando se use AJAX en cada boton
     
     $("#bPublicaciones").addClass("active");
-    $("#resultados").load("/perfil/1/publicaciones");
+    $("#resultados").load("/perfil/" + $("#bPublicaciones").attr("data-userId") + "/publicaciones");
     
     //Eventos para cada boton
     $("#bOfertas").click(function(){
