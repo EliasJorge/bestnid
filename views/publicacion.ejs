@@ -9,17 +9,6 @@
 
         <div class="row">
 
-            <!--	AL PEDO
-            <div class="col-md-3">
-                <p class="lead">Shop Name</p>
-                <div class="list-group">
-                    <a href="#" class="list-group-item active">Category 1</a>
-                    <a href="#" class="list-group-item">Category 2</a>
-                    <a href="#" class="list-group-item">Category 3</a>
-                </div>
-            </div>
-            -->
-
             <div class="col-md-9">
 
                 <div class="thumbnail">
@@ -36,8 +25,8 @@
                 <h4>Faltan <%= Math.floor((Date.UTC(publicacion.fechaFin.split('-')[0], publicacion.fechaFin.split('-')[1] - 1, publicacion.fechaFin.split('-')[2]) - Date.now()) / (1000 * 60 * 60 * 24))%> dias para que termine la publicacion
                 </h4>
                     <div class="text-right">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Preguntar</button>
-                        <a class="btn btn-success">Ofertar</a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPregunta" data-whatever="@mdo">Preguntar</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOferta" data-whatever="@mdo">Ofertar</button>
                     </div>
 
 
@@ -85,30 +74,64 @@
     </div>
 
 
-    <!--modal fade para ofertar-->
+    <!--modal fade para preguntar-->
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="exampleModalLabel">¿Tienes una duda de este producto?</h4>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <label for="message-text" class="control-label">Pregunta:</label>
-                <textarea class="form-control" id="message-text"></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary">Enviar</button>
-          </div>
+    <div class="modal fade" id="modalPregunta" tabindex="-1" role="dialog" aria-labelledby="modalPreguntaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalPreguntaLabel">¿Tienes una duda de este producto?</h4>
+                </div>
+                <!--///////FORM DE PREGUNTA/////////-->
+                <form id="formPregunta" action="#">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Pregunta:</label>
+                            <textarea id="textoPregunta" form="formPregunta" maxlength="100" class="form-control" required ></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success"></button>
+                    </div>
+                </from>
+                <!--///////FORM DE PREGUNTA/////////-->
+            </div>
         </div>
-      </div>
     </div>
+
+    <!--modal fade para ofertar-->
+    <div class="modal fade" id="modalOferta" tabindex="-1" role="dialog" aria-labelledby="modalOfertaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalOfertaLabel">¿Quieres ofertar para este producto?</h4>
+                </div>
+                <!--///////FORM DE OFERTA/////////-->
+                <form id="formOferta" action="#">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Quieres este producto porque:</label>
+                            <textarea id="textoOferta" form="formOferta" maxlength="100" class="form-control" required >
+                            </textarea>
+                            <br>
+                            <label for="message-text" class="control-label">Ofreces por este producto:</label>
+                            <div class="input-group col-md-2">
+                                <input type="text" id="montoOfrecido" class="form-control " required pattern="^[1-9][0-9]*([.][0-9]+)?">
+                                <span class="input-group-addon">$</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success"></button>
+                    </div>
+                </from>
+                <!--///////FORM DE OFERTA/////////-->
+            </div>
+        </div>
+    </div>
+
 
 
 	<% include partials/footer.ejs %>
