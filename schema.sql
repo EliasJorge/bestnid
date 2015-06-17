@@ -102,7 +102,7 @@ DROP TABLE IF EXISTS `publicacion`;
 CREATE TABLE `publicacion` (
   `idPublicacion` int(11) NOT NULL AUTO_INCREMENT,
   `titulo` varchar(200) NOT NULL,
-  `descripcion` varchar(200) NOT NULL,
+  `descripcion` varchar(500) NOT NULL,
   `foto` varchar(200) NOT NULL,
   `fechaInicio` date NOT NULL,
   `fechaFin` date NOT NULL,
