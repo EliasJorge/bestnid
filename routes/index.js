@@ -64,38 +64,43 @@ router.get('/publicacion/:id', function(req, res, next){
 			});
 		}
 		else{
-			dbPublicacion.getPreguntasYRespuestasDePublicacion(datosPublicacion,
-			function(errorPYR, preguntasYRespuestas, publicacion){
-				if (errorPYR) {
-					res.render('error', {
-						mensaje:'Hubo un error al cargar la publicacion, por favor intente de nuevo',
-						sesionUsuario:req.session.usuario,
-						url:req.originalUrl
-					});
-				}
-				else{
-					if(req.session.usuario == null){
-						res.render('publicacion', {
-							sesionUsuario: req.session.usuario,
-							publicacion:publicacion,
-							preguntasYRespuestas:preguntasYRespuestas,
+			if((typeof(datosPublicacion) != 'undefined'  && datosPublicacion.terminada == false) || (req.session.usuario != null && datosPublicacion.idUsuario == req.session.usuario.idUsuario) ){
+				dbPublicacion.getPreguntasYRespuestasDePublicacion(datosPublicacion,
+				function(errorPYR, preguntasYRespuestas, publicacion){
+					if (errorPYR) {
+						res.render('error', {
+							mensaje:'Hubo un error al cargar la publicacion, por favor intente de nuevo',
+							sesionUsuario:req.session.usuario,
 							url:req.originalUrl
 						});
 					}
 					else{
-						dbOferta.getOfertasDePublicacion(publicacion,preguntasYRespuestas,
-						function(error,ofertas,publicacion, preguntasYRespuestas){
+						if(req.session.usuario == null){
 							res.render('publicacion', {
 								sesionUsuario: req.session.usuario,
 								publicacion:publicacion,
 								preguntasYRespuestas:preguntasYRespuestas,
-								url:req.originalUrl,
-								ofertas:ofertas
+								url:req.originalUrl
 							});
-						});
+						}
+						else{
+							dbOferta.getOfertasDePublicacion(publicacion,preguntasYRespuestas,
+							function(error,ofertas,publicacion, preguntasYRespuestas){
+								res.render('publicacion', {
+									sesionUsuario: req.session.usuario,
+									publicacion:publicacion,
+									preguntasYRespuestas:preguntasYRespuestas,
+									url:req.originalUrl,
+									ofertas:ofertas
+								});
+							});
+						}
 					}
-				}
-			});
+				});
+			}
+			else{
+				res.redirect('/');
+			}
 		}
 	});
 });
