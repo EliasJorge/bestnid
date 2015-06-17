@@ -5,7 +5,7 @@ var modeloPublicacion = {};
 modeloPublicacion.getPublicaciones = function(desc, callback){
 	if (conn){
 		if (desc == 1) {
-			conn.query('SELECT * FROM publicacion  WHERE visible = 1 and terminada = 0 and visible = 1 ORDER BY fechaInicio ASC', function(error, resultado){
+			conn.query('SELECT * FROM publicacion  WHERE visible = 1 and terminada = 0 ORDER BY fechaInicio ASC', function(error, resultado){
 				if (error) {
 					callback(error);
 				}
@@ -15,7 +15,7 @@ modeloPublicacion.getPublicaciones = function(desc, callback){
 			});
 		}
 		else{
-			conn.query('SELECT * FROM publicacion  WHERE visible = 1 and terminada = 0 and visible = 1 ORDER BY fechaInicio DESC', function(error, resultado){
+			conn.query('SELECT * FROM publicacion  WHERE visible = 1 and terminada = 0 ORDER BY fechaInicio DESC', function(error, resultado){
 				if (error) {
 					callback(error);
 				}
@@ -44,7 +44,7 @@ modeloPublicacion.getPublicacionesByUsuario = function(id, callback){
 modeloPublicacion.getPublicacionesByNombre = function(string, desc, callback){
 	if (conn){
 		if (desc == 1) {
-			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio ASC", function(error, resultado){
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 and terminada = 0 AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio ASC", function(error, resultado){
 				if (error) {
 					callback(error);
 				}
@@ -54,7 +54,7 @@ modeloPublicacion.getPublicacionesByNombre = function(string, desc, callback){
 			});
 		}
 		else{
-			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio DESC", function(error, resultado){
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 and terminada = 0 AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio DESC", function(error, resultado){
 				if (error) {
 					callback(error);
 				}
@@ -69,7 +69,7 @@ modeloPublicacion.getPublicacionesByNombre = function(string, desc, callback){
 modeloPublicacion.getPublicacionesByCategoria = function(idCategoria, desc, callback){
 	if (conn){
 		if (desc == 1) {
-			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "' ORDER BY fechaInicio ASC", function(error, resultado){
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 and terminada = 0 AND idCategoria = '" + idCategoria + "' ORDER BY fechaInicio ASC", function(error, resultado){
 				if (error) {
 					callback(error);
 				}
@@ -79,7 +79,7 @@ modeloPublicacion.getPublicacionesByCategoria = function(idCategoria, desc, call
 			});
 		}
 		else{
-			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "' ORDER BY fechaInicio DESC", function(error, resultado){
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 and terminada = 0 AND idCategoria = '" + idCategoria + "' ORDER BY fechaInicio DESC", function(error, resultado){
 				if (error) {
 					callback(error);
 				}
@@ -94,7 +94,7 @@ modeloPublicacion.getPublicacionesByCategoria = function(idCategoria, desc, call
 modeloPublicacion.getPublicacionesByCategoriaAndNombre = function(idCategoria, string, desc, callback){
 	if (conn){
 		if (desc == 1) {
-			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "'AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio ASC", function(error, resultado){
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 and terminada = 0 AND idCategoria = '" + idCategoria + "'AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio ASC", function(error, resultado){
 				if (error) {
 					callback(error);
 				}
@@ -104,7 +104,7 @@ modeloPublicacion.getPublicacionesByCategoriaAndNombre = function(idCategoria, s
 			});
 		}
 		else{
-			conn.query("SELECT * FROM publicacion WHERE visible = 1 AND idCategoria = '" + idCategoria + "'AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio DESC", function(error, resultado){
+			conn.query("SELECT * FROM publicacion WHERE visible = 1 and terminada = 0 AND idCategoria = '" + idCategoria + "'AND titulo LIKE '%" + string + "%' ORDER BY fechaInicio DESC", function(error, resultado){
 				if (error) {
 					callback(error);
 				}
