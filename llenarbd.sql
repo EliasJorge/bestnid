@@ -6,7 +6,7 @@ insert into usuario set
 	apellido = 'admin',
 	password = '12345678',
 	mail = 'admin@admin.com',
-	foto = 'imagenes/perfilDefault.png',
+	foto = '/imagenes/perfilDefault.png',
 	esAdmin = true,
 	fechaRegistro = curdate();
 
@@ -16,7 +16,7 @@ insert into usuario set
 	apellido = 'publicador',
 	password = '12345678',
 	mail = 'publicador@publicador.com',
-	foto = 'imagenes/perfilDefault.png',
+	foto = '/imagenes/perfilDefault.png',
 	fechaRegistro = curdate();
 
 insert into usuario set 
@@ -25,7 +25,7 @@ insert into usuario set
 	apellido = 'ofertador',
 	password = '12345678',
 	mail = 'ofertador@ofertador.com',
-	foto = 'imagenes/perfilDefault.png',
+	foto = '/imagenes/perfilDefault.png',
 	fechaRegistro = curdate();
 
 insert into usuario set 
@@ -34,7 +34,7 @@ insert into usuario set
 	apellido = 'ofertador',
 	password = '12345678',
 	mail = 'ofertador@ofertador.com',
-	foto = 'imagenes/perfilDefault.png',
+	foto = '/imagenes/perfilDefault.png',
 	fechaRegistro = curdate();
 
 insert into usuario set 
@@ -43,7 +43,7 @@ insert into usuario set
 	apellido = 'ofertador',
 	password = '12345678',
 	mail = 'ofertador@ofertador.com',
-	foto = 'imagenes/perfilDefault.png',
+	foto = '/imagenes/perfilDefault.png',
 	fechaRegistro = curdate();
 
 insert into usuario set 
@@ -52,7 +52,7 @@ insert into usuario set
 	apellido = 'normal',
 	password = '12345678',
 	mail = 'normal@normal.com',
-	foto = 'imagenes/perfilDefault.png',
+	foto = '/imagenes/perfilDefault.png',
 	fechaRegistro = curdate();
 
 insert into categoria set 
@@ -205,6 +205,11 @@ insert into pregunta set
 	idPublicacion = 4,
 	idRespuesta = 3;
 
+insert into pregunta set
+	textoPregunta = 'hola posta que es mansa?',
+	fechaPregunta = curdate(),
+	idUsuario = 5,
+	idPublicacion = 4;
 
 insert into respuesta set
 	textoRespuesta = 'hola si es mansa',
