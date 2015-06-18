@@ -746,7 +746,7 @@ router.get('/:id/publicar', function(req,res,next){
 	dbCategoria.getCategorias(function(error,resultado){
 		if (error){
 			res.render('error', {
-				mensaje:'Hubo un error al cargar el formulario, por favor intente de nuevo',
+				mensaje:'No hay categorias disponibles para publicar un producto, por favor intente más tarde',
 				sesionUsuario: req.session.usuario,
 				categoriaActiva: null,
 				url:req.originalUrl
@@ -784,7 +784,7 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 	dbPublicacion.insertar(publicacion, function(error,respuesta){
 		if (error) {
 			res.render('error', {
-							mensaje:'error al insertar',
+							mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
 							sesionUsuario: req.session.usuario,
 							categoriaActiva: null,
 							url:req.originalUrl
