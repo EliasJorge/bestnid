@@ -5,6 +5,7 @@ var dbUsuario = require('../models/usuario');
 var dbPublicacion = require('../models/publicacion');
 var dbCategoria = require('../models/categoria');
 var dbOferta = require('../models/oferta');
+var dbRespuesta = require('../models/respuesta');
 
 function fechaFormatoLocal(fecha){
 	//Corto la fecha para darle otro formato
@@ -784,10 +785,10 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 	dbPublicacion.insertar(publicacion, function(error,respuesta){
 		if (error) {
 			res.render('error', {
-							mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
-							sesionUsuario: req.session.usuario,
-							categoriaActiva: null,
-							url:req.originalUrl
+				mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
 			});
 		} else{
 			res.redirect('/');
@@ -796,8 +797,19 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 
 }]);
 
-router.post('/responderPregunta', function(req, res, next){
-	
+router.post('/responder/:idPublicacion', function(req, res, next){
+	dbRespuesta.insertarRespuesta(req.body.idPregunta, req.body.textoRespuesta, function(error, respuesta){
+		if (error) {
+			res.render('error', {
+				mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		} else {
+			res.redirect('/publicacion/' + req.params.idPublicacion);
+		};
+	});
 });
 
 module.exports = router;

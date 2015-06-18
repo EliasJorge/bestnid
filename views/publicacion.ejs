@@ -99,7 +99,7 @@
                                 <%} else {%>
                                     <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
                                         <div class="text-right">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRespuesta" data-whatever="@mdo" data-idPregunta="<%=datos.idPregunta%>" style="margin-top: 0.7em; margin-left: 3em">Responder</button>
+                                            <button type="button" class="btn btn-primary botonResponder" data-toggle="modal" data-target="#modalRespuesta" data-whatever="@mdo" data-idPregunta="<%=datos.idPregunta%>" style="margin-top: 0.7em; margin-left: 3em">Responder</button>
                                         </div>
                                     <%}%>
                                 <%}%>
@@ -194,11 +194,11 @@
                     <h4 class="modal-title" id="modalRespuestaLabel">Responde a esta pregunta:</h4>
                 </div>
                 <!--///////FORM DE RESPUESTA/////////-->
-                <form id="formRespuesta" method="POST" action="/responderPregunta">
+                <form id="formRespuesta" method="POST" action="/responder/<%=publicacion.idPublicacion%>" data-idPregunta="">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="message-text" class="control-label">Respuesta:</label>
-                            <textarea id="textoRespuesta" style="resize:none" form="formRespuesta" maxlength="100" class="form-control" required ></textarea>
+                            <textarea id="textoRespuesta" name="textoRespuesta" style="resize:none" form="formRespuesta" maxlength="100" class="form-control" required ></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
