@@ -137,13 +137,18 @@
             </div>
              <!--//////////////////////////SI ES EL PUBLICADOR////////////////////////////////////////-->
             <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario){%>
-             <div class="col-md-3">
-                <p class="lead">Opciones</p>
-                <div class="list-group">
-                    <a href="#" class="list-group-item"><span class="glyphicon glyphicon-trash"></span> Eliminar Publicación</a>
-                    <a href="#" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Modificar Publicación</a>
+                
+                <div class="col-md-3">
+                <%if (ofertas.length == 0) { %>
+                    <p class="lead">Opciones</p>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item"><span class="glyphicon glyphicon-trash"></span> Eliminar Publicación</a>
+                        <a href="#" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Modificar Publicación</a>
+                    </div>
+                <%} else {%>
+                     <div class="alert alert-danger">No puede modificar/eliminar esta publicacion ya que han ofertado</div>
+                <%}%>
                 </div>
-            </div>
             <%}%>
         </div>
 
