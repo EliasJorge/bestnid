@@ -5,6 +5,7 @@ var dbUsuario = require('../models/usuario');
 var dbPublicacion = require('../models/publicacion');
 var dbCategoria = require('../models/categoria');
 var dbOferta = require('../models/oferta');
+var dbPregunta = require('../models/pregunta');
 
 function fechaFormatoLocal(fecha){
 	//Corto la fecha para darle otro formato
@@ -779,7 +780,8 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 			descripcion:req.body.descripcion,
 			idCategoria:req.body.categoriaElegida,
 			foto:req.files.pic.path.substring(6,req.files.pic.path.length).replace(/\\/g,'/'),
-			idUsuario:req.session.usuario.idUsuario
+			idUsuario:req.session.usuario.idUsuario,
+			duracion:req.body.duracion
 		};
 	dbPublicacion.insertar(publicacion, function(error,respuesta){
 		if (error) {
@@ -795,6 +797,33 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 	});
 
 }]);
+
+
+router.post('/preguntar/:idPublicacion/:idUsuario', function(req,res,next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
+		var pregunta = {
+			texto: req.body.textoPregunta,
+			idUsuario: req.params.idUsuario,
+			idPublicacion: req.params.idPublicacion
+		};
+		dbPregunta.insertarPregunta(pregunta, function(error,respuesta){
+			if (error) {
+				res.render('error', {
+					mensaje:'Hubo un error al ingresar su pregunta, por favor intente de nuevo',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				//Redireccionar a la pagina de la publicacion actual
+				res.redirect('/publicacion/' + req.params.idPublicacion);
+			};
+		});
+	} else {
+		res.redirect('/');
+	};
+});
+
 
 router.post('/responderPregunta', function(req, res, next){
 	
