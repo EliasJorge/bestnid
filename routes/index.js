@@ -219,21 +219,29 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 	                    } else {
 	                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ");
 	                    }
-	    				var thumbnail = '<div class="col-sm-4 col-lg-4 col-md-4">' +
-						                    '<div class="thumbnail" style="height: 20em;  word-wrap: break-word;">' +
-						                    '<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
-						                        '<img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
-						                    '</a>' +
+	    				var thumbnail = '';
+	    				thumbnail = '<div class="col-sm-4 col-lg-4 col-md-4">';
+						                
+						if (resultado[i].visible == 1) {
+							thumbnail += '<div class="thumbnail" style="height: 20em;  word-wrap: break-word;">' + 
+											'<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+											'<div><img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
+						                    '</div></a>' +
 						                        '<div class="caption-full">' +
 						                            '<h4><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
 						                                tituloMostrar +
-						                            '</a></h4>' +
-						                            '<p style="font-size: 0.9em;">' +
-							                            descripcionMostrar +
-						                            '</p>' +
-						                        '</div>' +
+						                            '</a></h4>';
+						} else {
+							thumbnail += '<div class="thumbnail" style="height: 20em;  word-wrap: break-word; background-color: #eee;">' +
+											'<div style="opacity: 0.7; filter: alpha(opacity=70); background-color: #000;">' +
+												'<img class="img-responsive" src ="' + resultado[i].foto +
+													'" style="width: 18em; height: 12em; opacity: 0.7; filter: alpha(opacity=70);" alt="" >' +
 						                    '</div>' +
-						                '</div>';
+						                        '<div class="caption-full">' +
+						                        '<h4>' + tituloMostrar + '</h4>';
+						};
+						thumbnail += '<p style="font-size: 0.9em;">' + descripcionMostrar + '</p></div></div></div>';
+						                            
 		                listadoHTML += thumbnail;
 	    			}
 				} else {
@@ -269,7 +277,7 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 	            		var panelHeading = '<div class="panel panel-info" style="margin-bottom:2em">' +
 	            			'<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
 	            			resultado[i].titulo + '</a></div>';
-	            		if (resultado[i].terminada == 1) {
+	            		if (resultado[i].visible == 0) {
 	            			panelHeading = '<div class="panel panel-default" style="margin-bottom:2em">' +
 	            				'<div class="panel-heading">' +
 	            				resultado[i].titulo + '</div>';
