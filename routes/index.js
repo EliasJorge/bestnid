@@ -790,7 +790,7 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 							url:req.originalUrl
 			});
 		} else{
-			res.redirect('/');
+			res.redirect('/publicacion/' + respuesta.insertId)
 		}
 	});
 
