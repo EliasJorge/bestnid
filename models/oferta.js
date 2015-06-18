@@ -39,7 +39,22 @@ modeloOferta.insertarOferta = function(oferta, callback){
 						oferta.idPublicacion + ', ' +
 						oferta.idUsuario +
 						')';
-		console.log(query);
+		conn.query(query, function(error, resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null, resultado);
+			};
+		});
+	}
+};
+
+modeloOferta.getOfertasDeUsuarioParaPublicacion = function(idUsuario, idPublicacion, callback){
+	if (conn){
+		var query = 'SELECT * FROM oferta ' +
+			'WHERE idUsuario=' + idUsuario +
+			' AND idPublicacion=' + idPublicacion;
 		conn.query(query, function(error, resultado){
 			if (error) {
 				callback(error);

@@ -1,0 +1,34 @@
+$(document).ready(function(){
+    var validarSiOferto = function(event){
+        // cancels the form submission
+        event.preventDefault();
+        //Me fijo si el usuario ya oferto en esta publicacion
+        $.get("/yaOferto/" + $(this).attr("data-idPublicacion") + '/' + $(this).attr("data-idUsuario"), function(data, status){
+            if (data != 'sessionError' && data != 'dbError') {
+                if (data == true) {
+                    if ($(".sacar").length == 0) {
+                        $("#formOfertaBody").after('<div class="col-md-12 sacar"><div class="alert alert-danger"><span>Usted ya ha ofertado en esta publicacion</span></div></div>');
+                        setTimeout(function() {
+                            $(".sacar").slideUp('fast', function(){
+                                $(".sacar").remove();
+                            });
+                        }, 3000);
+                    };
+                } else {
+                    //unbind y submit
+                    $("#formOferta").unbind("submit").submit();
+                };
+            } else {
+                if ($(".sacar").length == 0) {
+                    $("#formOfertaBody").after('<div class="col-md-12 sacar"><div class="alert alert-danger"><span>Ocurrio un error, por favor intente de nuevo</span></div></div>');
+                    setTimeout(function() {
+                        $(".sacar").slideUp('fast', function(){
+                            $(".sacar").remove();
+                        });
+                    }, 3000);
+                };
+            };
+        });
+    }
+    $('#formOferta').bind("submit", validarSiOferto);
+});

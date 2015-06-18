@@ -214,8 +214,8 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 	                    } else {
 	                        tituloMostrar = resultado[i].titulo;
 	                    }
-	                    if (resultado[i].descripcion.length > 78) {
-	                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ").substring(0,75) + '...';
+	                    if (resultado[i].descripcion.length > 65) {
+	                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ").substring(0,62) + '...';
 	                    } else {
 	                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ");
 	                    }
@@ -699,8 +699,41 @@ router.get('/cerrarSesion', function(req,res,next){
 	res.redirect('/');
 });
 
+router.get('/yaOferto/:idPublicacion/:idUsuario', function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
+		dbOferta.getOfertasDeUsuarioParaPublicacion(req.session.usuario.idUsuario, req.params.idPublicacion, function(errorO, resultadoO){
+			if (errorO) {
+				res.send('bdError');
+			} else {
+				res.send(typeof resultadoO !== 'undefined' && resultadoO.length > 0);
+			};
+		});
+	} else {
+		res.send('sessionError');
+	}
+});
+
 router.post('/ofertar/:idPublicacion/:idUsuario', function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
+		/*
+		dbOferta.getOfertasDeUsuarioParaPublicacion(req.session.usuario.idUsuario, req.params.idPublicacion, function(errorO, resultadoO){
+			if (errorO) {
+				res.render('error', {
+					mensaje:'Hubo un error al conectarse con la base de datos, por favor intente de nuevo',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				if (typeof resultadoO !== 'undefined' && resultadoO.length > 0) {
+					//ya oferto
+				} else {
+					//no oferto
+				};
+			};
+		});
+		*/
+
 		//Cargar oferta en la bd
 		var oferta = {
 			texto: req.body.textoOferta,
