@@ -796,4 +796,8 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 
 }]);
 
+router.post('/responderPregunta', function(req, res, next){
+	
+});
+
 module.exports = router;

@@ -98,7 +98,9 @@
                                     </div>
                                 <%} else {%>
                                     <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
-                                        <button type="button" class="btn btn-warning" style="margin-top: 0.7em; margin-left: 3em">Responder</button>
+                                        <div class="text-right">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRespuesta" data-whatever="@mdo" data-idPregunta="<%=datos.idPregunta%>" style="margin-top: 0.7em; margin-left: 3em">Responder</button>
+                                        </div>
                                     <%}%>
                                 <%}%>
                             </div>
@@ -183,6 +185,31 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalRespuesta" tabindex="-1" role="dialog" aria-labelledby="modalRespuestaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalRespuestaLabel">Responde a esta pregunta:</h4>
+                </div>
+                <!--///////FORM DE RESPUESTA/////////-->
+                <form id="formRespuesta" method="POST" action="/responderPregunta">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Respuesta:</label>
+                            <textarea id="textoRespuesta" style="resize:none" form="formRespuesta" maxlength="100" class="form-control" required ></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" value="Responder"></button>
+                    </div>
+                </form>
+                <!--///////FORM DE RESPUESTA/////////-->
+            </div>
+        </div>
+    </div>
+
     <% } %>
 
 
