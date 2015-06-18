@@ -28,8 +28,8 @@
                 <%}else {%>
                     <h4>La publicacion ha terminado</h4>
                 <%}%>
-
-                <%if (!(typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario)){%>
+                
+                <%if (typeof(sesionUsuario) != 'undefined' && !(sesionUsuario.idUsuario == publicacion.idUsuario)){%>
                     <div class="text-right">
                         <button id="bPreguntar" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPregunta" data-whatever="@mdo">Preguntar</button>
                         <button id="bOfertar" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOferta" data-whatever="@mdo">Ofertar</button>
