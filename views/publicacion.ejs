@@ -36,7 +36,7 @@
                     </div>
                 <%}%>
                     
-
+                    <!--//////////////////////////OFERTAS////////////////////////////////////////-->
                     <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario && publicacion.terminada == true){%>
                         <hr>
                         <h4><%= ofertas.length %> Ofertas:%></h4>
@@ -58,20 +58,18 @@
                             <div class="alert alert-danger">Nadie ha realizado Ofertas</div>
                         <%}%>                        
                     <%}%>
-
+                    <!--//////////////////////////OFERTA DEL USUARIO////////////////////////////////////////-->
                     <%if (typeof(sesionUsuario) != 'undefined') { %>
                         <% ofertas.forEach(function(oferta) { %>
                             <%if(oferta.idUsuario == sesionUsuario.idUsuario){%>
-                                <div class="row" style="margin-bottom: 0em;">
-                                    <div class="col-md-12" style="margin-bottom: 0em">
+                                <div class="row" style="margin-top: 1.2em;">
+                                    <div class="col-md-12 alert alert-info" style="margin-bottom: 0em">
                                         <p>Usted quiere este producto porque: </p>
-                                        <div class="alert alert-info col-md-9" style="margin-bottom: 0em; margin-top:0.5em;">
                                             <span class="pull-right"><%=oferta.fechaOferta.split('-')[2] + '/' + oferta.fechaOferta.split('-')[1] + '/' + oferta.fechaOferta.split('-')[0]%></span>
                                             <p><%=oferta.texto%><p>
                                             <br>
                                             <p>Y ofrece: <%= oferta.monto%><span class="glyphicon glyphicon-usd"></span></p>
-                                        </div>
-                                        <div class="text-right" style="margin-top: 6.1em">
+                                        <div class="text-right" style="">
                                             <button type="button" class="btn btn-warning">Modificar</button>
                                             <button type="button" class="btn btn-danger">Eliminar</button>
                                         </div>
@@ -81,22 +79,45 @@
                             <%}%>
                         <% });%>
                     <%}%>
+                    <!--//////////////////////////PREGUNTAS Y RESPUESTAS////////////////////////////////////////-->
                     <h4><%=preguntasYRespuestas.length%> preguntas</h4>
                     <hr>
                     <% if (preguntasYRespuestas.length !== 0 ) { %>
                         <% preguntasYRespuestas.forEach(function(datos) { %>
                         <div class="row">
-                            <div class="col-md-12">
+                             <!--//////////////////////////SI ES EL QUE PREGUNTO MARCO LA PREGUNTA//////////////////////////////////////-->
+                            <%if (typeof(sesionUsuario) != 'undefined' && datos.idUsuario == sesionUsuario.idUsuario) {%>
+                            <p>Usted pregunto:</p>
+                            <div class="col-md-12 alert alert-success">
+                            <%} else {%>
+                            <div class="col-md-12 ">
+                            <%}%>         
                                 <span class="pull-right"><%=datos.fechaPregunta.split('-')[2] + '/' + datos.fechaPregunta.split('-')[1] + '/' + datos.fechaPregunta.split('-')[0]%></span>
                                 <p>
                                     <span class="glyphicon glyphicon-question-sign"></span>
                                     <%= datos.textoPregunta %>
                                 </p>
-                                <%if (datos.idRespuesta != null ){%>
-                                    <div class="comment-content">
-                                        <span class="glyphicon glyphicon-chevron-right"></span><%= datos.textoRespuesta%>
+                                 <!--//////////////////////////SI ES EL PUBLICADOR PUEDE PREGUNTAR///////////////////////////////////-->
+                                <%if (typeof(sesionUsuario) != 'undefined' && datos.idUsuario == sesionUsuario.idUsuario && datos.idRespuesta == null ) {%>
+                                    <div class="text-right">
+                                        <button type="button" class="btn btn-warning text-right" style="margin-top: 0.7em">Eliminar</button>
+                                        <button type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Modificar</button>
                                     </div>
+                                <%}%>
+                                <!--si tiene una respuesta la muestro-->
+                                <%if (datos.idRespuesta != null ){%>
+                                     <div class="comment-content ">
+                                        <span class="glyphicon glyphicon-chevron-right"></span><%= datos.textoRespuesta%>
+                                        <!--si es el que publico-->
+                                        <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
+                                        <div class="text-right">
+                                            <button type="button" class="btn btn-warning text-right" style="">Eliminar</button>
+                                            <button type="button" class="btn btn-danger text-right" style="">Modificar</button>
+                                        </div> 
+                                        <%}%>
+                                    </div> 
                                 <%} else {%>
+                                    <!--/////////////si no tiene una respuesta y  es el publicador puede responder////////-->
                                     <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
                                         <div class="text-right">
                                             <button type="button" class="btn btn-primary botonResponder" data-toggle="modal" data-target="#modalRespuesta" data-whatever="@mdo" data-idPregunta="<%=datos.idPregunta%>" style="margin-top: 0.7em; margin-left: 3em">Responder</button>
@@ -114,6 +135,7 @@
                 </div>
 
             </div>
+             <!--//////////////////////////SI ES EL PUBLICADOR////////////////////////////////////////-->
             <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario){%>
              <div class="col-md-3">
                 <p class="lead">Opciones</p>
