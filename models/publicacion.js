@@ -2,6 +2,26 @@ var conn = require('./dbConnection');
 
 var modeloPublicacion = {};
 
+modeloPublicacion.insertar = function(nuevaPublicacion, callback){
+	if (conn) {
+		var query = 'INSERT INTO publicacion (titulo, descripcion, foto, fechaInicio, fechaFin, visible, terminada, idCategoria, idUsuario) VALUES (' +
+			"'" + nuevaPublicacion.titulo + "', " +
+			"'" + nuevaPublicacion.descripcion + "', " +
+			"'" + nuevaPublicacion.foto + "', " +
+			" CURRENT_DATE(), CURRENT_DATE() + interval 15 day, 1, 0, " +
+			"" + nuevaPublicacion.idCategoria + ", " +
+			"" + nuevaPublicacion.idUsuario + ")" ;
+		conn.query(query, function(error, resultado){
+			if (error) {
+				callback(error);
+			} else {
+				callback(null,resultado);
+			};
+		});
+	};
+};
+
+
 modeloPublicacion.getPublicaciones = function(desc, callback){
 	if (conn){
 		if (desc == 1) {

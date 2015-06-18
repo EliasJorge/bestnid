@@ -759,4 +759,60 @@ router.post('/ofertar/:idPublicacion/:idUsuario', function(req, res, next){
 	};
 });
 
+router.get('/:id/publicar', function(req,res,next){
+	if (req.session.usuario != null){
+	dbCategoria.getCategorias(function(error,resultado){
+		if (error){
+			res.render('error', {
+				mensaje:'Hubo un error al cargar el formulario, por favor intente de nuevo',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		} else {
+			res.render('publicar', {
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl,
+				usuarioExistente: false,
+				passwordIncorrecta: false,
+				passwordCambiada: false,
+				datosCambiados: false,
+				nombreUsuario: '',
+				nombre: '',
+				apellido: '',
+				mail: '',
+				categorias:resultado,
+			});
+		}
+	});
+	} else {
+		res.redirect('/');
+	}
+});
+
+router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), function(req,res,next){
+	var publicacion = {
+			titulo:req.body.nombreProducto,
+			descripcion:req.body.descripcion,
+			idCategoria:req.body.categoriaElegida,
+			foto:req.files.pic.path.substring(6,req.files.pic.path.length),
+			idUsuario:req.session.usuario.idUsuario
+		};
+	//publicacion.foto.replace(/\\"/g,"//");
+	dbPublicacion.insertar(publicacion, function(error,respuesta){
+		if (error) {
+			res.render('error', {
+							mensaje:'error al insertar',
+							sesionUsuario: req.session.usuario,
+							categoriaActiva: null,
+							url:req.originalUrl
+			});
+		} else{
+			res.redirect('/');
+		}
+	});
+
+}]);
+
 module.exports = router;

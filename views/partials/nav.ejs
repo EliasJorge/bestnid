@@ -28,9 +28,11 @@
                 </form>
             <!--barra de busqueda-->
                 </li>
+                <% if ( typeof sesionUsuario != 'undefined'){ %>
                 <li>
-                    <a href="/">Publicar</a>
+                    <a href="/<%=sesionUsuario.idUsuario%>/publicar">Publicar</a>
                 </li>
+                <% } %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
             <% if ( typeof sesionUsuario === 'undefined' || sesionUsuario == null ){ %>
