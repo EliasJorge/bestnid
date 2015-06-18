@@ -778,10 +778,9 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 			titulo:req.body.nombreProducto,
 			descripcion:req.body.descripcion,
 			idCategoria:req.body.categoriaElegida,
-			foto:req.files.pic.path.substring(6,req.files.pic.path.length),
+			foto:req.files.pic.path.substring(6,req.files.pic.path.length).replace(/\\/g,'/'),
 			idUsuario:req.session.usuario.idUsuario
 		};
-	//publicacion.foto.replace(/\\"/g,"//");
 	dbPublicacion.insertar(publicacion, function(error,respuesta){
 		if (error) {
 			res.render('error', {
