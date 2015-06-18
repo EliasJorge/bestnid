@@ -5,7 +5,11 @@ var dbUsuario = require('../models/usuario');
 var dbPublicacion = require('../models/publicacion');
 var dbCategoria = require('../models/categoria');
 var dbOferta = require('../models/oferta');
+<<<<<<< HEAD
 var dbPregunta = require('../models/pregunta');
+=======
+var dbRespuesta = require('../models/respuesta');
+>>>>>>> fe9971ba0ecd736552b56393b30f42e1cd2c3d63
 
 function fechaFormatoLocal(fecha){
 	//Corto la fecha para darle otro formato
@@ -224,7 +228,7 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 	    				thumbnail = '<div class="col-sm-4 col-lg-4 col-md-4">';
 						                
 						if (resultado[i].visible == 1) {
-							thumbnail += '<div class="thumbnail" style="height: 20em;  word-wrap: break-word;">' + 
+							thumbnail += '<div class="thumbnail" style="height: 22em;  word-wrap: break-word;">' + 
 											'<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
 											'<div><img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
 						                    '</div></a>' +
@@ -786,10 +790,10 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 	dbPublicacion.insertar(publicacion, function(error,respuesta){
 		if (error) {
 			res.render('error', {
-							mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
-							sesionUsuario: req.session.usuario,
-							categoriaActiva: null,
-							url:req.originalUrl
+				mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
 			});
 		} else{
 			res.redirect('/publicacion/' + respuesta.insertId)
@@ -798,6 +802,7 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 
 }]);
 
+<<<<<<< HEAD
 
 router.post('/preguntar/:idPublicacion/:idUsuario', function(req,res,next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
@@ -827,6 +832,21 @@ router.post('/preguntar/:idPublicacion/:idUsuario', function(req,res,next){
 
 router.post('/responderPregunta', function(req, res, next){
 	
+=======
+router.post('/responder/:idPublicacion', function(req, res, next){
+	dbRespuesta.insertarRespuesta(req.body.idPregunta, req.body.textoRespuesta, function(error, respuesta){
+		if (error) {
+			res.render('error', {
+				mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		} else {
+			res.redirect('/publicacion/' + req.params.idPublicacion);
+		};
+	});
+>>>>>>> fe9971ba0ecd736552b56393b30f42e1cd2c3d63
 });
 
 module.exports = router;
