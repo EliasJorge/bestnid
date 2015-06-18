@@ -224,7 +224,7 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 	    				thumbnail = '<div class="col-sm-4 col-lg-4 col-md-4">';
 						                
 						if (resultado[i].visible == 1) {
-							thumbnail += '<div class="thumbnail" style="height: 20em;  word-wrap: break-word;">' + 
+							thumbnail += '<div class="thumbnail" style="height: 22em;  word-wrap: break-word;">' + 
 											'<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
 											'<div><img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
 						                    '</div></a>' +
