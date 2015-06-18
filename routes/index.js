@@ -5,11 +5,8 @@ var dbUsuario = require('../models/usuario');
 var dbPublicacion = require('../models/publicacion');
 var dbCategoria = require('../models/categoria');
 var dbOferta = require('../models/oferta');
-<<<<<<< HEAD
 var dbPregunta = require('../models/pregunta');
-=======
 var dbRespuesta = require('../models/respuesta');
->>>>>>> fe9971ba0ecd736552b56393b30f42e1cd2c3d63
 
 function fechaFormatoLocal(fecha){
 	//Corto la fecha para darle otro formato
@@ -802,8 +799,6 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 
 }]);
 
-<<<<<<< HEAD
-
 router.post('/preguntar/:idPublicacion/:idUsuario', function(req,res,next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
 		var pregunta = {
@@ -829,10 +824,7 @@ router.post('/preguntar/:idPublicacion/:idUsuario', function(req,res,next){
 	};
 });
 
-
-router.post('/responderPregunta', function(req, res, next){
 	
-=======
 router.post('/responder/:idPublicacion', function(req, res, next){
 	dbRespuesta.insertarRespuesta(req.body.idPregunta, req.body.textoRespuesta, function(error, respuesta){
 		if (error) {
@@ -846,7 +838,6 @@ router.post('/responder/:idPublicacion', function(req, res, next){
 			res.redirect('/publicacion/' + req.params.idPublicacion);
 		};
 	});
->>>>>>> fe9971ba0ecd736552b56393b30f42e1cd2c3d63
 });
 
 module.exports = router;

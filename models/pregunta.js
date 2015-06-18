@@ -4,7 +4,7 @@ var modeloPregunta = {};
 
 modeloPregunta.insertarPregunta = function(pregunta,callback){
 	if (conn) {
-		var query = ' INSERT INTO pregunta (textoPregunta, fechaPregunta, idUsuario, idPublicacion) VALUES (' +
+		var query = 'INSERT INTO pregunta (textoPregunta, fechaPregunta, idUsuario, idPublicacion) VALUES (' +
 			"'"+ pregunta.texto + "', CURDATE(), " +
 			"" + pregunta.idUsuario + ", " +
 			"" + pregunta.idPublicacion + ")";
