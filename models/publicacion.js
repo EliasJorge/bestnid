@@ -5,7 +5,7 @@ var modeloPublicacion = {};
 modeloPublicacion.getPublicaciones = function(desc, callback){
 	if (conn){
 		if (desc == 1) {
-			conn.query('SELECT * FROM publicacion  WHERE visible = 1 ORDER BY fechaInicio ASC', function(error, resultado){
+			conn.query('SELECT * FROM publicacion  WHERE visible = 1 and terminada = 0 and visible = 1 ORDER BY fechaInicio ASC', function(error, resultado){
 				if (error) {
 					callback(error);
 				}
@@ -15,7 +15,7 @@ modeloPublicacion.getPublicaciones = function(desc, callback){
 			});
 		}
 		else{
-			conn.query('SELECT * FROM publicacion  WHERE visible = 1 ORDER BY fechaInicio DESC', function(error, resultado){
+			conn.query('SELECT * FROM publicacion  WHERE visible = 1 and terminada = 0 and visible = 1 ORDER BY fechaInicio DESC', function(error, resultado){
 				if (error) {
 					callback(error);
 				}
