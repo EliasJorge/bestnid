@@ -524,7 +524,7 @@ router.post('/actualizarImagen/:id', [ multer({ dest: './public/imagenes/'}), fu
 	//Si hay una cuenta iniciada
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
 		if (req.files.pic !== undefined) {
-			req.session.usuario.foto = req.files.pic.path.substring(6,req.files.pic.path.length);
+			req.session.usuario.foto = req.files.pic.path.substring(6,req.files.pic.path.length).replace(/\\/g,'/');
 		    dbUsuario.modificarUsuario(req.params.id, { foto:req.session.usuario.foto }, function(error, resultado){
 		    	if (error) {
 		    		res.render('error', {
