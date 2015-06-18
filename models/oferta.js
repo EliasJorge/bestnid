@@ -29,4 +29,26 @@ modeloOferta.getOfertasDeUsuario = function(usuario, callback){
 	}
 };
 
+modeloOferta.insertarOferta = function(oferta, callback){
+	if (conn){
+		var query = 'INSERT INTO oferta (texto, monto, fechaOferta, idPublicacion, idUsuario) ' +
+					'VALUES (' +
+						'"' + oferta.texto + '", ' +
+						oferta.monto + ', ' +
+						'CURDATE(), ' +
+						oferta.idPublicacion + ', ' +
+						oferta.idUsuario +
+						')';
+		console.log(query);
+		conn.query(query, function(error, resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null, resultado);
+			};
+		});
+	}
+};
+
 module.exports = modeloOferta;

@@ -699,5 +699,31 @@ router.get('/cerrarSesion', function(req,res,next){
 	res.redirect('/');
 });
 
+router.post('/ofertar/:idPublicacion/:idUsuario', function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
+		//Cargar oferta en la bd
+		var oferta = {
+			texto: req.body.textoOferta,
+			monto: req.body.montoOfrecido,
+			idPublicacion: req.params.idPublicacion,
+			idUsuario: req.params.idUsuario
+		};
+		dbOferta.insertarOferta(oferta, function(error, resultado){
+			if (error) {
+				res.render('error', {
+					mensaje:'Hubo un error al ingresar su oferta, por favor intente de nuevo',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				//Redireccionar a la pagina de la publicacion actual
+				res.redirect('/publicacion/' + req.params.idPublicacion);
+			};
+		});
+	} else {
+		res.redirect('/');
+	};
+});
 
 module.exports = router;
