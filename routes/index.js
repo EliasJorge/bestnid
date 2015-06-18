@@ -277,7 +277,7 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 	            		var panelHeading = '<div class="panel panel-info" style="margin-bottom:2em">' +
 	            			'<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
 	            			resultado[i].titulo + '</a></div>';
-	            		if (resultado[i].visible == 0) {
+	            		if (resultado[i].terminada) {
 	            			panelHeading = '<div class="panel panel-default" style="margin-bottom:2em">' +
 	            				'<div class="panel-heading">' +
 	            				resultado[i].titulo + '</div>';
@@ -715,24 +715,6 @@ router.get('/yaOferto/:idPublicacion/:idUsuario', function(req, res, next){
 
 router.post('/ofertar/:idPublicacion/:idUsuario', function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
-		/*
-		dbOferta.getOfertasDeUsuarioParaPublicacion(req.session.usuario.idUsuario, req.params.idPublicacion, function(errorO, resultadoO){
-			if (errorO) {
-				res.render('error', {
-					mensaje:'Hubo un error al conectarse con la base de datos, por favor intente de nuevo',
-					sesionUsuario: req.session.usuario,
-					categoriaActiva: null,
-					url:req.originalUrl
-				});
-			} else {
-				if (typeof resultadoO !== 'undefined' && resultadoO.length > 0) {
-					//ya oferto
-				} else {
-					//no oferto
-				};
-			};
-		});
-		*/
 
 		//Cargar oferta en la bd
 		var oferta = {
