@@ -524,7 +524,7 @@ router.post('/actualizarImagen/:id', [ multer({ dest: './public/imagenes/'}), fu
 	//Si hay una cuenta iniciada
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
 		if (req.files.pic !== undefined) {
-			req.session.usuario.foto = req.files.pic.path.substring(6,req.files.pic.path.length);
+			req.session.usuario.foto = req.files.pic.path.substring(6,req.files.pic.path.length).replace(/\\/g,'/');
 		    dbUsuario.modificarUsuario(req.params.id, { foto:req.session.usuario.foto }, function(error, resultado){
 		    	if (error) {
 		    		res.render('error', {
@@ -746,7 +746,7 @@ router.get('/:id/publicar', function(req,res,next){
 	dbCategoria.getCategorias(function(error,resultado){
 		if (error){
 			res.render('error', {
-				mensaje:'Hubo un error al cargar el formulario, por favor intente de nuevo',
+				mensaje:'No hay categorias disponibles para publicar un producto, por favor intente más tarde',
 				sesionUsuario: req.session.usuario,
 				categoriaActiva: null,
 				url:req.originalUrl
@@ -784,7 +784,7 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 	dbPublicacion.insertar(publicacion, function(error,respuesta){
 		if (error) {
 			res.render('error', {
-							mensaje:'error al insertar',
+							mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
 							sesionUsuario: req.session.usuario,
 							categoriaActiva: null,
 							url:req.originalUrl
@@ -795,5 +795,9 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 	});
 
 }]);
+
+router.post('/responderPregunta', function(req, res, next){
+	
+});
 
 module.exports = router;
