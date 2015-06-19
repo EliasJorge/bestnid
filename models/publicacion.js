@@ -165,5 +165,20 @@ modeloPublicacion.getPreguntasYRespuestasDePublicacion = function(publicacion ,c
 	};	
 };
 
+modeloPublicacion.setOfertaGanadora = function(idOfertaGanadora, idPublicacion, callback){
+	if (conn) {
+		var query = "UPDATE publicacion SET idOfertaGanadora = " + idOfertaGanadora + " WHERE idPublicacion = " + idPublicacion;
+		console.log(query);
+		conn.query(query, function(error,resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null)
+			}
+		});
+	}
+};
+
 
 module.exports = modeloPublicacion;

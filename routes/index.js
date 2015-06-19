@@ -873,6 +873,20 @@ router.get('/pagar/:idOferta/:idPublicacion', function(req, res, next){
 		categoriaActiva: null,
 		url:req.originalUrl
 	});
+
+router.post('/ofertaGanadora',function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.body.idUsuarioPublicador) {
+		dbPublicacion.setOfertaGanadora(req.body.idOfertaGanadora, req.body.idPublicacion, function(error){
+			if (error){
+				console.log("error");
+			}
+			else{
+				res.redirect('/');
+			}
+		})
+	}else{
+		res.redirect('/');
+	}
 });
 
 module.exports = router;

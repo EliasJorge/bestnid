@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    //Funcion para validar si un usuario ya oferto
     var validarSiOferto = function(event){
         // cancels the form submission
         event.preventDefault();
@@ -31,6 +30,23 @@ $(document).ready(function(){
             };
         });
     }
+
+    var pasarParametrosAModelGanador = function (event) {
+        var boton= event.relatedTarget; // Button that triggered the modal
+        //le pido al boton los atributos data-idOferta y data-idUsuario
+        var idOferta = boton.getAttribute("data-idOferta");
+        var idUsuario = boton.getAttribute("data-idUsuario");
+        var modal = $(this);
+        //le  pongoo al elemento con id botonGanador los atributos
+        modal.find('#idUsuarioPublicador').attr('value', idUsuario);
+        modal.find('#idOfertaGanadora').attr('value', idOferta );
+        //modal.find('#formGanador').attr('action','/elegirGanador/' + idOferta + '/' + idUsuario);
+    }
+
+    var elegirGanador = function (event) {
+        
+    }   
+
     $('#formOferta').bind("submit", validarSiOferto);
 
     //Pasa parametros al modal cuando quiero responder a una pregunta
@@ -47,4 +63,6 @@ $(document).ready(function(){
             .appendTo('#formRespuesta');
         $(this).unbind("submit").submit();
     });
+
+    $('#elegirGanador').on('show.bs.modal', pasarParametrosAModelGanador);
 });
