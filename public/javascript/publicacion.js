@@ -52,5 +52,18 @@ $(document).ready(function(){
 
     $('#formOferta').bind("submit", validarSiOferto);
 
+    $('.botonResponder').click(function(){
+        $('#formRespuesta').attr('data-idPregunta', $(this).attr('data-idPregunta'));
+        $('#textoRespuesta').focus();
+    });
+
+    $('#formRespuesta').submit(function(event){
+        event.preventDefault();
+        $('<input id="idPregunta" name="idPregunta" />').attr('type', 'hidden')
+            .attr('value', $("#formRespuesta").attr("data-idPregunta"))
+            .appendTo('#formRespuesta');
+        $(this).unbind("submit").submit();
+    });
+
     $('#elegirGanador').on('show.bs.modal', pasarParametrosAModelGanador);
 });

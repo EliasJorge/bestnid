@@ -8,7 +8,7 @@ modeloPublicacion.insertar = function(nuevaPublicacion, callback){
 			"'" + nuevaPublicacion.titulo + "', " +
 			"'" + nuevaPublicacion.descripcion + "', " +
 			"'" + nuevaPublicacion.foto + "', " +
-			" CURRENT_DATE(), CURRENT_DATE() + interval 15 day, 1, 0, " +
+			" CURRENT_DATE(), CURRENT_DATE() + interval " + nuevaPublicacion.duracion + " day, 1, 0, " +
 			"" + nuevaPublicacion.idCategoria + ", " +
 			"" + nuevaPublicacion.idUsuario + ")" ;
 		conn.query(query, function(error, resultado){

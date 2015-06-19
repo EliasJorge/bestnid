@@ -110,7 +110,8 @@
                                         <!--si es el que publico-->
                                         <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
                                         <div class="text-right">
-                                            <button type="button" class="btn btn-warning text-right" style="">Eliminar</button>
+                                            <a class="btn" href=""></a>
+                                            <a href="/eliminarRespuesta/<%=datos.idPublicacion%>/<%=datos.idPregunta%>/<%=datos.idRespuesta%>" class="btn btn-warning text-right" style="">Eliminar</a>
                                             <button type="button" class="btn btn-danger text-right" style="">Modificar</button>
                                         </div> 
                                         <%}%>
@@ -119,7 +120,7 @@
                                     <!--/////////////si no tiene una respuesta y  es el publicador puede responder////////-->
                                     <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
                                         <div class="text-right">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRespuesta" data-whatever="@mdo" data-idPregunta="<%=datos.idPregunta%>" style="margin-top: 0.7em; margin-left: 3em">Responder</button>
+                                            <button type="button" class="btn btn-primary botonResponder" data-toggle="modal" data-target="#modalRespuesta" data-whatever="@mdo" data-idPregunta="<%=datos.idPregunta%>" style="margin-top: 0.7em; margin-left: 3em">Responder</button>
                                         </div>
                                     <%}%>
                                 <%}%>
@@ -191,11 +192,11 @@
                     <h4 class="modal-title" id="modalPreguntaLabel">¿Tienes una duda de este producto?</h4>
                 </div>
                 <!--///////FORM DE PREGUNTA/////////-->
-                <form id="formPregunta" action="#">
+                <form id="formPregunta" method="POST" action="/preguntar/<%=publicacion.idPublicacion%>/<%=sesionUsuario.idUsuario%>">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="message-text" class="control-label">Pregunta:</label>
-                            <textarea id="textoPregunta" style="resize:none" form="formPregunta" maxlength="100" class="form-control" required ></textarea>
+                            <textarea id="textoPregunta" name="textoPregunta" style="resize:none" form="formPregunta" maxlength="100" class="form-control" required ></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -246,11 +247,11 @@
                     <h4 class="modal-title" id="modalRespuestaLabel">Responde a esta pregunta:</h4>
                 </div>
                 <!--///////FORM DE RESPUESTA/////////-->
-                <form id="formRespuesta" method="POST" action="/responderPregunta">
+                <form id="formRespuesta" method="POST" action="/responder/<%=publicacion.idPublicacion%>" data-idPregunta="">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="message-text" class="control-label">Respuesta:</label>
-                            <textarea id="textoRespuesta" style="resize:none" form="formRespuesta" maxlength="100" class="form-control" required ></textarea>
+                            <textarea id="textoRespuesta" name="textoRespuesta" style="resize:none" form="formRespuesta" maxlength="100" class="form-control" required ></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

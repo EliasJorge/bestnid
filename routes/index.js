@@ -5,6 +5,8 @@ var dbUsuario = require('../models/usuario');
 var dbPublicacion = require('../models/publicacion');
 var dbCategoria = require('../models/categoria');
 var dbOferta = require('../models/oferta');
+var dbPregunta = require('../models/pregunta');
+var dbRespuesta = require('../models/respuesta');
 
 function fechaFormatoLocal(fecha){
 	//Corto la fecha para darle otro formato
@@ -221,18 +223,17 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 	                    }
 	    				var thumbnail = '';
 	    				thumbnail = '<div class="col-sm-4 col-lg-4 col-md-4">';
-						                
 						if (resultado[i].visible == 1) {
-							thumbnail += '<div class="thumbnail" style="height: 20em;  word-wrap: break-word;">' + 
-											'<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
-											'<div><img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
-						                    '</div></a>' +
-						                        '<div class="caption-full">' +
-						                            '<h4><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
-						                                tituloMostrar +
-						                            '</a></h4>';
+							thumbnail += '<div class="thumbnail" style="height: 22em;  word-wrap: break-word;">' + 
+										'<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+										'<div><img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
+					                    '</div></a>' +
+					                        '<div class="caption-full">' +
+					                            '<h4><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+					                                tituloMostrar +
+					                            '</a></h4>';
 						} else {
-							thumbnail += '<div class="thumbnail" style="height: 20em;  word-wrap: break-word; background-color: #eee;">' +
+							thumbnail += '<div class="thumbnail" style="height: 22em;  word-wrap: break-word; background-color: #eee;">' +
 											'<div style="opacity: 0.7; filter: alpha(opacity=70); background-color: #000;">' +
 												'<img class="img-responsive" src ="' + resultado[i].foto +
 													'" style="width: 18em; height: 12em; opacity: 0.7; filter: alpha(opacity=70);" alt="" >' +
@@ -240,7 +241,12 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 						                        '<div class="caption-full">' +
 						                        '<h4>' + tituloMostrar + '</h4>';
 						};
-						thumbnail += '<p style="font-size: 0.9em;">' + descripcionMostrar + '</p></div></div></div>';
+						if (resultado[i].terminada) {
+							thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Terminada</p></div></div></div>';
+						} else {
+							thumbnail += '<p style="font-size: 0.9em;">' + descripcionMostrar + '</p></div></div></div>';
+						};
+						
 						                            
 		                listadoHTML += thumbnail;
 	    			}
@@ -779,15 +785,16 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 			descripcion:req.body.descripcion,
 			idCategoria:req.body.categoriaElegida,
 			foto:req.files.pic.path.substring(6,req.files.pic.path.length).replace(/\\/g,'/'),
-			idUsuario:req.session.usuario.idUsuario
+			idUsuario:req.session.usuario.idUsuario,
+			duracion:req.body.duracion
 		};
 	dbPublicacion.insertar(publicacion, function(error,respuesta){
 		if (error) {
 			res.render('error', {
-							mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
-							sesionUsuario: req.session.usuario,
-							categoriaActiva: null,
-							url:req.originalUrl
+				mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
 			});
 		} else{
 			res.redirect('/publicacion/' + respuesta.insertId)
@@ -796,8 +803,60 @@ router.post('/publicarProducto',[ multer({ dest: './public/imagenes/'}), functio
 
 }]);
 
-router.post('/responderPregunta', function(req, res, next){
+router.post('/preguntar/:idPublicacion/:idUsuario', function(req,res,next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
+		var pregunta = {
+			texto: req.body.textoPregunta,
+			idUsuario: req.params.idUsuario,
+			idPublicacion: req.params.idPublicacion
+		};
+		dbPregunta.insertarPregunta(pregunta, function(error,respuesta){
+			if (error) {
+				res.render('error', {
+					mensaje:'Hubo un error al ingresar su pregunta, por favor intente de nuevo',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				//Redireccionar a la pagina de la publicacion actual
+				res.redirect('/publicacion/' + req.params.idPublicacion);
+			};
+		});
+	} else {
+		res.redirect('/');
+	};
+});
+
 	
+router.post('/responder/:idPublicacion', function(req, res, next){
+	dbRespuesta.insertarRespuesta(req.body.idPregunta, req.body.textoRespuesta, function(error, respuesta){
+		if (error) {
+			res.render('error', {
+				mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		} else {
+			res.redirect('/publicacion/' + req.params.idPublicacion);
+		};
+	});
+});
+
+router.get('/eliminarRespuesta/:idPublicacion/:idPregunta/:idRespuesta', function(req,res,next){
+	dbRespuesta.eliminarRespuesta(req.params.idPregunta, req.params.idRespuesta, function(error, respuesta){
+		if (error) {
+					res.render('error', {
+						mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+						sesionUsuario: req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl
+					});
+				} else {
+					res.redirect('/publicacion/' + req.params.idPublicacion);
+				};
+	});
 });
 
 
