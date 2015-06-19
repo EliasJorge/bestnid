@@ -168,13 +168,26 @@ modeloPublicacion.getPreguntasYRespuestasDePublicacion = function(publicacion ,c
 modeloPublicacion.setOfertaGanadora = function(idOfertaGanadora, idPublicacion, callback){
 	if (conn) {
 		var query = "UPDATE publicacion SET idOfertaGanadora = " + idOfertaGanadora + " WHERE idPublicacion = " + idPublicacion;
-		console.log(query);
 		conn.query(query, function(error,resultado){
 			if (error) {
 				callback(error);
 			}
 			else{
 				callback(null)
+			}
+		});
+	}
+};
+
+modeloPublicacion.getPublicacionConOfertaGanadora = function(idPublicacion, callback){
+	if (conn) {
+		var query = "SELECT * FROM publicacion p INNER JOIN oferta o ON p.idOfertaGanadora=o.idOferta WHERE p.idPublicacion=" + idPublicacion;
+		conn.query(query, function(error,resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null, resultado);
 			}
 		});
 	}

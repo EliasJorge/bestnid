@@ -66,4 +66,19 @@ modeloOferta.getOfertasDeUsuarioParaPublicacion = function(idUsuario, idPublicac
 	}
 };
 
+modeloOferta.getOfertaByID = function(id, callback){
+	if (conn){
+		var query = 'SELECT * FROM oferta ' +
+			'WHERE idOferta=' + id;
+		conn.query(query, function(error, resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null, resultado);
+			};
+		});
+	}
+};
+
 module.exports = modeloOferta;

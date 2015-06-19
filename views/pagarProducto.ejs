@@ -3,24 +3,47 @@
 <% include partials/head.ejs %>
 <body>
 	<% include partials/nav.ejs %>
-	
-    <form id="formPagar" method="POST" action="/pagar/<%=sesionUsuario.idUsuario%>">
-        <div id="formPagarBody" class="modal-body">
-            <div class="form-group">
-                <label for="message-text" class="control-label">Numero de tarjeta de crédito:</label>
-                <input id="numTarjeta" name="numTarjeta" type="text" form="formPagar" class="form-control" required></input>
-                <br>
-                <label for="message-text" class="control-label">Contraseña:</label>
-                <input id="passTarjeta" name="passTarjeta" type="password" form="formPagar" class="form-control" required></input>
-                <br>
-                <label for="message-text" class="control-label"><h3 id="montoPagar"></h3></label>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <input type="submit" class="btn btn-success" value="Debitar"></button>
-        </div>
-    </form>
+    <form method="POST" action="/pagarProducto">
+		<div class="col-sm-6 col-md-offset-3">
+	        <h4>Por favor llene los campos:</h4>
+	        <div class="panel panel-default">
+	            <div class="panel-body form-horizontal payment-form">
 
+	            	<div class="form-group">
+	                    <label for="tarjeta" class="col-sm-3 control-label">Número de tarjeta:</label>
+	                    <div class="col-sm-9">
+	                        <input type="text" class="form-control" pattern="[0-9]{16}" placeholder="Ej: 1234567890123456" title="El número de tarjeta debe ser de 16 dígitos" id="tarjeta" name="tarjeta" required>
+	                    </div>
+	                </div>
+ 
+	                <div class="form-group">
+	                    <label for="password" class="col-sm-3 control-label">Código:</label>
+	                    <div class="col-sm-9">
+	                        <input type="password" class="form-control" pattern="[A-Za-z0-9]{3}" title="El código debe tener 3 caracteres" placeholder="Ej: 123" id="codigo" name="codigo" required>
+	                    </div>
+	                </div>
+
+	                <div class="form-group">
+	                    <label class="col-sm-3 control-label">Monto a pagar:</label>
+	                    <div class="col-sm-9">
+	                        <label class="control-label">$<%=publicacionYOferta.monto%></label>
+	                    </div>
+	                </div>
+	               
+	                <div class="form-group">
+	                    <div class="col-sm-12 text-right">
+	                        <button type="submit" class="btn btn-primary preview-add-button">
+	                            Debitar
+	                        </button>
+	                        <a href="/" class="btn btn-danger" role="button">
+	                        	Cancelar
+	                        </a>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>            
+	    </div> <!-- / panel preview -->
+	</form>
 	<% include partials/footer.ejs %>
 	
 </body>
