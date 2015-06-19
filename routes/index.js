@@ -844,4 +844,19 @@ router.post('/responder/:idPublicacion', function(req, res, next){
 	});
 });
 
+router.get('/eliminarRespuesta/:idPublicacion/:idPregunta/:idRespuesta', function(req,res,next){
+	dbRespuesta.eliminarRespuesta(req.params.idPregunta, req.params.idRespuesta, function(error, respuesta){
+		if (error) {
+					res.render('error', {
+						mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+						sesionUsuario: req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl
+					});
+				} else {
+					res.redirect('/publicacion/' + req.params.idPublicacion);
+				};
+	});
+});
+
 module.exports = router;

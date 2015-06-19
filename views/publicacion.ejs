@@ -111,7 +111,8 @@
                                         <!--si es el que publico-->
                                         <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
                                         <div class="text-right">
-                                            <button type="button" class="btn btn-warning text-right" style="">Eliminar</button>
+                                            <a class="btn" href=""></a>
+                                            <a href="/eliminarRespuesta/<%=datos.idPublicacion%>/<%=datos.idPregunta%>/<%=datos.idRespuesta%>" class="btn btn-warning text-right" style="">Eliminar</a>
                                             <button type="button" class="btn btn-danger text-right" style="">Modificar</button>
                                         </div> 
                                         <%}%>
