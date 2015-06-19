@@ -860,8 +860,19 @@ router.get('/eliminarRespuesta/:idPublicacion/:idPregunta/:idRespuesta', functio
 });
 
 
-router.post('elegirGanador/:idOfertaGanadora/:idUsuarioPublicador',function(req, res, next){
-	
+router.post('/ofertaGanadora',function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.body.idUsuarioPublicador) {
+		dbPublicacion.setOfertaGanadora(req.body.idOfertaGanadora, req.body.idPublicacion, function(error){
+			if (error){
+				console.log("error");
+			}
+			else{
+				res.redirect('/');
+			}
+		})
+	}else{
+		res.redirect('/');
+	}
 });
 
 module.exports = router;

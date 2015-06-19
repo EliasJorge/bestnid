@@ -43,7 +43,7 @@ $(document).ready(function(){
         //le  pongoo al elemento con id botonGanador los atributos
         modal.find('#idUsuarioPublicador').attr('value', idUsuario);
         modal.find('#idOfertaGanadora').attr('value', idOferta );
-        modal.find('#formGanador').attr('action','/elegirGanador/' + idOferta + '/' + idUsuario);
+        //modal.find('#formGanador').attr('action','/elegirGanador/' + idOferta + '/' + idUsuario);
     }
 
     var elegirGanador = function (event) {

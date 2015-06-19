@@ -169,10 +169,11 @@
                         Esta seguro de que quiere elegir a esta oferta como ganadora?
                     </div>
                     <div class="modal-footer">
-                        <form id="formGanador"  action="" method="POST">
+                        <form id="formGanador" action="/ofertaGanadora" method="POST">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <input id="idOfertaGanadora" type = "hidden" value="" required>
-                            <input id="idUsuarioPublicador" type = "hidden" value="" required>
+                            <input id="idOfertaGanadora" name="idOfertaGanadora" type="number" style="display:none" required>
+                            <input id="idUsuarioPublicador" name="idUsuarioPublicador" type="number" style="display:none" required>
+                            <input id="idPublicacion" name ="idPublicacion"type="number" style="display:none" value=<%=publicacion.idPublicacion%> required>
                             <input id="submitGanador" type="submit" value="Aceptar"class="btn btn-primary">
                         </form>
                     </div>
