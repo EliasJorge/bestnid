@@ -3,23 +3,38 @@
 <% include partials/head.ejs %>
 <body>
 	<% include partials/nav.ejs %>
-    <form method="POST" action="/pagarProducto">
+    <form method="POST" action="/pagarProducto/<%=publicacionYOferta.idPublicacion%>/<%=publicacionYOferta.idUsuario%>">
 		<div class="col-sm-6 col-md-offset-3">
 	        <h4>Por favor llene los campos:</h4>
 	        <div class="panel panel-default">
 	            <div class="panel-body form-horizontal payment-form">
 
+	            	<% if (tarjetaVencida) { %>
+                        <div class="col-md-14">
+		            		<div class="alert alert-danger">
+		            			<span>Su tarjeta ha vencido, intente pagar su producto en otro momento</span>
+		            		</div>
+		            	</div>
+		            <% } %>
+
 	            	<div class="form-group">
 	                    <label for="tarjeta" class="col-sm-3 control-label">Número de tarjeta:</label>
 	                    <div class="col-sm-9">
-	                        <input type="text" class="form-control" pattern="[0-9]{16}" placeholder="Ej: 1234567890123456" title="El número de tarjeta debe ser de 16 dígitos" id="tarjeta" name="tarjeta" required>
+	                        <input type="text" class="form-control" pattern="[0-9]{16}" placeholder="Ej: 1234567890123456" title="El número de tarjeta debe ser de 16 dígitos" id="tarjeta" name="tarjeta" value="<%=tarjeta%>" required>
 	                    </div>
 	                </div>
  
 	                <div class="form-group">
-	                    <label for="password" class="col-sm-3 control-label">Código:</label>
+	                    <label for="codigo" class="col-sm-3 control-label">Código:</label>
 	                    <div class="col-sm-9">
 	                        <input type="password" class="form-control" pattern="[A-Za-z0-9]{3}" title="El código debe tener 3 caracteres" placeholder="Ej: 123" id="codigo" name="codigo" required>
+	                    </div>
+	                </div>
+
+	                <div class="form-group">
+	                    <label for="vencimiento" class="col-sm-3 control-label">Vencimiento:</label>
+	                    <div class="col-sm-9">
+	                        <input type="date" id="vencimiento" name="vencimiento" value="<%=vencimiento%>" required>
 	                    </div>
 	                </div>
 
@@ -29,6 +44,8 @@
 	                        <label class="control-label">$<%=publicacionYOferta.monto%></label>
 	                    </div>
 	                </div>
+
+	                <input id="idPublicacion" name="idPublicacion" type="hidden" value="<%=publicacionYOferta.idPublicacion%>">
 	               
 	                <div class="form-group">
 	                    <div class="col-sm-12 text-right">
@@ -47,4 +64,15 @@
 	<% include partials/footer.ejs %>
 	
 </body>
+
+<!-- cdn for modernizr, if you haven't included it already -->
+<script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
+<!-- polyfiller file to detect and load polyfills -->
+<script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+<script>
+	webshims.setOptions('waitReady', false);
+	webshims.setOptions('forms-ext', {types: 'date'});
+	webshims.polyfill('forms forms-ext');
+</script>
+
 </html>

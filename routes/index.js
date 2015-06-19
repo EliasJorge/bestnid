@@ -915,6 +915,9 @@ router.get('/pagar/:idOfertaGanadora/:idPublicacion', function(req, res, next){
 									sesionUsuario: req.session.usuario,
 									categoriaActiva: null,
 									url:req.originalUrl,
+									tarjetaVencida: false,
+									tarjeta: '',
+									vencimiento: '',
 									publicacionYOferta: resultado[0]
 								});
 							} else {
@@ -930,6 +933,37 @@ router.get('/pagar/:idOfertaGanadora/:idPublicacion', function(req, res, next){
 				} else {
 					res.redirect('/');
 				};
+			};
+		});
+	} else {
+		res.redirect('/');
+	};
+});
+
+router.post('/pagarProducto/:idPublicacion/:idUsuarioPublicador', function(req, res, next){
+	var hoy = new Date();
+	console.log(hoy);
+	var arregloFecha = req.body.vencimiento.split('-');
+	var vencimiento = new Date(arregloFecha[0], arregloFecha[1], arregloFecha[2]);
+	if (vencimiento < hoy) {
+		dbPublicacion.getPublicacionConOfertaGanadora(req.params.idPublicacion, function(error, resultado){
+			if (error) {
+				res.render('error', {
+					mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				res.render('pagarProducto', {
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl,
+					tarjetaVencida: true,
+					tarjeta: req.body.tarjeta,
+					vencimiento: req.body.vencimiento,
+					publicacionYOferta: resultado[0]
+				});
 			};
 		});
 	} else {
