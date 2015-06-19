@@ -108,6 +108,7 @@ CREATE TABLE `publicacion` (
   `fechaFin` date NOT NULL,
   `visible` tinyint(1) NOT NULL DEFAULT 1,
   `terminada` tinyint(1) NOT NULL DEFAULT 0,
+  `pagada` tinyint(1) NOT NULL DEFAULT 0,
   `idOfertaGanadora` int(11) DEFAULT NULL,
   `idCategoria` int(11) NOT NULL,
   `idUsuario` int(11) NOT NULL,
