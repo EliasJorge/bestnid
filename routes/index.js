@@ -66,7 +66,7 @@ router.get('/publicacion/:id', function(req, res, next){
 			});
 		}
 		else{
-			if( (typeof(datosPublicacion) != 'undefined' && datosPublicacion.visible == true) && ((typeof(datosPublicacion) != 'undefined'  && datosPublicacion.terminada == false) || (req.session.usuario != null && datosPublicacion.idUsuario == req.session.usuario.idUsuario)) ){
+			if(typeof(datosPublicacion) != 'undefined' && datosPublicacion.visible == true){
 				dbPublicacion.getPreguntasYRespuestasDePublicacion(datosPublicacion,
 				function(errorPYR, preguntasYRespuestas, publicacion){
 					if (errorPYR) {
