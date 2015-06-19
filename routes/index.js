@@ -246,7 +246,9 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 						                        '<h4>' + tituloMostrar + '</h4>';
 						};
 						if (resultado[i].terminada) {
-							thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Terminada</p></div></div></div>';
+							thumbnail += '<div class="text-center"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+								'<button type="button" class="btn btn-success" style="margin-top: 1em;">Elegir Ganador</button></a></div>'
+							//thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Terminada</p></div></div></div>';
 						} else {
 							thumbnail += '<p style="font-size: 0.9em;">' + descripcionMostrar + '</p></div></div></div>';
 						};
@@ -287,18 +289,28 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 	            		var panelHeading = '<div class="panel panel-info" style="margin-bottom:2em">' +
 	            			'<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
 	            			resultado[i].titulo + '</a></div>';
+	            		/*
 	            		if (resultado[i].terminada) {
 	            			panelHeading = '<div class="panel panel-default" style="margin-bottom:2em">' +
 	            				'<div class="panel-heading">' +
 	            				resultado[i].titulo + '</div>';
 	            		};
+	            		*/
 	            		listadoHTML += panelHeading +
 					    	'<div class="panel-body">' +
 					    		'<p><b>Descripción</b></p>' +
 					    		'<p>' + resultado[i].texto + '</p>' +
 					    		'<p><b>Monto:</b> $' + resultado[i].monto + '</p>' +
-					    		'<p><b>Fecha:</b> ' + fechaFormatoLocal(resultado[i].fechaOferta) + '</p>' +
-					    	'</div></div>';
+					    		'<p><b>Fecha:</b> ' + fechaFormatoLocal(resultado[i].fechaOferta) + '</p>';
+					    if (resultado[i].idOfertaGanadora != null && resultado[i].idOfertaGanadora == resultado[i].idOferta) {
+					    	listadoHTML += '<a href="/pagar/' +
+					    		resultado[i].idPublicacion +
+					    		'/' + req.session.usuario.idUsuario +
+					    		'">' +
+					    		'<button type="button" class="pull-right btn btn-success">' +
+					    		'Pagar</button></a>';
+					    };
+					    listadoHTML += '</div></div>';
 	            	};
 	            	listadoHTML += '</div></div>';
 	            } else {
@@ -863,6 +875,32 @@ router.get('/eliminarRespuesta/:idPublicacion/:idPregunta/:idRespuesta', functio
 	});
 });
 
+//------------------------------------------------Seguir el pagar aca------------------------------------------------
+
+router.get('/pagar/:idPublicacion/:idUsuario', function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
+		dbPublicacion.getPublicacionConOfertaGanadora(req.params.idPublicacion, function(error, resultado){
+			if (error) {
+				res.render('error', {
+					mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				console.log(resultado);
+				res.render('pagarProducto', {
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl,
+					publicacionYOferta: resultado[0]
+				});
+			};
+		});
+	} else {
+		res.redirect('/');
+	};
+});
 
 router.post('/ofertaGanadora',function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.body.idUsuarioPublicador) {

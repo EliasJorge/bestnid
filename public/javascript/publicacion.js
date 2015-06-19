@@ -1,11 +1,11 @@
 $(document).ready(function(){
 
+
     //Animacion para sacar mensajes de datos actualizados
     setTimeout(function() {
         $("#passChangedDiv").slideUp('fast');
         $("#dataChangedDiv").slideUp('fast');
     }, 3000);
-
     var validarSiOferto = function(event){
         // cancels the form submission
         event.preventDefault();
@@ -56,11 +56,13 @@ $(document).ready(function(){
 
     $('#formOferta').bind("submit", validarSiOferto);
 
+    //Pasa parametros al modal cuando quiero responder a una pregunta
     $('.botonResponder').click(function(){
         $('#formRespuesta').attr('data-idPregunta', $(this).attr('data-idPregunta'));
         $('#textoRespuesta').focus();
     });
 
+    //Necesito mandar el id de la pregunta para crear la respuesta
     $('#formRespuesta').submit(function(event){
         event.preventDefault();
         $('<input id="idPregunta" name="idPregunta" />').attr('type', 'hidden')
