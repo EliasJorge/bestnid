@@ -77,14 +77,14 @@
                 </div>
                 <div class="col-md-8">
                 	<% if (passwordCambiada) { %>
-                        <div id="passChangedDiv" class="col-md-12">
+                        <div class="col-md-12 alerta">
 		            		<div class="alert alert-success">
 		            			<span>La contraseña se ha actualizado correctamente</span>
 		            		</div>
 		            	</div>
 		            <% } %>
 		            <% if (datosCambiados) { %>
-                        <div id="dataChangedDiv" class="col-md-12">
+                        <div class="col-md-12 alerta">
 		            		<div class="alert alert-success">
 		            			<span>Sus datos personales se han actualizado correctamente</span>
 		            		</div>
@@ -99,7 +99,7 @@
 	                        <% } else { %>
 	                        	<h4>Usuario Regular</h4>
 	                        <% } %>
-	                        <h4>Ingresos: <%= '$' + parseInt(sesionUsuario.ingresos) %> </h4>
+	                        <h4>Ingresos: <%= '$' + sesionUsuario.ingresos %> </h4>
 	                        <h4>Fecha de Registro: <%= sesionUsuario.fechaRegistro %> </h4>
 	                    </div>
 	                    <ul class="nav nav-pills">

@@ -319,7 +319,7 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 						    		'<button type="button" class="pull-right btn btn-success">' +
 						    		'Pagar</button></a>';
 						    } else {
-						    	listadoHTML += '<div class="alert alert-success pull-right" style="margin-bottom:0em"><span>Ya ha pagado este producto</span></div>';
+						    	listadoHTML += '<div class="alert alert-success pull-right" style="margin-bottom:0em"><span>Ya ha adquirido este producto</span></div>';
 						    };
 						};
 					    listadoHTML += '</div></div>';
@@ -899,7 +899,7 @@ router.get('/pagar/:idOfertaGanadora/:idPublicacion', function(req, res, next){
 				});
 			} else {
 				//Me tengo que fijar si esa publicacion tiene una oferta ganadora y si es la misma que la que quiero pagar
-				if (resultado.length > 0 && resultado[0].idOfertaGanadora == req.params.idOfertaGanadora){
+				if (resultado.length > 0 && resultado[0].idOfertaGanadora == req.params.idOfertaGanadora && !resultado[0].pagada){
 					//Ahora tengo que saber si el usuario que quiere pagar es de verdad el que gano
 					dbOferta.getOfertaByID(resultado[0].idOfertaGanadora, function(errorO, resultadoO){
 						if (errorO) {
@@ -940,21 +940,20 @@ router.get('/pagar/:idOfertaGanadora/:idPublicacion', function(req, res, next){
 	};
 });
 
-router.post('/pagarProducto/:idPublicacion/:idUsuarioPublicador', function(req, res, next){
+router.post('/pagarProducto/:idPublicacion', function(req, res, next){
 	var hoy = new Date();
-	console.log(hoy);
 	var arregloFecha = req.body.vencimiento.split('-');
 	var vencimiento = new Date(arregloFecha[0], arregloFecha[1], arregloFecha[2]);
-	if (vencimiento < hoy) {
-		dbPublicacion.getPublicacionConOfertaGanadora(req.params.idPublicacion, function(error, resultado){
-			if (error) {
-				res.render('error', {
-					mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
-					sesionUsuario: req.session.usuario,
-					categoriaActiva: null,
-					url:req.originalUrl
-				});
-			} else {
+	dbPublicacion.getPublicacionConOfertaGanadora(req.params.idPublicacion, function(error, resultado){
+		if (error) {
+			res.render('error', {
+				mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		} else {
+			if (vencimiento < hoy) {
 				res.render('pagarProducto', {
 					sesionUsuario: req.session.usuario,
 					categoriaActiva: null,
@@ -964,11 +963,70 @@ router.post('/pagarProducto/:idPublicacion/:idUsuarioPublicador', function(req, 
 					vencimiento: req.body.vencimiento,
 					publicacionYOferta: resultado[0]
 				});
+			} else {
+				dbPublicacion.getPublicacionByID(req.params.idPublicacion, function(errorPub, resultadoPub){
+					if (errorPub) {
+						res.render('error', {
+							mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+							sesionUsuario: req.session.usuario,
+							categoriaActiva: null,
+							url:req.originalUrl
+						});
+					} else {
+						var datosPublicador = {
+							monto: resultado[0].monto * 0.7,
+							id: resultadoPub.idUsuario
+						}
+						var datosAdmin = {
+							monto: resultado[0].monto * 0.3,
+							id: 1
+						}
+						dbUsuario.pagar(datosPublicador, datosAdmin, function(errorP, resultadoP){
+							if (errorP) {
+								res.render('error', {
+									mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+									sesionUsuario: req.session.usuario,
+									categoriaActiva: null,
+									url:req.originalUrl
+								});
+							} else {
+								dbPublicacion.setPublicacionPagada(resultadoPub.idPublicacion, function(errorPagar, resultadoPagar){
+									if (errorPagar) {
+										//Paga la guita y no actualiza la publicacion, pero me cago ya fue
+										res.render('error', {
+											mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+											sesionUsuario: req.session.usuario,
+											categoriaActiva: null,
+											url:req.originalUrl
+										});
+									} else {
+										dbUsuario.getUsuarioByID(resultadoPub.idUsuario, function(errorU, resultadoU){
+											if (errorU) {
+												res.render('error', {
+													mensaje:'Su producto ha sido pagado, sin embargo, ha ocurrido un error al buscar los datos del publicador, busque en la publicación para verlos',
+													sesionUsuario: req.session.usuario,
+													categoriaActiva: null,
+													url:req.originalUrl
+												});
+											} else {
+												res.render('pagado', {
+													sesionUsuario: req.session.usuario,
+													categoriaActiva: null,
+													url:req.originalUrl,
+													nombreUsuario: resultadoU[0].nombreUsuario,
+													mail: resultadoU[0].mail
+												});
+											};
+										});
+									};
+								});
+							};
+						});
+					};
+				});
 			};
-		});
-	} else {
-		res.redirect('/');
-	};
+		};
+	});
 });
 
 router.post('/ofertaGanadora',function(req, res, next){

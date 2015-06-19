@@ -2,8 +2,7 @@ $(function() {
 
 	//Animacion para sacar mensajes de datos actualizados
     setTimeout(function() {
-        $("#passChangedDiv").slideUp('fast');
-        $("#dataChangedDiv").slideUp('fast');
+        $(".alerta").slideUp('fast');
     }, 3000);
 
     //Carga por defecto las publicaciones del usuario

@@ -144,7 +144,7 @@ CREATE TABLE `usuario` (
   `apellido` varchar(100) NOT NULL,
   `nombreUsuario` varchar(100) NOT NULL,
   `password` varchar(16) NOT NULL,
-  `ingresos` float unsigned zerofill NOT NULL DEFAULT '000000000000',
+  `ingresos` float unsigned NOT NULL DEFAULT '000000000000',
   `mail` varchar(100) NOT NULL,
   `foto` varchar(512),
   `fechaRegistro` date NOT NULL,

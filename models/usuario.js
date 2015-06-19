@@ -35,6 +35,18 @@ modeloUsuario.getUsuarioByNombre = function(nombreUsuario, callback){
 	};
 };
 
+modeloUsuario.getUsuarioByID = function(id, callback){
+	if (conn) {
+		conn.query("SELECT * FROM usuario WHERE idUsuario = '" + id + "'", function(error, resultado){
+			if (error) {
+				callback(error);
+			} else {
+				callback(null, resultado);
+			};
+		});
+	};
+};
+
 modeloUsuario.getLogin = function(nombreUsuario, password, callback){
 	if (conn) {
 		var query = 'SELECT * FROM usuario WHERE nombreUsuario = ' + conn.escape(nombreUsuario) +
@@ -76,6 +88,26 @@ modeloUsuario.modificarUsuario = function(id, datos, callback){
 		};
 	} else {
 		callback(null, {});
+	};
+};
+
+modeloUsuario.pagar = function(publicador, admin, callback){
+	if (conn) {
+		var query = 'UPDATE usuario SET ingresos=ingresos+' + publicador.monto + ' WHERE idUsuario=' + publicador.id;
+		conn.query(query, function(error, resultado){
+			if (error) {
+				callback(error);
+			} else {
+				var queryAdmin = 'UPDATE usuario SET ingresos=ingresos+' + admin.monto + ' WHERE idUsuario=' + admin.id;
+				conn.query(queryAdmin, function(errorA, resultadoA){
+					if (errorA) {
+						callback(errorA);
+					} else {
+						callback(null, resultadoA);
+					};
+				});
+			};
+		});
 	};
 };
 

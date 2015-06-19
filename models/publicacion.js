@@ -193,5 +193,18 @@ modeloPublicacion.getPublicacionConOfertaGanadora = function(idPublicacion, call
 	}
 };
 
+modeloPublicacion.setPublicacionPagada = function(idPublicacion, callback){
+	if (conn) {
+		var query = "UPDATE publicacion SET pagada=1 WHERE idPublicacion=" + idPublicacion;
+		conn.query(query, function(error,resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null, resultado);
+			}
+		});
+	}
+};
 
 module.exports = modeloPublicacion;
