@@ -242,9 +242,17 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 						                        '<h4>' + tituloMostrar + '</h4>';
 						};
 						if (resultado[i].terminada) {
-							thumbnail += '<div class="text-center"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
-								'<button type="button" class="btn btn-success" style="margin-top: 1em;">Elegir Ganador</button></a></div>'
-							//thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Terminada</p></div></div></div>';
+							if (resultado[i].idOfertaGanadora != null) {
+								if (resultado[i].pagada) {
+									thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Finalizada</p></div></div></div>';
+								} else {
+									thumbnail += '<p class="text-center alert alert-warning" style="font-size: 1.2em; padding-top: 1em;">Esperando pago</p></div></div></div>';
+								};
+							} else {
+								thumbnail += '<div class="text-center"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+									'<button type="button" class="btn btn-success" style="margin-top: 1em;">Elegir Ganador</button></a></div></div></div></div>'
+								//thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Terminada</p></div></div></div>';
+							};
 						} else {
 							thumbnail += '<p style="font-size: 0.9em;">' + descripcionMostrar + '</p></div></div></div>';
 						};
@@ -300,8 +308,8 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 					    		'<p><b>Fecha:</b> ' + fechaFormatoLocal(resultado[i].fechaOferta) + '</p>';
 					    if (resultado[i].idOfertaGanadora != null && resultado[i].idOfertaGanadora == resultado[i].idOferta) {
 					    	listadoHTML += '<a href="/pagar/' +
+					    		resultado[i].idOfertaGanadora + '/' +
 					    		resultado[i].idPublicacion +
-					    		'/' + req.session.usuario.idUsuario +
 					    		'">' +
 					    		'<button type="button" class="pull-right btn btn-success">' +
 					    		'Pagar</button></a>';
@@ -871,10 +879,8 @@ router.get('/eliminarRespuesta/:idPublicacion/:idPregunta/:idRespuesta', functio
 	});
 });
 
-//------------------------------------------------Seguir el pagar aca------------------------------------------------
-
-router.get('/pagar/:idPublicacion/:idUsuario', function(req, res, next){
-	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
+router.get('/pagar/:idOfertaGanadora/:idPublicacion', function(req, res, next){
+	if (req.session.usuario != null) {
 		dbPublicacion.getPublicacionConOfertaGanadora(req.params.idPublicacion, function(error, resultado){
 			if (error) {
 				res.render('error', {
@@ -884,13 +890,38 @@ router.get('/pagar/:idPublicacion/:idUsuario', function(req, res, next){
 					url:req.originalUrl
 				});
 			} else {
-				console.log(resultado);
-				res.render('pagarProducto', {
-					sesionUsuario: req.session.usuario,
-					categoriaActiva: null,
-					url:req.originalUrl,
-					publicacionYOferta: resultado[0]
-				});
+				//Me tengo que fijar si esa publicacion tiene una oferta ganadora y si es la misma que la que quiero pagar
+				if (resultado.length > 0 && resultado[0].idOfertaGanadora == req.params.idOfertaGanadora){
+					//Ahora tengo que saber si el usuario que quiere pagar es de verdad el que gano
+					dbOferta.getOfertaByID(resultado[0].idOfertaGanadora, function(errorO, resultadoO){
+						if (errorO) {
+							res.render('error', {
+								mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+								sesionUsuario: req.session.usuario,
+								categoriaActiva: null,
+								url:req.originalUrl
+							});
+						} else {
+							if (resultadoO[0].idUsuario == req.session.usuario.idUsuario) {
+								res.render('pagarProducto', {
+									sesionUsuario: req.session.usuario,
+									categoriaActiva: null,
+									url:req.originalUrl,
+									publicacionYOferta: resultado[0]
+								});
+							} else {
+								res.render('error', {
+									mensaje:'Parece que usted no ha ganado esta subasta, siga ofertando :)',
+									sesionUsuario: req.session.usuario,
+									categoriaActiva: null,
+									url:req.originalUrl
+								});
+							};
+						};
+					});
+				} else {
+					res.redirect('/');
+				};
 			};
 		});
 	} else {
