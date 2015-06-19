@@ -873,6 +873,7 @@ router.get('/pagar/:idOferta/:idPublicacion', function(req, res, next){
 		categoriaActiva: null,
 		url:req.originalUrl
 	});
+});
 
 router.post('/ofertaGanadora',function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.body.idUsuarioPublicador) {
