@@ -4,9 +4,11 @@
 	<body>
 		<% include partials/nav.ejs %>
 		<div class="col-sm-12 col-md-12 col-lg-12" style="margin-bottom:5em;">
-			<div class="alert alert-success">
-				<span>Su pago se ha efectuado exitosamente</span>
-			</div>
+			<% if (pago) { %>
+				<div class="alert alert-success">
+					<span>Su pago se ha efectuado exitosamente</span>
+				</div>
+			<% } %>
 			<div class="jumbotron text-center">
 				<h2>Datos de contacto del publicador:</h2>
 				<p><b>Nombre de usuario: </b><%=nombreUsuario%></p>

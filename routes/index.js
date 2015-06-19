@@ -297,13 +297,12 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 	            		var panelHeading = '<div class="panel panel-info" style="margin-bottom:2em">' +
 	            			'<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
 	            			resultado[i].titulo + '</a></div>';
-	            		/*
-	            		if (resultado[i].terminada) {
-	            			panelHeading = '<div class="panel panel-default" style="margin-bottom:2em">' +
+	            		if (resultado[i].idOfertaGanadora == resultado[i].idOferta) {
+	            			panelHeading = '<div class="panel panel-success" style="margin-bottom:2em">' +
 	            				'<div class="panel-heading">' +
-	            				resultado[i].titulo + '</div>';
+	            				'<a style="color:#004400;" href="/publicacion/' + resultado[i].idPublicacion + '">' +
+	            				resultado[i].titulo + '</a></div>';
 	            		};
-	            		*/
 	            		listadoHTML += panelHeading +
 					    	'<div class="panel-body">' +
 					    		'<p><b>Descripción</b></p>' +
@@ -319,7 +318,10 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 						    		'<button type="button" class="pull-right btn btn-success">' +
 						    		'Pagar</button></a>';
 						    } else {
-						    	listadoHTML += '<div class="alert alert-success pull-right" style="margin-bottom:0em"><span>Ya ha adquirido este producto</span></div>';
+						    	listadoHTML += '<div class="alert alert-success pull-right" style="margin-bottom:0em"><span>Ya ha adquirido este producto, ' +
+						    		'<a href="/datosPublicador/' + resultado[i].idPublicacion + '" style="color:#00aa00;">' +
+						    		'<i>consulte los datos del publicador</i></a>' +
+						    		'</span></div>';
 						    };
 						};
 					    listadoHTML += '</div></div>';
@@ -1013,6 +1015,7 @@ router.post('/pagarProducto/:idPublicacion', function(req, res, next){
 													sesionUsuario: req.session.usuario,
 													categoriaActiva: null,
 													url:req.originalUrl,
+													pago: true,
 													nombreUsuario: resultadoU[0].nombreUsuario,
 													mail: resultadoU[0].mail
 												});
@@ -1047,6 +1050,58 @@ router.post('/ofertaGanadora',function(req, res, next){
 	}else{
 		dbPublicacion;
 	}
+});
+
+router.get('/datosPublicador/:idPublicacion', function(req, res, next){
+	if (req.session.usuario != null) {
+		dbPublicacion.getPublicacionByID(req.params.idPublicacion, function(error, resultado){
+			if (error) {
+				res.render('error', {
+					mensaje:'Ha ocurrido un error al conectarse a la base de datos, por favor intente más tarde',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				dbOferta.getOfertaByID(resultado.idOfertaGanadora, function(errorO, resultadoO){
+					if (errorO) {
+						res.render('error', {
+							mensaje:'Ha ocurrido un error al conectarse a la base de datos, por favor intente más tarde',
+							sesionUsuario: req.session.usuario,
+							categoriaActiva: null,
+							url:req.originalUrl
+						});
+					} else {
+						if (resultadoO[0].idUsuario == req.session.usuario.idUsuario) {
+							dbUsuario.getUsuarioByID(resultado.idUsuario, function(errorU, resultadoU){
+								if (errorU) {
+									res.render('error', {
+										mensaje:'Ha ocurrido un error al conectarse a la base de datos, por favor intente más tarde',
+										sesionUsuario: req.session.usuario,
+										categoriaActiva: null,
+										url:req.originalUrl
+									});
+								} else {
+									res.render('pagado', {
+										sesionUsuario: req.session.usuario,
+										categoriaActiva: null,
+										url:req.originalUrl,
+										pago: false,
+										nombreUsuario: resultadoU[0].nombreUsuario,
+										mail: resultadoU[0].mail
+									});
+								};
+							});
+						} else {
+							res.redirect('/');
+						};
+					};
+				});
+			};
+		});
+	} else {
+		res.redirect('/');
+	};
 });
 
 module.exports = router;
