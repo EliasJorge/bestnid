@@ -100,8 +100,8 @@
                                  <!--//////////////////////////SI ES EL PUBLICADOR PUEDE PREGUNTAR///////////////////////////////////-->
                                 <%if (typeof(sesionUsuario) != 'undefined' && datos.idUsuario == sesionUsuario.idUsuario && datos.idRespuesta == null ) {%>
                                     <div class="text-right">
-                                        <button type="button" class="btn btn-warning text-right" style="margin-top: 0.7em">Modificar</button>
-                                        <button type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Eliminar</button>
+                                        <button type="button" class="btn btn-warning text-right" style="margin-top: 0.7em">Eliminar</button>
+                                        <button type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Modificar</button>
                                     </div>
                                 <%}%>
                                 <!--si tiene una respuesta la muestro-->
@@ -111,8 +111,9 @@
                                         <!--si es el que publico-->
                                         <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
                                         <div class="text-right">
-                                            <button type="button" class="btn btn-warning text-right" style="">Modificar</button>
-                                            <button type="button" class="btn btn-danger text-right" style="">Eliminar</button>
+                                            <a class="btn" href=""></a>
+                                            <a href="/eliminarRespuesta/<%=datos.idPublicacion%>/<%=datos.idPregunta%>/<%=datos.idRespuesta%>" class="btn btn-warning text-right" style="">Eliminar</a>
+                                            <button type="button" class="btn btn-danger text-right" style="">Modificar</button>
                                         </div> 
                                         <%}%>
                                     </div> 
