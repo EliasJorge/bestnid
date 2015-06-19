@@ -295,12 +295,10 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 					    		'<p><b>Monto:</b> $' + resultado[i].monto + '</p>' +
 					    		'<p><b>Fecha:</b> ' + fechaFormatoLocal(resultado[i].fechaOferta) + '</p>';
 					    if (/*resultado[i].idOfertaGanadora != null && resultado[i].idOfertaGanadora == resultado[i].idOferta*/true) {
-					    	listadoHTML += '<button type="button" class="pull-right btn btn-success pagar" ' +
-					    	'data-idPublicacion="' + resultado[i].idPublicacion + '" ' +
-					    	'data-idOferta="' + resultado[i].idOferta + '" ' +
-					    	'data-monto="' + resultado[i].monto + '" ' +
-					    	'data-toggle="modal" data-target="#modalPagar" data-whatever="@mdo"' +
-					    	'>Pagar</button>';
+					    	listadoHTML += '<a href="/pagar/' + resultado[i].idOferta + '/' +
+					    		resultado[i].idPublicacion + '">' +
+					    		'<button type="button" class="pull-right btn btn-success">' +
+					    		'Pagar</button></a>';
 					    };
 					    listadoHTML += '</div></div>';
 	            	};
@@ -864,6 +862,16 @@ router.get('/eliminarRespuesta/:idPublicacion/:idPregunta/:idRespuesta', functio
 				} else {
 					res.redirect('/publicacion/' + req.params.idPublicacion);
 				};
+	});
+});
+
+//------------------------------------------------Seguir el pagar aca------------------------------------------------
+
+router.get('/pagar/:idOferta/:idPublicacion', function(req, res, next){
+	res.render('pagarProducto', {
+		sesionUsuario: req.session.usuario,
+		categoriaActiva: null,
+		url:req.originalUrl
 	});
 });
 

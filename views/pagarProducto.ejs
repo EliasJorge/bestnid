@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<% include partials/head.ejs %>
+<body>
+	<% include partials/nav.ejs %>
+	
+    <form id="formPagar" method="POST" action="/pagar/<%=sesionUsuario.idUsuario%>">
+        <div id="formPagarBody" class="modal-body">
+            <div class="form-group">
+                <label for="message-text" class="control-label">Numero de tarjeta de crédito:</label>
+                <input id="numTarjeta" name="numTarjeta" type="text" form="formPagar" class="form-control" required></input>
+                <br>
+                <label for="message-text" class="control-label">Contraseña:</label>
+                <input id="passTarjeta" name="passTarjeta" type="password" form="formPagar" class="form-control" required></input>
+                <br>
+                <label for="message-text" class="control-label"><h3 id="montoPagar"></h3></label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-success" value="Debitar"></button>
+        </div>
+    </form>
+
+	<% include partials/footer.ejs %>
+	
+</body>
+</html>
