@@ -800,4 +800,9 @@ router.post('/responderPregunta', function(req, res, next){
 	
 });
 
+
+router.post('elegirGanador/:idOfertaGanadora/:idUsuarioPublicador',function(req, res, next){
+	
+});
+
 module.exports = router;

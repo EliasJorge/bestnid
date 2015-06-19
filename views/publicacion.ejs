@@ -44,12 +44,11 @@
                         <% if (ofertas.length !== 0 ) { %>
                             <% ofertas.forEach(function(oferta) { %>
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="alert alert-success col-md-9">
+                                <div class="col-md-12 alert alert-success">
                                     <span class="pull-right"><%=oferta.fechaOferta.split('-')[2] + '/' + oferta.fechaOferta.split('-')[1] + '/' + oferta.fechaOferta.split('-')[0]%></span>
                                     <p><%= oferta.texto%></p>
-                                    </div>
-                                    <button type="button" class="pull-right btn btn-primary">Elegir ganador</button>
+                                    <button type="button" style="margin-top: 1em" class="pull-right btn btn-primary" data-toggle="modal" data-target="#elegirGanador" data-idUsuario ="<%=sesionUsuario.idUsuario%>" data-idOferta ="<%=oferta.idOferta%>" data-backdrop='static'>Elegir ganador
+                                    </button>
                                 </div>
                             </div>
                             <hr>
@@ -63,8 +62,8 @@
                         <% ofertas.forEach(function(oferta) { %>
                             <%if(oferta.idUsuario == sesionUsuario.idUsuario){%>
                                 <div class="row" style="margin-top: 1.2em;">
+                                    <p>Usted quiere este producto porque: </p>
                                     <div class="col-md-12 alert alert-info" style="margin-bottom: 0em">
-                                        <p>Usted quiere este producto porque: </p>
                                             <span class="pull-right"><%=oferta.fechaOferta.split('-')[2] + '/' + oferta.fechaOferta.split('-')[1] + '/' + oferta.fechaOferta.split('-')[0]%></span>
                                             <p><%=oferta.texto%><p>
                                             <br>
@@ -97,11 +96,11 @@
                                     <span class="glyphicon glyphicon-question-sign"></span>
                                     <%= datos.textoPregunta %>
                                 </p>
-                                 <!--//////////////////////////SI ES EL PUBLICADOR PUEDE PREGUNTAR///////////////////////////////////-->
+                                 <!--//////////////////////////si no tiene una respuesta lla puede modificar o eliminar///////////////////////////////////-->
                                 <%if (typeof(sesionUsuario) != 'undefined' && datos.idUsuario == sesionUsuario.idUsuario && datos.idRespuesta == null ) {%>
                                     <div class="text-right">
-                                        <button type="button" class="btn btn-warning text-right" style="margin-top: 0.7em">Eliminar</button>
-                                        <button type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Modificar</button>
+                                        <button type="button" class="btn btn-warning text-right" style="margin-top: 0.7em">Modificar</button>
+                                        <button type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Eliminar</button>
                                     </div>
                                 <%}%>
                                 <!--si tiene una respuesta la muestro-->
@@ -129,7 +128,11 @@
                         <hr>
                         <% }); %>
                     <%} else {%>
-                        <div class="alert alert-danger">Nadie ha realizado preguntas, escribe una!</div>
+                        <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
+                            <div class="alert alert-danger">Nadie ha realizado preguntas</div>       
+                        <%} else {%>
+                            <div class="alert alert-danger">Nadie ha realizado preguntas, escribe una!</div>
+                        <%}%>
                     <%}%>
 
                 </div>
@@ -154,6 +157,28 @@
 
     </div>
 
+    <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario){%>
+        <div class="modal bs-example-modal-sm" id="elegirGanador" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-title">Atencion</h4>
+                    </div>
+                    <div class="modal-body">
+                        Esta seguro de que quiere elegir a esta oferta como ganadora?
+                    </div>
+                    <div class="modal-footer">
+                        <form id="formGanador"  action="" method="POST">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <input id="idOfertaGanadora" type = "hidden" value="" required>
+                            <input id="idUsuarioPublicador" type = "hidden" value="" required>
+                            <input id="submitGanador" type="submit" value="Aceptar"class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <%}%>
 
     <%if (typeof(sesionUsuario) != 'undefined'){%>
     <!--modal fade para preguntar-->
