@@ -57,6 +57,9 @@
                                             </button>
                                         <%}%>
                                 </div>
+                                <%if (publicacion.idOfertaGanadora == oferta.idOferta && publicacion.pagada != true){%>
+                                    <p>Este usuario aun no ha pagado<p>
+                                <%}%>
                             </div>
                             <hr>
                             <% }); %>
@@ -171,6 +174,13 @@
                      <div class="alert alert-danger">No puede modificar/eliminar esta publicacion ya que han ofertado</div>
                 <%}%>
                 </div>
+                <% if (typeof(ganadorElegido) != 'undefined' && ganadorElegido == true) { %>
+                    <div id="dataChangedDiv" class="col-md-3">
+                        <div class="alert alert-success">
+                            <span>Usted ha elegido el ganador correctamente, espere a que el usuario realice el pago</span>
+                        </div>
+                    </div>
+                <% } %>
             <%}%>
         </div>
 

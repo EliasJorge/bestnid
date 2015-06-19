@@ -88,12 +88,16 @@ router.get('/publicacion/:id', function(req, res, next){
 						else{
 							dbOferta.getOfertasDePublicacion(publicacion,preguntasYRespuestas,
 							function(error,ofertas,publicacion, preguntasYRespuestas){
+								var ganador = req.session.usuario.ganadorElegido;
+								req.session.usuario.ganadorElegido = null;
+								console.log(ganador);
 								res.render('publicacion', {
 									sesionUsuario: req.session.usuario,
 									publicacion:publicacion,
 									preguntasYRespuestas:preguntasYRespuestas,
 									url:req.originalUrl,
-									ofertas:ofertas
+									ofertas:ofertas,
+									ganadorElegido:ganador
 								});
 							});
 						}
@@ -933,14 +937,19 @@ router.post('/ofertaGanadora',function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.body.idUsuarioPublicador) {
 		dbPublicacion.setOfertaGanadora(req.body.idOfertaGanadora, req.body.idPublicacion, function(error){
 			if (error){
-				console.log("error");
+				res.render('error', {
+						mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+						sesionUsuario: req.session.usuario,
+						url:req.originalUrl
+					});
 			}
 			else{
-				res.redirect('/');
+				req.session.usuario.ganadorElegido = true;
+				res.redirect('/publicacion/' + req.body.idPublicacion);
 			}
 		})
 	}else{
-		res.redirect('/');
+		dbPublicacion;
 	}
 });
 
