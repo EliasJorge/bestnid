@@ -1,6 +1,10 @@
 $(document).ready(function(){
 
-
+    //Animacion para sacar mensajes de datos actualizados
+    setTimeout(function() {
+        $("#passChangedDiv").slideUp('fast');
+        $("#dataChangedDiv").slideUp('fast');
+    }, 3000);
 
     var validarSiOferto = function(event){
         // cancels the form submission
