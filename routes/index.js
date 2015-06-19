@@ -222,18 +222,17 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 	                    }
 	    				var thumbnail = '';
 	    				thumbnail = '<div class="col-sm-4 col-lg-4 col-md-4">';
-						                
 						if (resultado[i].visible == 1) {
 							thumbnail += '<div class="thumbnail" style="height: 22em;  word-wrap: break-word;">' + 
-											'<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
-											'<div><img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
-						                    '</div></a>' +
-						                        '<div class="caption-full">' +
-						                            '<h4><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
-						                                tituloMostrar +
-						                            '</a></h4>';
+										'<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+										'<div><img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
+					                    '</div></a>' +
+					                        '<div class="caption-full">' +
+					                            '<h4><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+					                                tituloMostrar +
+					                            '</a></h4>';
 						} else {
-							thumbnail += '<div class="thumbnail" style="height: 20em;  word-wrap: break-word; background-color: #eee;">' +
+							thumbnail += '<div class="thumbnail" style="height: 22em;  word-wrap: break-word; background-color: #eee;">' +
 											'<div style="opacity: 0.7; filter: alpha(opacity=70); background-color: #000;">' +
 												'<img class="img-responsive" src ="' + resultado[i].foto +
 													'" style="width: 18em; height: 12em; opacity: 0.7; filter: alpha(opacity=70);" alt="" >' +
@@ -241,7 +240,12 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 						                        '<div class="caption-full">' +
 						                        '<h4>' + tituloMostrar + '</h4>';
 						};
-						thumbnail += '<p style="font-size: 0.9em;">' + descripcionMostrar + '</p></div></div></div>';
+						if (resultado[i].terminada) {
+							thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Terminada</p></div></div></div>';
+						} else {
+							thumbnail += '<p style="font-size: 0.9em;">' + descripcionMostrar + '</p></div></div></div>';
+						};
+						
 						                            
 		                listadoHTML += thumbnail;
 	    			}
