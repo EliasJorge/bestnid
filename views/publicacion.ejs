@@ -49,7 +49,7 @@
                                     <span class="pull-right"><%=oferta.fechaOferta.split('-')[2] + '/' + oferta.fechaOferta.split('-')[1] + '/' + oferta.fechaOferta.split('-')[0]%></span>
                                     <p><%= oferta.texto%></p>
                                     </div>
-                                    <button type="button" class="pull-right btn btn-primary">Elegir ganador</button>
+                                    <button id="elegirOferta" data-idUsuario="<%=oferta.idUsuario%>" data-idPublicacion="<%=publicacion.idPublicacion%>" type="button" class="pull-right btn btn-primary">Elegir ganador</button>
                                 </div>
                             </div>
                             <hr>
@@ -100,8 +100,8 @@
                                  <!--//////////////////////////SI ES EL PUBLICADOR PUEDE PREGUNTAR///////////////////////////////////-->
                                 <%if (typeof(sesionUsuario) != 'undefined' && datos.idUsuario == sesionUsuario.idUsuario && datos.idRespuesta == null ) {%>
                                     <div class="text-right">
-                                        <button type="button" class="btn btn-warning text-right" style="margin-top: 0.7em">Eliminar</button>
-                                        <button type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Modificar</button>
+                                        <button type="button" class="btn btn-warning text-right" style="margin-top: 0.7em">Modificar</button>
+                                        <button type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Eliminar</button>
                                     </div>
                                 <%}%>
                                 <!--si tiene una respuesta la muestro-->
@@ -111,8 +111,8 @@
                                         <!--si es el que publico-->
                                         <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
                                         <div class="text-right">
-                                            <button type="button" class="btn btn-warning text-right" style="">Eliminar</button>
-                                            <button type="button" class="btn btn-danger text-right" style="">Modificar</button>
+                                            <button type="button" class="btn btn-warning text-right" style="">Modificar</button>
+                                            <button type="button" class="btn btn-danger text-right" style="">Eliminar</button>
                                         </div> 
                                         <%}%>
                                     </div> 

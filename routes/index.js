@@ -293,8 +293,16 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 					    		'<p><b>Descripción</b></p>' +
 					    		'<p>' + resultado[i].texto + '</p>' +
 					    		'<p><b>Monto:</b> $' + resultado[i].monto + '</p>' +
-					    		'<p><b>Fecha:</b> ' + fechaFormatoLocal(resultado[i].fechaOferta) + '</p>' +
-					    	'</div></div>';
+					    		'<p><b>Fecha:</b> ' + fechaFormatoLocal(resultado[i].fechaOferta) + '</p>';
+					    if (/*resultado[i].idOfertaGanadora != null && resultado[i].idOfertaGanadora == resultado[i].idOferta*/true) {
+					    	listadoHTML += '<button type="button" class="pull-right btn btn-success pagar" ' +
+					    	'data-idPublicacion="' + resultado[i].idPublicacion + '" ' +
+					    	'data-idOferta="' + resultado[i].idOferta + '" ' +
+					    	'data-monto="' + resultado[i].monto + '" ' +
+					    	'data-toggle="modal" data-target="#modalPagar" data-whatever="@mdo"' +
+					    	'>Pagar</button>';
+					    };
+					    listadoHTML += '</div></div>';
 	            	};
 	            	listadoHTML += '</div></div>';
 	            } else {

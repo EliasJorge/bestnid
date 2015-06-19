@@ -124,6 +124,37 @@
         </section>
         <!-- SECTION END -->
     </div>
+
+    <!--modal fade para ofertar-->
+    <div class="modal fade" id="modalPagar" tabindex="-1" role="dialog" aria-labelledby="modalPagarLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalPagarLabel">¡Ha ganado la subasta!</h4>
+                </div>
+                <!--///////FORM DE OFERTA/////////-->
+                <form id="formPagar" method="POST" action="/pagar/<%=sesionUsuario.idUsuario%>">
+                    <div id="formPagarBody" class="modal-body">
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Numero de tarjeta de crédito:</label>
+                            <input id="numTarjeta" name="numTarjeta" type="text" form="formPagar" class="form-control" required></input>
+                            <br>
+                            <label for="message-text" class="control-label">Contraseña:</label>
+                            <input id="passTarjeta" name="passTarjeta" type="password" form="formPagar" class="form-control" required></input>
+                            <br>
+                            <label for="message-text" class="control-label"><h3 id="montoPagar"></h3></label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" value="Debitar"></button>
+                    </div>
+                </form>
+                <!--///////FORM DE OFERTA/////////-->
+            </div>
+        </div>
+    </div>
+
     <!-- CONATINER END -->
 	<% include partials/footer.ejs %>
 

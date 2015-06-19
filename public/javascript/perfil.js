@@ -42,4 +42,8 @@ $(function() {
     	$("#bPreguntas").removeClass("active");
     	$(this).addClass("active");
     });
+
+    $("#formPagarBody").on('click', '.pagar', function() {
+    	$("#montoPagar").text("Monto a pagar: $" + $(this).attr("data-monto"));
+    });
 });
