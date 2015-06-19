@@ -310,14 +310,18 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 					    		'<p>' + resultado[i].texto + '</p>' +
 					    		'<p><b>Monto:</b> $' + resultado[i].monto + '</p>' +
 					    		'<p><b>Fecha:</b> ' + fechaFormatoLocal(resultado[i].fechaOferta) + '</p>';
-					    if (resultado[i].idOfertaGanadora != null && resultado[i].idOfertaGanadora == resultado[i].idOferta) {
-					    	listadoHTML += '<a href="/pagar/' +
-					    		resultado[i].idOfertaGanadora + '/' +
-					    		resultado[i].idPublicacion +
-					    		'">' +
-					    		'<button type="button" class="pull-right btn btn-success">' +
-					    		'Pagar</button></a>';
-					    };
+					    if (resultado[i].idOfertaGanadora == resultado[i].idOferta) {
+					    	if (!resultado[i].pagada) {
+					    		listadoHTML += '<a href="/pagar/' +
+						    		resultado[i].idOfertaGanadora + '/' +
+						    		resultado[i].idPublicacion +
+						    		'">' +
+						    		'<button type="button" class="pull-right btn btn-success">' +
+						    		'Pagar</button></a>';
+						    } else {
+						    	listadoHTML += '<div class="alert alert-success pull-right" style="margin-bottom:0em"><span>Ya ha pagado este producto</span></div>';
+						    };
+						};
 					    listadoHTML += '</div></div>';
 	            	};
 	            	listadoHTML += '</div></div>';
