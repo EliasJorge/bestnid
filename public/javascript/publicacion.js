@@ -71,10 +71,16 @@ $(document).ready(function(){
 
         //Eventos para boton ver datos
     $("#botonVerDatos").click(function(){
-        //Limpio el div antes de cargarle datos nuevos
-        var idPublicador = $(this).attr("data-idPublicador");
-        $("#resultadoDatosGanador").slideDown('fast');
-        $('#resultadoDatosGanador').html("");
-        $("#resultadoDatosGanador").load("/datosGanador/" + $(this).attr("data-ofertaId"), {idPublicador: idPublicador});
+        if($(this).attr("data-abrir") == 0){
+            $(this).attr("data-abrir",1);
+            $("#resultadoDatosGanador").slideDown('fast');
+            var idPublicador = $(this).attr("data-idPublicador");
+            $("#resultadoDatosGanador").load("/datosGanador/" + $(this).attr("data-ofertaId"), {idPublicador: idPublicador});
+        }
+        else{
+            $("#resultadoDatosGanador").slideUp('slow');
+            $(this).attr("data-abrir",0);
+        }
+
     });
 });
