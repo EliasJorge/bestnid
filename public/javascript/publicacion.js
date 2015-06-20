@@ -1,11 +1,6 @@
 $(document).ready(function(){
 
 
-    //Animacion para sacar mensajes de datos actualizados
-    setTimeout(function() {
-        $("#passChangedDiv").slideUp('fast');
-        $("#dataChangedDiv").slideUp('fast');
-    }, 3000);
     var validarSiOferto = function(event){
         // cancels the form submission
         event.preventDefault();
@@ -72,4 +67,14 @@ $(document).ready(function(){
     });
 
     $('#elegirGanador').on('show.bs.modal', pasarParametrosAModelGanador);
+
+
+        //Eventos para boton ver datos
+    $("#botonVerDatos").click(function(){
+        //Limpio el div antes de cargarle datos nuevos
+        var idPublicador = $(this).attr("data-idPublicador");
+        $("#resultadoDatosGanador").slideDown('fast');
+        $('#resultadoDatosGanador').html("");
+        $("#resultadoDatosGanador").load("/datosGanador/" + $(this).attr("data-ofertaId"), {idPublicador: idPublicador});
+    });
 });

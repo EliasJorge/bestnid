@@ -88,16 +88,12 @@ router.get('/publicacion/:id', function(req, res, next){
 						else{
 							dbOferta.getOfertasDePublicacion(publicacion,preguntasYRespuestas,
 							function(error,ofertas,publicacion, preguntasYRespuestas){
-								var ganador = req.session.usuario.ganadorElegido;
-								req.session.usuario.ganadorElegido = null;
-								console.log(ganador);
 								res.render('publicacion', {
 									sesionUsuario: req.session.usuario,
 									publicacion:publicacion,
 									preguntasYRespuestas:preguntasYRespuestas,
 									url:req.originalUrl,
-									ofertas:ofertas,
-									ganadorElegido:ganador
+									ofertas:ofertas
 								});
 							});
 						}
@@ -1043,7 +1039,6 @@ router.post('/ofertaGanadora',function(req, res, next){
 					});
 			}
 			else{
-				req.session.usuario.ganadorElegido = true;
 				res.redirect('/publicacion/' + req.body.idPublicacion);
 			}
 		})
@@ -1104,4 +1099,25 @@ router.get('/datosPublicador/:idPublicacion', function(req, res, next){
 	};
 });
 
+
+router.post('/datosGanador/:idOfertaGanadora', function(req, res, next){
+	if (req.session.usuario != req.body.idPublicador) {
+		dbOferta.getUsuarioDeOfertaConId(req.params.idOfertaGanadora, function(error, resultado){
+			if(error){
+				res.send("<p>Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde <p>")
+			}
+			else{
+				var html =''
+				html += '<div class="jumbotron text-center">';
+				html += 	'<h2>Datos de contacto del publicador:</h2>';
+				html +=		"<p>Nombre de Usuario: <b>" + resultado.nombreUsuario + "</b></p>";
+				html += 	"<p>Usuario: <b>" + resultado.nombre +"</b></p>";
+				html += 	"<p>Apellido: <b>" + resultado.apellido +"</b></p>";
+				html += 	"<p>Mail: <b>" + resultado.mail +"</b></p>";
+				html += '</div>'
+				res.send(html);
+			}
+		});
+	}
+});
 module.exports = router;

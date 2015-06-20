@@ -10,6 +10,9 @@
         <div class="row">
 
             <div class="col-md-9">
+                <div id="resultadoDatosGanador" class="col-md-14" style="display:none;">
+                        
+                </div>
 
                 <div class="thumbnail">
                     <img class="img-responsive img-rounded" src="<%= publicacion.foto %>" alt="" style="max-height: 40em;">
@@ -58,7 +61,10 @@
                                         <%}%>
                                 </div>
                                 <%if (publicacion.idOfertaGanadora == oferta.idOferta && publicacion.pagada != true){%>
-                                    <p>Este usuario aun no ha pagado<p>
+                                    <p>El usuario aun no ha pagado<p>
+                                <%} %>
+                                <%if (publicacion.idOfertaGanadora == oferta.idOferta && publicacion.pagada == true){%>
+                                    <p>El usuario ha pagado<p>
                                 <%}%>
                             </div>
                             <hr>
@@ -171,16 +177,25 @@
                         <a href="#" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Modificar Publicación</a>
                     </div>
                 <%} else {%>
-                     <div class="alert alert-danger">No puede modificar/eliminar esta publicacion ya que han ofertado</div>
-                <%}%>
-                </div>
-                <% if (typeof(ganadorElegido) != 'undefined' && ganadorElegido == true) { %>
-                    <div id="dataChangedDiv" class="col-md-3">
-                        <div class="alert alert-success">
-                            <span>Usted ha elegido el ganador correctamente, espere a que el usuario realice el pago</span>
+                    <%if (publicacion.idOfertaGanadora == null && publicacion.pagada == false) {%>
+                        <div class="alert alert-warning">No puede modificar/eliminar esta publicacion ya que han ofertado</div>
+                    <%}%>
+                    <% if (publicacion.idOfertaGanadora != null && publicacion.pagada == false) { %>
+                        <div id="dataChangedDiv" >
+                            <div class="alert alert-success">
+                                <span>Usted ha elegido el ganador correctamente, espere a que el usuario realice el pago</span>
+                            </div>
                         </div>
-                    </div>
-                <% } %>
+                    <% } %>
+                    <% if (publicacion.pagada == true) { %>
+                        <div id="dataDeUsuarioGanador">
+                            <div class="alert alert-success">
+                                <p>El usuario ganadora ya ha pagado, has click aqui para ver los datos<button id="botonVerDatos" class="btn btn-primary botonResponder" data-idPublicador=<%=sesionUsuario.idUsuario%> data-ofertaId =<%=publicacion.idOfertaGanadora%>>Ver datos</button></p>
+                            </div>
+                        </div>
+                    <% } %>
+                <%}%>
+                </div>               
             <%}%>
         </div>
 

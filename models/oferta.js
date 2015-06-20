@@ -81,4 +81,19 @@ modeloOferta.getOfertaByID = function(id, callback){
 	}
 };
 
+
+modeloOferta.getUsuarioDeOfertaConId = function(idOferta, callback){
+	if(conn){
+		var query = 'SELECT nombreUsuario, nombre, apellido, mail FROM usuario u INNER JOIN oferta o ON u.idUsuario = o.idUsuario WHERE o.idOferta = ' + idOferta;
+		conn.query(query, function(error, resultado){
+			if(error){
+				callback(error);
+			}
+			else{
+				callback(null, resultado[0]);
+			}
+		});
+	}
+};
+
 module.exports = modeloOferta;
