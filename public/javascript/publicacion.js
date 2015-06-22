@@ -45,6 +45,21 @@ $(document).ready(function(){
         //modal.find('#formGanador').attr('action','/elegirGanador/' + idOferta + '/' + idUsuario);
     }
 
+    var pasarParametrosAModelEliminarRespuesta = function (event) {
+        var boton= event.relatedTarget; // Button that triggered the modal
+        //le pido al boton los atributos data-idUsuario, data-idPublicacion, data-idPregunta, data-idRespuesta
+        var idPublicacion = boton.getAttribute("data-idPublicacion");
+        var idPregunta = boton.getAttribute("data-idPregunta");
+        var idRespuesta = boton.getAttribute("data-idRespuesta");
+        var idUsuario = boton.getAttribute("data-idUsuario");
+        var modal = $(this);
+        //le  pongo los atributos
+        modal.find('#idUsuario').attr('value', idUsuario);
+        modal.find('#idPublicacion').attr('value', idPublicacion);
+        modal.find('#idPregunta').attr('value', idPregunta );
+        modal.find('#idRespuesta').attr('value', idRespuesta );
+    }
+
     var elegirGanador = function (event) {
         
     }   
@@ -68,6 +83,7 @@ $(document).ready(function(){
 
     $('#elegirGanador').on('show.bs.modal', pasarParametrosAModelGanador);
 
+    $('#eliminarRespuesta').on('show.bs.modal', pasarParametrosAModelEliminarRespuesta);
 
         //Eventos para boton ver datos
     $("#botonVerDatos").click(function(){

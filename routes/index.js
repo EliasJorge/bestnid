@@ -870,19 +870,23 @@ router.post('/responder/:idPublicacion', function(req, res, next){
 	});
 });
 
-router.get('/eliminarRespuesta/:idPublicacion/:idPregunta/:idRespuesta', function(req,res,next){
-	dbRespuesta.eliminarRespuesta(req.params.idPregunta, req.params.idRespuesta, function(error, respuesta){
-		if (error) {
-					res.render('error', {
-						mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
-						sesionUsuario: req.session.usuario,
-						categoriaActiva: null,
-						url:req.originalUrl
-					});
-				} else {
-					res.redirect('/publicacion/' + req.params.idPublicacion);
-				};
-	});
+router.post('/eliminarRespuesta', function(req,res,next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.body.idUsuario) {
+		dbRespuesta.eliminarRespuesta(req.body.idPregunta, req.body.idRespuesta, function(error, respuesta){
+			if (error) {
+						res.render('error', {
+							mensaje:'Hubo un error al intentar acceder a la base de datos, por favor intente de nuevo mas tarde',
+							sesionUsuario: req.session.usuario,
+							categoriaActiva: null,
+							url:req.originalUrl
+						});
+					} else {
+						res.redirect('/publicacion/' + req.body.idPublicacion);
+					};
+		});
+	} else {
+		res.redirect('/');
+	}
 });
 
 router.get('/pagar/:idOfertaGanadora/:idPublicacion', function(req, res, next){
@@ -1043,7 +1047,7 @@ router.post('/ofertaGanadora',function(req, res, next){
 			}
 		})
 	}else{
-		dbPublicacion;
+		res.redirect('/publicacion/' + req.body.idPublicacion);
 	}
 });
 

@@ -140,8 +140,8 @@
                                         <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario) {%>
                                         <div class="text-right">
                                             <%if (publicacion.terminada != true) {%>
-                                                <a class="btn" href=""></a>
-                                                <a href="/eliminarRespuesta/<%=datos.idPublicacion%>/<%=datos.idPregunta%>/<%=datos.idRespuesta%>" class="btn btn-danger text-right" style="">Eliminar</a>
+                                                <button type="button" class="btn btn-danger text-right" style="margin-top: 1em" class="pull-right btn btn-primary" data-toggle="modal" data-target="#eliminarRespuesta" data-idUsuario ="<%=sesionUsuario.idUsuario%>" data-idPublicacion ="<%=publicacion.idPublicacion%>" data-idPregunta ="<%=datos.idPregunta%>" data-idRespuesta ="<%=datos.idRespuesta%>" data-idUsuario="<%=sesionUsuario.idUsuario%>" data-backdrop='static' data-whatever="@mdo">Eliminar
+                                            </button>
                                             <%}%>
                                         </div> 
                                         <%}%>
@@ -201,6 +201,29 @@
 
     </div>
 
+    <div class="modal bs-example-modal-sm" id="eliminarRespuesta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-title">Atencion</h4>
+                </div>
+                <div class="modal-body">
+                    ¿Esta seguro de que quiere eliminar la respuesta a esta pregunta?
+                </div>
+                <div class="modal-footer">
+                    <form id="formEliminarRespuesta" action="/eliminarRespuesta" method="POST">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <input id="idUsuario" name="idUsuario" type="number" style="display:none" >
+                        <input id="idPregunta" name="idPregunta" type="number" style="display:none" >
+                        <input id="idRespuesta" name="idRespuesta" type="number" style="display:none" >
+                        <input id="idPublicacion" name ="idPublicacion" type="number" style="display:none" >
+                        <input id="submitEliminarRespuesta" type="submit" value="Aceptar" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <%if (typeof(sesionUsuario) != 'undefined' && sesionUsuario.idUsuario == publicacion.idUsuario){%>
         <div class="modal bs-example-modal-sm" id="elegirGanador" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -209,7 +232,7 @@
                         <h4 class="modal-title" id="modal-title">Atencion</h4>
                     </div>
                     <div class="modal-body">
-                        Esta seguro de que quiere elegir a esta oferta como ganadora?
+                        ¿Esta seguro de que quiere elegir a esta oferta como ganadora?
                     </div>
                     <div class="modal-footer">
                         <form id="formGanador" action="/ofertaGanadora" method="POST">
