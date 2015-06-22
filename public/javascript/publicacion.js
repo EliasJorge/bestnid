@@ -92,10 +92,12 @@ $(document).ready(function(){
             $("#resultadoDatosGanador").slideDown('fast');
             var idPublicador = $(this).attr("data-idPublicador");
             $("#resultadoDatosGanador").load("/datosGanador/" + $(this).attr("data-ofertaId"), {idPublicador: idPublicador});
+            $(this).text("Ocultar Datos");
         }
         else{
             $("#resultadoDatosGanador").slideUp('slow');
             $(this).attr("data-abrir",0);
+            $(this).text("Ver Datos");
         }
 
     });

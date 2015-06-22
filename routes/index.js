@@ -1115,8 +1115,8 @@ router.post('/datosGanador/:idOfertaGanadora', function(req, res, next){
 				html += '<div class="jumbotron text-center">';
 				html += 	'<h2>Datos de contacto del publicador:</h2>';
 				html +=		"<p>Nombre de Usuario: <b>" + resultado.nombreUsuario + "</b></p>";
-				html += 	"<p>Usuario: <b>" + resultado.nombre +"</b></p>";
-				html += 	"<p>Apellido: <b>" + resultado.apellido +"</b></p>";
+				//html += 	"<p>Usuario: <b>" + resultado.nombre +"</b></p>";
+				//html += 	"<p>Apellido: <b>" + resultado.apellido +"</b></p>";
 				html += 	"<p>Mail: <b>" + resultado.mail +"</b></p>";
 				html += '</div>'
 				res.send(html);
