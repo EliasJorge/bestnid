@@ -189,8 +189,9 @@
                     <% } %>
                     <% if (publicacion.pagada == true) { %>
                         <div id="dataDeUsuarioGanador">
-                            <div class="alert alert-success">
-                                <p>El usuario ganadora ya ha pagado, has click aqui para ver los datos<button id="botonVerDatos" class="btn btn-primary botonResponder" data-abrir="0"data-idPublicador=<%=sesionUsuario.idUsuario%> data-ofertaId =<%=publicacion.idOfertaGanadora%>>Ver datos</button></p>
+                            <div class="alert alert-success text-center">
+                                <p style="margin-bottom:1em;">El usuario ganador ya ha pagado</p>
+                                <button id="botonVerDatos" class="btn btn-primary botonResponder" data-abrir="0"data-idPublicador=<%=sesionUsuario.idUsuario%> data-ofertaId =<%=publicacion.idOfertaGanadora%>>Ver datos</button>
                             </div>
                         </div>
                     <% } %>
