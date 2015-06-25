@@ -1061,7 +1061,7 @@ router.get('/datosPublicador/:idPublicacion', function(req, res, next){
 					categoriaActiva: null,
 					url:req.originalUrl
 				});
-			} else if (resultado != null) {
+			} else if (typeof(resultado) != 'undefined') {
 				dbOferta.getOfertaByID(resultado.idOfertaGanadora, function(errorO, resultadoO){
 					if (errorO) {
 						res.render('error', {
