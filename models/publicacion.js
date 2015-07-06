@@ -207,4 +207,19 @@ modeloPublicacion.setPublicacionPagada = function(idPublicacion, callback){
 	}
 };
 
+modeloPublicacion.getPublicacionesGanadasPorUsuario = function(idUsuario, callback){
+	if (conn) {
+		var query = "SELECT * FROM publicacion p INNER JOIN oferta o ON p.idOfertaGanadora=o.idOferta " +
+			"WHERE o.idUsuario=" + idUsuario;
+		conn.query(query, function(error,resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null, resultado);
+			}
+		});
+	}
+};
+
 module.exports = modeloPublicacion;

@@ -339,25 +339,83 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 	};
 });
 
+router.get('/perfil/:id/pubsGanadas', function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
+		dbPublicacion.getPublicacionesGanadasPorUsuario(req.session.usuario.idUsuario, function(error, resultado){
+			if (error) {
+				var errorHTML = '<div class="col-md-12">' +
+		           	'<div class="alert alert-danger"><span>Hubo un error al cargar sus ofertas, por favor intente más tarde</span></div>' +
+		            '</div>';
+				res.send(errorHTML);
+			} else {
+				var listadoHTML = '';
+				if (resultado.length > 0) {
+					for (var i = 0; i < resultado.length; i++) {
+	    				var tituloMostrar = '';
+	    				var descripcionMostrar = '';
+	    				if (resultado[i].titulo.length > 37) {
+	                        tituloMostrar = resultado[i].titulo.substring(0,35) + '...';
+	                    } else {
+	                        tituloMostrar = resultado[i].titulo;
+	                    }
+	                    if (resultado[i].descripcion.length > 65) {
+	                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ").substring(0,62) + '...';
+	                    } else {
+	                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ");
+	                    }
+	    				var thumbnail = '';
+	    				thumbnail = '<div class="col-sm-4 col-lg-4 col-md-4">';
+						if (resultado[i].visible == 1) {
+							thumbnail += '<div class="thumbnail" style="height: 22em;  word-wrap: break-word;">' + 
+										'<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+										'<div><img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
+					                    '</div></a>' +
+					                        '<div class="caption-full">' +
+					                            '<h4><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+					                                tituloMostrar +
+					                            '</a></h4>';
+						} else {
+							thumbnail += '<div class="thumbnail" style="height: 22em;  word-wrap: break-word; background-color: #eee;">' +
+											'<div style="opacity: 0.7; filter: alpha(opacity=70); background-color: #000;">' +
+												'<img class="img-responsive" src ="' + resultado[i].foto +
+													'" style="width: 18em; height: 12em; opacity: 0.7; filter: alpha(opacity=70);" alt="" >' +
+						                    '</div>' +
+						                        '<div class="caption-full">' +
+						                        '<h4>' + tituloMostrar + '</h4>';
+						};
+
+						if (resultado[i].pagada) {
+							thumbnail += '<div class="alert alert-success text-center"><a href="/datosPublicador/' + resultado[i].idPublicacion + '" style="color:#007700;">' +
+						    		'<i>Datos del publicador</i></a></div></div></div></div>'
+						} else {
+							thumbnail += '<div class="text-center"><a href="/pagar/' +
+						    		resultado[i].idOfertaGanadora + '/' +
+						    		resultado[i].idPublicacion +
+						    		'">' +
+									'<button type="button" class="btn btn-success" style="margin-top: 1em;">Pagar</button></a></div></div></div></div>'
+						};
+
+		                listadoHTML += thumbnail;
+	    			};
+	    		} else {
+	            	listadoHTML = '<div class="col-md-12">' +
+		           		'<div class="alert alert-danger"><span>No hay datos disponibles</span></div>' +
+		            	'</div>';
+	            };
+	            res.send(listadoHTML);
+			};
+		});
+	} else {
+		var errorHTML = '<div class="col-md-12">' +
+           	'<div class="alert alert-danger"><span>Hubo un error al validar la sesión, por favor intente más tarde</span></div>' +
+            '</div>';
+		res.send(errorHTML);
+	};
+});
+
 //////////////////////////////////////////////////////////////////////
 /////////////////// RUTAS PARA AJAX DEL PERFIL ///////////////////////
 //////////////////////////////////////////////////////////////////////
-
-router.get('/perfil/:id/preguntas', function(req, res, next){
-	res.render('perfil', {
-		sesionUsuario: req.session.usuario,
-		categoriaActiva: null,
-		url:req.originalUrl,
-		usuarioExistente: false,
-		passwordIncorrecta: false,
-		passwordCambiada: false,
-		datosCambiados: false,
-		nombreUsuario: '',
-		nombre: '',
-		apellido: '',
-		mail: ''
-	});
-});
 
 router.get('/perfil/:id/estadisticas', function(req, res, next){
 	res.render('perfil', {

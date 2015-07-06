@@ -13,7 +13,7 @@ $(function() {
     //Eventos para cada boton
     $("#bOfertas").click(function(){
     	$("#bPublicaciones").removeClass("active");
-    	$("#bPreguntas").removeClass("active");
+    	$("#bGanadas").removeClass("active");
     	$("#bEstadisticas").removeClass("active");
     	$(this).addClass("active");
     	//Limpio el div antes de cargarle datos nuevos
@@ -21,7 +21,7 @@ $(function() {
     	$("#resultados").load("/perfil/" + $(this).attr("data-userId") + "/ofertas");
     });
     $("#bPublicaciones").click(function(){
-    	$("#bPreguntas").removeClass("active");
+    	$("#bGanadas").removeClass("active");
     	$("#bOfertas").removeClass("active");
     	$("#bEstadisticas").removeClass("active");
     	$(this).addClass("active");
@@ -29,16 +29,18 @@ $(function() {
     	$('#resultados').html("");
     	$("#resultados").load("/perfil/" + $(this).attr("data-userId") + "/publicaciones");
     });
-    $("#bPreguntas").click(function(){
+    $("#bGanadas").click(function(){
     	$("#bPublicaciones").removeClass("active");
     	$("#bOfertas").removeClass("active");
     	$("#bEstadisticas").removeClass("active");
     	$(this).addClass("active");
+        $('#resultados').html("");
+        $("#resultados").load("/perfil/" + $(this).attr("data-userId") + "/pubsGanadas");
     });
     $("#bEstadisticas").click(function(){
     	$("#bPublicaciones").removeClass("active");
     	$("#bOfertas").removeClass("active");
-    	$("#bPreguntas").removeClass("active");
+    	$("#bGanadas").removeClass("active");
     	$(this).addClass("active");
     });
 });
