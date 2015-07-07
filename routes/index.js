@@ -14,6 +14,10 @@ function fechaFormatoLocal(fecha){
 	return arregloFecha[2] + '/' + arregloFecha[1] + '/' + arregloFecha[0];
 };
 
+function reemplazar(str){
+	return str.replace(/\'/g, "\\'");
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) { 
 	// si la sesion no tiene un atributo que sea usuario es porque no tiene una sesion activa
@@ -1184,4 +1188,82 @@ router.post('/datosGanador/:idOfertaGanadora', function(req, res, next){
 		});
 	}
 });
+
+router.get('/:idPublicacion/modificarPublicacion', function(req,res,next){
+	if (req.session.usuario != null) {
+		dbPublicacion.getPublicacionByID(req.params.idPublicacion, function(error, resultadoP){
+			if (error){
+				res.render('error', {
+					mensaje:'Hubo un error al cargar los datos de su publicacion, por favor intente más tarde',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				dbCategoria.getCategorias(function(error,resultadoC){
+					if (error){
+						res.render('error', {
+							mensaje:'No hay categorias disponibles para asignar al producto, por favor intente más tarde',
+							sesionUsuario: req.session.usuario,
+							categoriaActiva: null,
+							url:req.originalUrl
+						});
+					} else {
+						res.render('modificarPublicacion', {
+							sesionUsuario: req.session.usuario,
+							categoriaActiva: null,
+							url:req.originalUrl,
+							usuarioExistente: false,
+							passwordIncorrecta: false,
+							passwordCambiada: false,
+							datosCambiados: false,
+							nombreUsuario: '',
+							nombre: '',
+							apellido: '',
+							mail: '',
+							categorias:resultadoC,
+							datosPublicacion: resultadoP
+						});
+					}
+				});
+			}
+		});
+	} else {
+		res.redirect('/');
+	}
+});
+
+router.post('/modificarPublicacion/:idUsuario/:idPublicacion',[ multer({ dest: './public/imagenes/'}), function(req,res,next){
+	
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario){
+		var datosNuevos={
+			titulo:reemplazar(req.body.nombreProducto),
+			descripcion:reemplazar(req.body.descripcion),
+			idCategoria:req.body.categoriaElegida,
+		}
+		if (req.files.pic != undefined) {
+			datosNuevos.foto = req.files.pic.path.substring(6,req.files.pic.path.length).replace(/\\/g,'/');
+		} else {
+			datosNuevos.foto = req.body.urlVieja;
+		}
+		dbPublicacion.modificarPublicacion(datosNuevos, req.params.idPublicacion, function(error,resultado){
+			if (error){
+				res.render('error', {
+					mensaje:'Hubo un error al cargar los datos nuevos, por favor intente más tarde',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				res.redirect('/publicacion/' + req.params.idPublicacion);
+			}
+		});
+	} else {
+		res.redirect('/');
+	}
+}]);
+
+
+
 module.exports = router;
+

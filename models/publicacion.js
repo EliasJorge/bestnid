@@ -222,4 +222,17 @@ modeloPublicacion.getPublicacionesGanadasPorUsuario = function(idUsuario, callba
 	}
 };
 
+modeloPublicacion.modificarPublicacion = function(datosNuevos, idPublic, callback){
+	if (conn){
+		var query = "UPDATE publicacion SET titulo=" + "'" + datosNuevos.titulo + "'," + " descripcion=" + "'" + datosNuevos.descripcion + "'," + " foto=" + "'" + datosNuevos.foto + "'," + " idCategoria=" +  datosNuevos.idCategoria + " WHERE idPublicacion=" + idPublic;			
+		console.log(query);
+		conn.query(query, function(error,resultado){
+			if (error){
+				callback(error);
+			} else {
+				callback(null,resultado);
+			}
+		});		
+	}
+}
 module.exports = modeloPublicacion;

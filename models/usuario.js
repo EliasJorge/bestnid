@@ -77,7 +77,6 @@ modeloUsuario.modificarUsuario = function(id, datos, callback){
 			//Saco la ultima coma
 			query = query.substring(0, query.length - 1);
 			query += ' WHERE idUsuario = ' + id;
-			console.log(query);
 			conn.query(query, function(error, resultado){
 				if (error) {
 					callback(error);

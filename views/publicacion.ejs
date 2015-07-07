@@ -174,7 +174,7 @@
                     <p class="lead">Opciones</p>
                     <div class="list-group">
                         <a href="#" class="list-group-item"><span class="glyphicon glyphicon-trash"></span> Eliminar Publicación</a>
-                        <a href="#" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Modificar Publicación</a>
+                        <a href="/<%=publicacion.idPublicacion%>/modificarPublicacion" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Modificar Publicación</a>
                     </div>
                 <%} else {%>
                     <%if (publicacion.idOfertaGanadora == null && publicacion.pagada == false) {%>

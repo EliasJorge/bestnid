@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<% include partials/head.ejs %>
+<style type="text/css">
+ .row { vertical-align: top; height:auto !important; }
+ .list {display:none; }
+ .show {display: none; }
+ .hide:target + .show {display: inline; }
+ .hide:target {display: none; }
+ .hide:target ~ .list {display:inline; }
+ @media print { .hide, .show { display: none; } }
+ </style>
+<body>
+	<% include partials/nav.ejs %>
+    <form id="pub" method="POST" action="/modificarPublicacion/<%=sesionUsuario.idUsuario%>/<%=datosPublicacion.idPublicacion%>" enctype="multipart/form-data" >
+		<div class="col-sm-6 col-md-offset-3">
+	        <h4>Modificar publicación</h4>
+	        <div class="panel panel-default">
+	            <div class="panel-body form-horizontal payment-form">
+
+	            	<div class="form-group">
+	                    <label for="nombreProducto" class="col-sm-3 control-label">Nombre del producto</label>
+	                    <div class="col-sm-9">
+	                        <input type="text" class="form-control" maxlength="200" placeholder="Ej: calculadora" id="nombreProducto" name="nombreProducto" value="<%=datosPublicacion.titulo%>" required>
+	                    </div>
+	                </div>
+
+	                <div class="form-group">
+	                    <label for="descripcion" class="col-sm-3 control-label">Descripción</label>
+	                    <div class="col-sm-9" >
+	                    	<TEXTAREA name="descripcion" id="descripcion" style="resize:none" maxlength="500" rows="3" cols="68" wrap="VIRTUAL" form="pub" class="form-control" required><%=datosPublicacion.descripcion%></TEXTAREA> 	
+	                    </div>
+	                </div> 
+	                
+	                <div class="form-group">
+	                	<label for="categoriaElegida" class="col-sm-3 control-label">Categoria</label>
+						 <div class="col-sm-9">
+						 <select class="form-control" name="categoriaElegida" id="categoriaElegida" required>
+						 	<% if (categorias.length) { %>
+                      			<% categorias.forEach(function(datos) { %>
+                      			<% if (datos.idCategoria == datosPublicacion.idCategoria) {%>
+                      				<option id="<%=datos.idCategoria%>" name="categoriaElegida" selected="selected" value="<%=datos.idCategoria%>"><%= datos.nombre %></option>
+                      			<%} else {%>
+									<option id="<%=datos.idCategoria%>" name="categoriaElegida" value="<%=datos.idCategoria%>"><%= datos.nombre %></option>
+								<%}%>
+							<% }) %>
+                      		<% } %>
+						</select>
+						</div>
+					 </div>
+
+	                
+					<div class="form-group">
+	                    <label for="imagen" class="col-sm-3 control-label">Imagen</label>
+	                    <div class="col-sm-9">
+	                        <span class="btn btn-default btn-file">
+		                        Seleccionar&hellip; <input type="file" name="pic" id="pic" accept="image/*" style="height:50px; width:50px"  onchange="loadFile(event)" >
+		                        <img id="output"/>
+		                        	<script>							      
+									      output.src = '<%=datosPublicacion.foto%>';
+
+									      output.height = 100;
+									      output.width = 100;
+		                        	</script>
+									<script>
+									  var loadFile = function(event) {
+									    var reader = new FileReader();
+									    reader.onload = function(){
+									      var output = document.getElementById('output');
+									      var copia = reader.result;
+
+									      output.src = reader.result;
+
+									      output.height = 100;
+									      output.width = 100;
+									    };
+
+									    reader.readAsDataURL(event.target.files[0]);
+									  };
+									</script>
+		                    </span>
+	                    </div>
+	                </div> 
+
+	                <input type="hidden" name="urlVieja" id:"urlVieja" value='<%=datosPublicacion.foto%>' required>
+
+	                <div class="form-group">
+	                    <div class="col-sm-12 text-right">
+	                        <button type="submit" class="btn btn-primary preview-add-button">
+	                            Modificar
+	                        </button>
+	                        <a href="/publicacion/<%=datosPublicacion.idPublicacion%>" class="btn btn-danger" role="button">
+	                        	Cancelar
+	                        </a>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>            
+	    </div> <!-- / panel preview -->
+	</form>
+	<% include partials/footer.ejs %>
+	
+</body>
+</html>
