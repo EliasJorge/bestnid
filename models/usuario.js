@@ -125,4 +125,19 @@ modeloUsuario.getUsuariosPorFecha = function(desde, hasta, callback){
 	};
 };
 
+modeloUsuario.resetPassword = function(datosUsuario, callback){
+	if (conn) {
+		var query = 'UPDATE usuario SET password=' + conn.escape('12345678') +
+			' WHERE nombreUsuario=' + conn.escape(datosUsuario.nombreUsuario) +
+			' AND mail=' + conn.escape(datosUsuario.mail);
+		conn.query(query, function(error, resultado){
+			if (error) {
+				callback(error);
+			} else {
+				callback(null, resultado);
+			};
+		})
+	};
+};
+
 module.exports = modeloUsuario;

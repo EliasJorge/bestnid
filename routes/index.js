@@ -1354,7 +1354,52 @@ router.post('/modificarPublicacion/:idUsuario/:idPublicacion',[ multer({ dest: '
 	}
 }]);
 
+router.get('/recuperarPassword', function(req, res, next){
+	if (req.session.usuario != null) {
+		res.redirect('/');
+	} else {
+		res.render('recuperarPassword', {
+			noCoincide: false,
+			nombreUsuario: '',
+			mail: '',
+			categoriaActiva: null,
+			url:req.originalUrl
+		});
+	};
+});
 
+router.post('/recuperarPassword', function(req, res, next){
+	var datos = {
+		nombreUsuario: req.body.nombreUsuario,
+		mail: req.body.mail
+	};
+	dbUsuario.resetPassword(datos, function(error, resultado){
+		if (error) {
+			res.render('error', {
+				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		} else {
+			if (resultado.affectedRows == 1) {
+				res.render('passRecuperada', {
+					mail: datos.mail,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				res.render('recuperarPassword', {
+					noCoincide: true,
+					nombreUsuario: datos.nombreUsuario,
+					mail: datos.mail,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			};
+		};
+	});
+});
 
 module.exports = router;
 

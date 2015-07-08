@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<% include partials/head.ejs %>
+	<body>
+		<% include partials/nav.ejs %>
+		<div class="col-sm-12 col-md-12 col-lg-12" style="margin-bottom:5em;">
+			<div class="jumbotron text-center">
+				<h2>Hemos enviado un correo a <b><%=mail%></b> con su nueva contraseña</h2>
+				<br/>
+				<a href="/ingreso"><button class="btn btn-success">Volver</button></a>
+			</div>
+		</div>
+		<% include partials/footer.ejs %>
+	</body>
+</html>
