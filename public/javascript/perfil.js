@@ -42,5 +42,7 @@ $(function() {
     	$("#bOfertas").removeClass("active");
     	$("#bGanadas").removeClass("active");
     	$(this).addClass("active");
+        $('#resultados').html("");
+        $("#resultados").load("/perfil/" + $(this).attr("data-userId") + "/estadisticas");
     });
 });

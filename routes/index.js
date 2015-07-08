@@ -417,29 +417,70 @@ router.get('/perfil/:id/pubsGanadas', function(req, res, next){
 	};
 });
 
-//////////////////////////////////////////////////////////////////////
-/////////////////// RUTAS PARA AJAX DEL PERFIL ///////////////////////
-//////////////////////////////////////////////////////////////////////
-
 router.get('/perfil/:id/estadisticas', function(req, res, next){
-	res.render('perfil', {
-		sesionUsuario: req.session.usuario,
-		categoriaActiva: null,
-		url:req.originalUrl,
-		usuarioExistente: false,
-		passwordIncorrecta: false,
-		passwordCambiada: false,
-		datosCambiados: false,
-		nombreUsuario: '',
-		nombre: '',
-		apellido: '',
-		mail: ''
-	});
+    if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
+    	var html = '<div class="col-md-12 text-center">' +
+    		'<a href="/' + req.session.usuario.idUsuario +
+    		'/usuariosRegistrados" class="btn btn-primary text-center" style="width:15em; margin-right:1em;">Usuarios Registrados</a>' +
+    		'<a href="/' + req.session.usuario.idUsuario +
+    		'/pubsConcretadas" class="btn btn-primary text-center" style="width:15em;">Publicaciones Concretadas</a>' +
+    		'</div>';
+    	res.send(html);
+    } else {
+    	var errorHTML = '<div class="col-md-12">' +
+           	'<div class="alert alert-danger"><span>Hubo un error al validar la sesión, por favor intente más tarde</span></div>' +
+            '</div>';
+		res.send(errorHTML);
+    };
 });
 
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
+router.get('/:id/usuariosRegistrados', function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id && req.session.usuario.esAdmin == 1) {
+		res.render('usuariosRegistrados', {
+			sesionUsuario:req.session.usuario,
+			categoriaActiva: null,
+			url:req.originalUrl
+		});
+	} else {
+		res.redirect('/');
+	};
+});
+
+router.get('/tablaUsuarios/:id/:desde/:hasta', function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id && req.session.usuario.esAdmin == 1) {
+		dbUsuario.getUsuariosPorFecha(req.params.desde, req.params.hasta, function(error, resultado){
+			if (error) {
+				var errorHTML = '<div class="col-md-12">' +
+		           	'<div class="alert alert-danger"><span>Hubo un error al conectarse a la base de datos, por favor intente más tarde</span></div>' +
+		            '</div>';
+				res.send(errorHTML);
+			} else {
+				if (resultado.length > 0) {
+					var tablaHtml = '<div class="col-md-12">' +
+			           	'<table><th>Nombre de Usuario</th><th>Nombre</th><th>Apellido</th><th>E-Mail</th>';
+			        for (var i = 0; i < resultado.length; i++) {
+			        	tablaHtml += '<tr><td>' + resultado[i].nombreUsuario + '</td>' +
+			        		'<td>' + resultado[i].nombre + '</td>' +
+			        		'<td>' + resultado[i].apellido + '</td>' +
+			        		'<td>' + resultado[i].mail + '</td></tr>';
+			        };
+			        tablaHtml += '</table></div>'
+			        res.send(tablaHtml);
+				} else {
+					var errorHTML = '<div class="col-md-12">' +
+			           	'<div class="alert alert-warning"><span>No hay usuarios registrados entre esas fechas</span></div>' +
+			            '</div>';
+					res.send(errorHTML);
+				};
+				
+			}
+		});
+	} else {
+		res.redirect('/');
+	}
+});
+
+//Ruta para publicaciones concretadas
 
 router.post('/actualizarInfo/:id', function(req, res, next){
 	//Verifico que haya una sesion activa

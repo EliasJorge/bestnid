@@ -107,7 +107,7 @@
                     		<li id="bOfertas" data-userId="<%=sesionUsuario.idUsuario%>"><a href="#" onclick="return false;">Mis Ofertas</a></li>
                     		<li id="bGanadas" data-userId="<%=sesionUsuario.idUsuario%>"><a href="#" onclick="return false;">Publicaciones Ganadas</a></li>
                         	<% if (sesionUsuario.esAdmin) { %>
-                        		<li id="bEstadisticas"><a href="/perfil/<%=sesionUsuario.idUsuario%>/estadisticas">Estadísticas</a></li>
+                        		<li id="bEstadisticas" data-userId="<%=sesionUsuario.idUsuario%>"><a href="#" onclick="return false;">Estadísticas</a></li>
                         	<% } %>
 	                    </ul>
 	                </div>
