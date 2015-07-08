@@ -195,7 +195,7 @@ modeloPublicacion.getPublicacionConOfertaGanadora = function(idPublicacion, call
 
 modeloPublicacion.setPublicacionPagada = function(idPublicacion, callback){
 	if (conn) {
-		var query = "UPDATE publicacion SET pagada=1 WHERE idPublicacion=" + idPublicacion;
+		var query = "UPDATE publicacion SET pagada=1, fechaPago=CURDATE() WHERE idPublicacion=" + idPublicacion;
 		conn.query(query, function(error,resultado){
 			if (error) {
 				callback(error);
@@ -235,4 +235,32 @@ modeloPublicacion.modificarPublicacion = function(datosNuevos, idPublic, callbac
 		});		
 	}
 }
+
+modeloPublicacion.getPublicacionesPorFechaPago = function(desde, hasta, callback){
+	if (conn) {
+		var query = 'SELECT * FROM publicacion p INNER JOIN usuario u ON p.idUsuario = u.idUsuario ' +
+			'WHERE fechaPago BETWEEN ' + conn.escape(desde) +
+			' AND ' + conn.escape(hasta) +
+			' ORDER BY fechaPago ASC';
+		conn.query(query, function(errorP, resultadoConPublicador){
+			if (errorP) {
+				callback(errorP);
+			} else {
+				var queryGanador = 'SELECT * FROM publicacion p INNER JOIN oferta o ON p.idOfertaGanadora = o.idOferta ' +
+					'INNER JOIN usuario u ON o.idUsuario = u.idUsuario ' +
+					'WHERE fechaPago BETWEEN ' + conn.escape(desde) +
+					' AND ' + conn.escape(hasta) +
+					' ORDER BY fechaPago ASC';
+				conn.query(queryGanador, function(errorG, resultadoConGanador){
+					if (errorG) {
+						callback(errorG);
+					} else {
+						callback(null, resultadoConPublicador, resultadoConGanador);
+					};
+				});
+			};
+		})
+	};
+};
+
 module.exports = modeloPublicacion;

@@ -113,7 +113,8 @@ modeloUsuario.pagar = function(publicador, admin, callback){
 modeloUsuario.getUsuariosPorFecha = function(desde, hasta, callback){
 	if (conn) {
 		var query = 'SELECT * FROM usuario WHERE fechaRegistro BETWEEN ' + conn.escape(desde) +
-			' AND ' + conn.escape(hasta);
+			' AND ' + conn.escape(hasta) +
+			' ORDER BY fechaRegistro ASC';
 		conn.query(query, function(error, resultado){
 			if (error) {
 				callback(error);

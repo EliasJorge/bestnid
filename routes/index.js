@@ -456,13 +456,14 @@ router.get('/tablaUsuarios/:id/:desde/:hasta', function(req, res, next){
 				res.send(errorHTML);
 			} else {
 				if (resultado.length > 0) {
-					var tablaHtml = '<div class="col-md-12">' +
-			           	'<table><th>Nombre de Usuario</th><th>Nombre</th><th>Apellido</th><th>E-Mail</th>';
+					var tablaHtml = '<div class="col-md-12" style="margin-bottom:2em;">' +
+			           	'<table><th>Nombre de Usuario</th><th>Nombre</th><th>Apellido</th><th>E-Mail</th><th>Fecha de Registro</th>';
 			        for (var i = 0; i < resultado.length; i++) {
 			        	tablaHtml += '<tr><td>' + resultado[i].nombreUsuario + '</td>' +
 			        		'<td>' + resultado[i].nombre + '</td>' +
 			        		'<td>' + resultado[i].apellido + '</td>' +
-			        		'<td>' + resultado[i].mail + '</td></tr>';
+			        		'<td>' + resultado[i].mail + '</td>' +
+			        		'<td>' + fechaFormatoLocal(resultado[i].fechaRegistro) + '</td></tr>';
 			        };
 			        tablaHtml += '</table></div>'
 			        res.send(tablaHtml);
@@ -480,7 +481,56 @@ router.get('/tablaUsuarios/:id/:desde/:hasta', function(req, res, next){
 	}
 });
 
-//Ruta para publicaciones concretadas
+router.get('/:id/pubsConcretadas', function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id && req.session.usuario.esAdmin == 1) {
+		res.render('pubsConcretadas', {
+			sesionUsuario:req.session.usuario,
+			categoriaActiva: null,
+			url:req.originalUrl
+		});
+	} else {
+		res.redirect('/');
+	};
+});
+
+router.get('/tablaPublicaciones/:id/:desde/:hasta', function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id && req.session.usuario.esAdmin == 1) {
+		dbPublicacion.getPublicacionesPorFechaPago(req.params.desde, req.params.hasta, function(error, pubsConPublicador, pubsConGanador){
+			if (error) {
+				var errorHTML = '<div class="col-md-12">' +
+		           	'<div class="alert alert-danger"><span>Hubo un error al conectarse a la base de datos, por favor intente más tarde</span></div>' +
+		            '</div>';
+				res.send(errorHTML);
+			} else {
+				if (pubsConPublicador.length > 0) {
+					var tablaHtml = '<div class="col-md-12" style="margin-bottom:2em;">' +
+			           	'<table><th>Titulo</th><th>Publicador</th><th>Ganador</th><th>Fecha de Pago</th><th>Ganancias</th>';
+			        for (var i = 0; i < pubsConPublicador.length; i++) {
+			        	tablaHtml += '<tr><td>' + pubsConPublicador[i].titulo + '</td>' +
+			        		'<td>' + pubsConPublicador[i].nombreUsuario + '</td>' +
+			        		'<td>' + pubsConGanador[i].nombreUsuario + '</td>' +
+			        		'<td>' + fechaFormatoLocal(pubsConPublicador[i].fechaPago) + '</td>';
+			        	if (pubsConPublicador[i].idUsuario == 1) { /*es el administrador*/
+			        		tablaHtml += '<td>' + pubsConGanador[i].monto + '</td></tr>';
+			        	} else {
+			        		tablaHtml += '<td>' + (pubsConGanador[i].monto * 0.3) + '</td></tr>';
+			        	};
+			        };
+			        tablaHtml += '</table></div>'
+			        res.send(tablaHtml);
+				} else {
+					var errorHTML = '<div class="col-md-12">' +
+			           	'<div class="alert alert-warning"><span>No se concretaron publicaciones entre esas fechas</span></div>' +
+			            '</div>';
+					res.send(errorHTML);
+				};
+				
+			}
+		});
+	} else {
+		res.redirect('/');
+	}
+});
 
 router.post('/actualizarInfo/:id', function(req, res, next){
 	//Verifico que haya una sesion activa
