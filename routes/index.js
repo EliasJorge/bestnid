@@ -506,7 +506,8 @@ router.get('/tablaPublicaciones/:id/:desde/:hasta', function(req, res, next){
 					var tablaHtml = '<div class="col-md-12" style="margin-bottom:2em;">' +
 			           	'<table><th>Titulo</th><th>Publicador</th><th>Ganador</th><th>Fecha de Pago</th><th>Ganancias</th>';
 			        for (var i = 0; i < pubsConPublicador.length; i++) {
-			        	tablaHtml += '<tr><td>' + pubsConPublicador[i].titulo + '</td>' +
+			        	tablaHtml += '<tr><td><a href="/publicacion/' + pubsConPublicador[i].idPublicacion +
+			        		'">' + pubsConPublicador[i].titulo + '</a></td>' +
 			        		'<td>' + pubsConPublicador[i].nombreUsuario + '</td>' +
 			        		'<td>' + pubsConGanador[i].nombreUsuario + '</td>' +
 			        		'<td>' + fechaFormatoLocal(pubsConPublicador[i].fechaPago) + '</td>';
