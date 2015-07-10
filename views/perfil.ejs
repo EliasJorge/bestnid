@@ -8,15 +8,28 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="col-md-10 text-center" style="margin-bottom:3em">
-                    <img src="<%=sesionUsuario.foto%>" class="img-circle img-responsive" style="width: 20em; height: 20em;" alt="" />
+                    <img id="output" src="<%=sesionUsuario.foto%>" class="img-circle img-responsive" style="width: 20em; height: 20em;" alt="" />
                     <form method="POST" action="/actualizarImagen/<%=sesionUsuario.idUsuario%>" enctype="multipart/form-data">
                 	    <div class="col-sm-14" style="margin-top:0.5em; margin-bottom:0.5em">
-		                    <span class="btn btn-success btn-file">
-		                        Cambiar&hellip; <input type="file" name="pic" accept="image/*">
+		                    <span class="btn btn-warning btn-file">
+		                        Cambiar&hellip; <input type="file" name="pic" accept="image/*" onchange="loadFile(event)">
+		                        <script>
+								  	var loadFile = function(event) {
+								    	var reader = new FileReader();
+								    	reader.onload = function(){
+								      		var output = document.getElementById('output');
+								      		output.src = reader.result;
+								      		output.height = 100;
+								      		output.width = 100;
+								    	};
+								    	reader.readAsDataURL(event.target.files[0]);
+								    	$("#bConfirmar").slideDown('fast');
+								  	};
+								</script>
 		                    </span>
                 	    </div>
                 	    <div class="col-sm-14">
-                	    	<button type="submit" class="btn btn-success">Confirmar</button>
+                	    	<button id="bConfirmar" type="submit" class="btn btn-success">Confirmar</button>
                 	    </div>
 					</form>
                     </div>
@@ -43,7 +56,7 @@
 	                    <br>
 	                    <div class="form-group">
 		                    <div class="col-sm-16 text-right">
-	                    		<button type="submit" class="btn btn-success">Actualizar Datos</button>
+	                    		<button type="submit" class="btn btn-warning">Actualizar Datos</button>
 	                    	</div>
 	                    </div>
                     </form>

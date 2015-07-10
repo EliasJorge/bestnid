@@ -1,5 +1,7 @@
 $(function() {
 
+    $("#bConfirmar").hide();
+
 	//Animacion para sacar mensajes de datos actualizados
     setTimeout(function() {
         $(".alerta").slideUp('fast');
