@@ -128,6 +128,21 @@
 		            		</div>
 		            	</div>
 		            <% } %>
+		            <% if (typeof(puedeBorrar) != 'undefined' ) {%>
+		            	<% if (puedeBorrar == 1 ){%>
+	                        <div class="col-md-12 alerta">
+			            		<div class="alert alert-danger">
+			            			<span>No puede borrar su perfil ya que ha elegido ganadores en alguna de sus publicaciones</span>
+			            		</div>
+			            	</div>
+		            	<%} else {%>
+		            		<div class="col-md-12 alerta">
+			            		<div class="alert alert-danger">
+			            			<span>No puede borrar su perfil ya que fue elegido como ganador de una publicacion</span>
+			            		</div>
+			            	</div>
+		            	<%}%>
+		            <%}%>
                 	<div class="col-md-12" style="margin-bottom:2em">
 	                    <div class="jumbotron">
 	                        <h2>Información: </h2>

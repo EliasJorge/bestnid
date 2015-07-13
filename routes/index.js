@@ -1421,7 +1421,7 @@ router.post('/eliminarPublicacion/:idPublicacion', function(req, res, next){
 
 router.post('/eliminarCuenta/:idUsuario', function(req, res, next){
 	if(req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario){
-		dbUsuario.eliminarCuenta(req.session.usuario.idUsuario, function(error, publicacionesConGanador){
+		dbUsuario.eliminarCuenta(req.session.usuario.idUsuario, function(error, puedeBorrar){
 			if (error) {
 				res.render('error', {
 					mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
@@ -1431,11 +1431,24 @@ router.post('/eliminarCuenta/:idUsuario', function(req, res, next){
 				});
 			}
 			else{
-				if (publicacionesConGanador == 1) {
-					res.redirect('/');
+				if (puedeBorrar == 0) {
+					res.redirect('/cerrarSesion');
 				}
 				else{
-					res.redirect('/cerrarSesion');
+					res.render('perfil', {
+						sesionUsuario: req.session.usuario,
+						categoriaActiva: null,
+						url:req.originalUrl,
+						usuarioExistente: false,
+						passwordIncorrecta: false,
+						passwordCambiada: false,
+						datosCambiados: false,
+						nombreUsuario: '',
+						nombre: '',
+						apellido: '',
+						mail: '',
+						puedeBorrar: puedeBorrar
+					});					
 				}
 			}
 		});

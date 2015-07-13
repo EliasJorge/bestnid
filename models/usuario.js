@@ -149,11 +149,19 @@ modeloUsuario.eliminarCuenta = function(idUsuario, callback){
 				callback(error);
 			}
 			else{
-				console.log(resultado.length);
 				if(resultado.length == 0){
-					conn.query('UPDATE usuario SET visible = false WHERE idUsuario = ' + idUsuario);
-					conn.query('UPDATE publicacion SET visible = false WHERE idUsuario = ' + idUsuario);		
-					callback(null,0);
+					conn.query('SELECT * FROM publicacion p INNER JOIN oferta o ON p.idPublicacion = o.idPublicacion WHERE p.pagada = false AND p.idOfertaGanadora = o.idOferta AND o.idUsuario = ' + idUsuario,
+					function(error, resultado){
+						if (resultado.length == 0 ) {
+							conn.query('UPDATE usuario SET visible = false WHERE idUsuario = ' + idUsuario);
+							conn.query('UPDATE publicacion SET visible = false WHERE idUsuario = ' + idUsuario);	
+							conn.query('DELETE FROM oferta WHERE idUsuario = ' + idUsuario);	
+							callback(null,0);
+						}
+						else{
+							callback(null,2);
+						}
+					});
 				}
 				else{
 					callback(null, 1);

@@ -5,7 +5,7 @@ $(function() {
 	//Animacion para sacar mensajes de datos actualizados
     setTimeout(function() {
         $(".alerta").slideUp('fast');
-    }, 3000);
+    }, 6000);
 
     //Carga por defecto las publicaciones del usuario
     
