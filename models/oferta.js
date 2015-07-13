@@ -96,4 +96,17 @@ modeloOferta.getUsuarioDeOfertaConId = function(idOferta, callback){
 	}
 };
 
+modeloOferta.eliminarOferta = function(idUsuario,idOferta,callback){
+	if(conn){
+		var query = "DELETE FROM oferta WHERE idOferta = " + idOferta + " AND idUsuario = " + idUsuario;
+		conn.query(query, function(error,resultado){
+			if (error){
+				callback(error);
+			} else {
+				callback(null,resultado);
+			}
+		});
+	};
+};
+
 module.exports = modeloOferta;

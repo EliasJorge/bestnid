@@ -97,7 +97,12 @@
                                             <!--No lo muestra si la publicacion ya termino-->
                                         <%if (publicacion.terminada != true) {%>
                                             <div class="text-right" style="">
-                                                <button type="button" class="btn btn-danger">Eliminar</button>
+                                                <a id="eliminarOferta" href="/eliminarOferta/<%=sesionUsuario.idUsuario%>/<%=publicacion.idPublicacion%>/<%=oferta.idOferta%>" type="button" class="btn btn-danger">Eliminar</a>
+                                                <script type="text/javascript">
+                                                $(document).ready(function() {
+                                                    $('#eliminarOferta').confirm({text:"¿Esta seguro de que desea eliminar la oferta?"});
+                                                });
+                                                </script>
                                             </div>
                                         <%}%>
                                     </div>
@@ -116,7 +121,7 @@
                             <%if (typeof(sesionUsuario) != 'undefined' && datos.idUsuario == sesionUsuario.idUsuario) {%>
                             <p>Usted pregunto:</p>
                             <div class="col-md-12 alert alert-success">
-                            <%} else {%>
+                            <%} else {%>    
                             <div class="col-md-12 ">
                             <%}%>         
                                 <span class="pull-right"><%=datos.fechaPregunta.split('-')[2] + '/' + datos.fechaPregunta.split('-')[1] + '/' + datos.fechaPregunta.split('-')[0]%></span>
@@ -128,7 +133,12 @@
                                 <%if (typeof(sesionUsuario) != 'undefined' && datos.idUsuario == sesionUsuario.idUsuario && datos.idRespuesta == null ) {%>
                                     <%if (publicacion.terminada != true) {%>
                                         <div class="text-right">
-                                            <button type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Eliminar</button>
+                                            <a id="eliminarPregunta" href="/eliminarPregunta/<%=datos.idUsuario%>/<%=publicacion.idPublicacion%>/<%=datos.idPregunta%>" type="button" class="eliminarPregunta btn btn-danger text-right" style="margin-top: 0.7em">Eliminar</a>
+                                            <script type="text/javascript">
+                                            $(document).ready(function() {
+                                                $('.eliminarPregunta').confirm({text:"¿Esta seguro de que desea eliminar la pregunta?"});
+                                            });
+                                            </script>
                                         </div>
                                     <%}%>
                                 <%}%>
@@ -215,12 +225,12 @@
                 </div>
                 <div class="modal-footer">
                     <form id="formEliminarRespuesta" action="/eliminarRespuesta" method="POST">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         <input id="idUsuario" name="idUsuario" type="number" style="display:none" >
                         <input id="idPregunta" name="idPregunta" type="number" style="display:none" >
                         <input id="idRespuesta" name="idRespuesta" type="number" style="display:none" >
                         <input id="idPublicacion" name ="idPublicacion" type="number" style="display:none" >
                         <input id="submitEliminarRespuesta" type="submit" value="Aceptar" class="btn btn-primary">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     </form>
                 </div>
             </div>
@@ -358,5 +368,6 @@
 </body>
 
 <script src="/javascript/publicacion.js"></script>
-
+<script src="/javascript/jquery-confirm.js"></script>
+<script src="/javascript/jquery-confirm.min.js"></script>
 </html>
