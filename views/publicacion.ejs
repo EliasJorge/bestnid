@@ -173,12 +173,14 @@
                 <%if (ofertas.length == 0) { %>
                     <p class="lead">Opciones</p>
                     <div class="list-group">
-                        <a href="#" class="list-group-item"><span class="glyphicon glyphicon-trash"></span> Eliminar Publicación</a>
+                        <a href="#" class="list-group-item" data-toggle="modal" data-target="#modalEliminar" data-idPublicacion=<%=publicacion.idPublicacion%> ><span class="glyphicon glyphicon-trash"></span> Eliminar Publicación</a>
                         <a href="/<%=publicacion.idPublicacion%>/modificarPublicacion" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Modificar Publicación</a>
+
                     </div>
                 <%} else {%>
                     <%if (publicacion.idOfertaGanadora == null && publicacion.pagada == false) {%>
-                        <div class="alert alert-warning">No puede modificar/eliminar esta publicacion ya que han ofertado</div>
+                        <div class="alert alert-warning">No puede modificar esta publicacion ya que han ofertado</div>
+                        <a href="#" class="list-group-item" data-toggle="modal" data-target="#modalEliminar" data-idPublicacion=<%=publicacion.idPublicacion%> ><span class="glyphicon glyphicon-trash"></span> Eliminar Publicación</a>
                     <%}%>
                     <% if (publicacion.idOfertaGanadora != null && publicacion.pagada == false) { %>
                         <div id="dataChangedDiv" >
@@ -247,90 +249,108 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminarlabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalEliminarlabel">Atencion!</h4>
+                    </div>
+                    <!--///////FORM PARA ELIMINAR/////////-->
+                    <div class="modal-body">¿Esta seguro que quiere eliminar su publicacion?</div>
+                    <form id="formRespuesta" method="POST" action="/eliminarPublicacion/<%=publicacion.idPublicacion%>" novalidate>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <input type="submit" class="btn btn-primary" value="Eliminar">
+                        </div>
+                    </form>
+                    <!--///////FORM DE ELIMINAR/////////-->
+                </div>
+            </div>
+        </div>
     <%}%>
 
-    <%if (typeof(sesionUsuario) != 'undefined'){%>
-    <!--modal fade para preguntar-->
+    <%if (typeof(sesionUsuario) != 'undefined') { %>
+        <!--modal fade para preguntar-->
 
-    <div class="modal fade" id="modalPregunta" tabindex="-1" role="dialog" aria-labelledby="modalPreguntaLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="modalPreguntaLabel">¿Tienes una duda de este producto?</h4>
-                </div>
-                <!--///////FORM DE PREGUNTA/////////-->
-                <form id="formPregunta" method="POST" action="/preguntar/<%=publicacion.idPublicacion%>/<%=sesionUsuario.idUsuario%>">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="message-text" class="control-label">Pregunta:</label>
-                            <textarea id="textoPregunta" name="textoPregunta" style="resize:none" form="formPregunta" maxlength="100" class="form-control" required ></textarea>
-                        </div>
+        <div class="modal fade" id="modalPregunta" tabindex="-1" role="dialog" aria-labelledby="modalPreguntaLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalPreguntaLabel">¿Tienes una duda de este producto?</h4>
                     </div>
-                    <div class="modal-footer">
-                        <input type="submit" class="btn btn-success" value="Preguntar"></button>
-                    </div>
-                </form>
-                <!--///////FORM DE PREGUNTA/////////-->
-            </div>
-        </div>
-    </div>
-
-    <!--modal fade para ofertar-->
-    <div class="modal fade" id="modalOferta" tabindex="-1" role="dialog" aria-labelledby="modalOfertaLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="modalOfertaLabel">¿Quieres ofertar para este producto?</h4>
-                </div>
-                <!--///////FORM DE OFERTA/////////-->
-                <form id="formOferta" method="POST" action="/ofertar/<%=publicacion.idPublicacion%>/<%=sesionUsuario.idUsuario%>" data-idPublicacion="<%=publicacion.idPublicacion%>" data-idUsuario="<%=sesionUsuario.idUsuario%>">
-                    <div id="formOfertaBody" class="modal-body">
-                        <div class="form-group">
-                            <label for="message-text" class="control-label">Quieres este producto porque:</label>
-                            <textarea id="textoOferta" name="textoOferta" style="resize:none" form="formOferta" maxlength="100" class="form-control" required></textarea>
-                            <br>
-                            <label for="message-text" class="control-label">Ofreces por este producto:</label>
-                            <div class="input-group col-md-4">
-                                <input type="number" id="montoOfrecido" name="montoOfrecido" form="formOferta" class="form-control" min="1" max="9999999" step="0.01" size="4" required />
-                                <span class="input-group-addon">$</span>
+                    <!--///////FORM DE PREGUNTA/////////-->
+                    <form id="formPregunta" method="POST" action="/preguntar/<%=publicacion.idPublicacion%>/<%=sesionUsuario.idUsuario%>">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Pregunta:</label>
+                                <textarea id="textoPregunta" name="textoPregunta" style="resize:none" form="formPregunta" maxlength="100" class="form-control" required ></textarea>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="submit" class="btn btn-success" value="Ofertar"></button>
-                    </div>
-                </form>
-                <!--///////FORM DE OFERTA/////////-->
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalRespuesta" tabindex="-1" role="dialog" aria-labelledby="modalRespuestaLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="modalRespuestaLabel">Responde a esta pregunta:</h4>
-                </div>
-                <!--///////FORM DE RESPUESTA/////////-->
-                <form id="formRespuesta" method="POST" action="/responder/<%=publicacion.idPublicacion%>" data-idPregunta="">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="message-text" class="control-label">Respuesta:</label>
-                            <textarea id="textoRespuesta" name="textoRespuesta" style="resize:none" form="formRespuesta" maxlength="100" class="form-control" required ></textarea>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-success" value="Preguntar"></button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="submit" class="btn btn-success" value="Responder"></button>
-                    </div>
-                </form>
-                <!--///////FORM DE RESPUESTA/////////-->
+                    </form>
+                    <!--///////FORM DE PREGUNTA/////////-->
+                </div>
             </div>
         </div>
-    </div>
 
+        <!--modal fade para ofertar-->
+        <div class="modal fade" id="modalOferta" tabindex="-1" role="dialog" aria-labelledby="modalOfertaLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalOfertaLabel">¿Quieres ofertar para este producto?</h4>
+                    </div>
+                    <!--///////FORM DE OFERTA/////////-->
+                    <form id="formOferta" method="POST" action="/ofertar/<%=publicacion.idPublicacion%>/<%=sesionUsuario.idUsuario%>" data-idPublicacion="<%=publicacion.idPublicacion%>" data-idUsuario="<%=sesionUsuario.idUsuario%>">
+                        <div id="formOfertaBody" class="modal-body">
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Quieres este producto porque:</label>
+                                <textarea id="textoOferta" name="textoOferta" style="resize:none" form="formOferta" maxlength="100" class="form-control" required></textarea>
+                                <br>
+                                <label for="message-text" class="control-label">Ofreces por este producto:</label>
+                                <div class="input-group col-md-4">
+                                    <input type="number" id="montoOfrecido" name="montoOfrecido" form="formOferta" class="form-control" min="1" max="9999999" step="0.01" size="4" required />
+                                    <span class="input-group-addon">$</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-success" value="Ofertar"></button>
+                        </div>
+                    </form>
+                    <!--///////FORM DE OFERTA/////////-->
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalRespuesta" tabindex="-1" role="dialog" aria-labelledby="modalRespuestaLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalRespuestaLabel">Responde a esta pregunta:</h4>
+                    </div>
+                    <!--///////FORM DE RESPUESTA/////////-->
+                    <form id="formRespuesta" method="POST" action="/responder/<%=publicacion.idPublicacion%>" data-idPregunta="">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Respuesta:</label>
+                                <textarea id="textoRespuesta" name="textoRespuesta" style="resize:none" form="formRespuesta" maxlength="100" class="form-control" required ></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-success" value="Responder"></button>
+                        </div>
+                    </form>
+                    <!--///////FORM DE RESPUESTA/////////-->
+                </div>
+            </div>
+        </div>
     <% } %>
 
 
