@@ -86,9 +86,24 @@
 
 	                <div class="form-group">
 	                    <div class="col-sm-12 text-right">
-	                        <button type="submit" class="btn btn-primary preview-add-button">
-	                            Modificar
-	                        </button>
+	                    	<button class="btn btn-primary" id="complexConfirm">Modificar</button>
+	                    	<script type="text/javascript">
+								$(document).ready(function() {
+								$("#complexConfirm").confirm({
+								    title:"Atencion",
+								    text:"¿Esta seguro de que desea modificar la publicacion?",
+								    confirm: function(button) {
+								        $('form#pub').submit();
+								    },
+								    cancel: function(button) {
+								        //no hace nada
+								    },
+								    confirmButton: "Aceptar",
+								    cancelButton: "Cancelar",
+								    cancelButtonClass: "btn-danger"
+								});
+							});
+	                    	</script>
 	                        <a href="/publicacion/<%=datosPublicacion.idPublicacion%>" class="btn btn-danger" role="button">
 	                        	Cancelar
 	                        </a>
@@ -101,4 +116,6 @@
 	<% include partials/footer.ejs %>
 	
 </body>
+<script src="/javascript/jquery-confirm.js"></script>
+<script src="/javascript/jquery-confirm.min.js"></script>
 </html>
