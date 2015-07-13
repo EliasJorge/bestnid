@@ -116,7 +116,7 @@
                             <%if (typeof(sesionUsuario) != 'undefined' && datos.idUsuario == sesionUsuario.idUsuario) {%>
                             <p>Usted pregunto:</p>
                             <div class="col-md-12 alert alert-success">
-                            <%} else {%>
+                            <%} else {%>    
                             <div class="col-md-12 ">
                             <%}%>         
                                 <span class="pull-right"><%=datos.fechaPregunta.split('-')[2] + '/' + datos.fechaPregunta.split('-')[1] + '/' + datos.fechaPregunta.split('-')[0]%></span>
@@ -128,7 +128,12 @@
                                 <%if (typeof(sesionUsuario) != 'undefined' && datos.idUsuario == sesionUsuario.idUsuario && datos.idRespuesta == null ) {%>
                                     <%if (publicacion.terminada != true) {%>
                                         <div class="text-right">
-                                            <button type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Eliminar</button>
+                                            <a id="eliminarPregunta" href="/eliminarPregunta/<%=datos.idUsuario%>/<%=publicacion.idPublicacion%>/<%=datos.idPregunta%>" type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Eliminar</a>
+                                            <script type="text/javascript">
+                                            $(document).ready(function() {
+                                                $('#eliminarPregunta').confirm({text:"¿Esta seguro de que desea eliminar la pregunta?"});
+                                            });
+                                            </script>
                                         </div>
                                     <%}%>
                                 <%}%>
@@ -358,5 +363,6 @@
 </body>
 
 <script src="/javascript/publicacion.js"></script>
-
+<script src="/javascript/jquery-confirm.js"></script>
+<script src="/javascript/jquery-confirm.min.js"></script>
 </html>

@@ -1419,6 +1419,24 @@ router.post('/eliminarPublicacion/:idPublicacion', function(req, res, next){
 	});
 })
 
+router.get('/eliminarPregunta/:idUsuario/:idPublicacion/:idPregunta', function(req,res,next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario){
+		dbPregunta.eliminarPregunta(req.params.idUsuario,req.params.idPregunta, function(error){
+			if (error){
+				res.render('error', {
+				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+			} else {
+				res.redirect('/publicacion/' + req.params.idPublicacion);
+			}
+		});
+	} else {
+		res.redirect('/');
+	}
+});
 
 module.exports = router;
 

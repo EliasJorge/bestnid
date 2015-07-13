@@ -16,7 +16,19 @@ modeloPregunta.insertarPregunta = function(pregunta,callback){
 			};
 		});
 	};
+}
 
+modeloPregunta.eliminarPregunta = function(idUsuario,idPregunta,callback){
+	if (conn) {
+		var query = "DELETE FROM pregunta WHERE idPregunta = " + idPregunta + " AND idUsuario = " + idUsuario;
+		conn.query(query,function(error,resultado){
+			if (error){
+				callback(error);
+			} else {
+				callback(null,resultado);
+			}
+		});
+	};
 }
 
 module.exports = modeloPregunta;
