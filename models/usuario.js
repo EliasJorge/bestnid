@@ -49,7 +49,7 @@ modeloUsuario.getUsuarioByID = function(id, callback){
 
 modeloUsuario.getLogin = function(nombreUsuario, password, callback){
 	if (conn) {
-		var query = 'SELECT * FROM usuario WHERE nombreUsuario = ' + conn.escape(nombreUsuario) +
+		var query = 'SELECT * FROM usuario WHERE visible = true AND nombreUsuario = ' + conn.escape(nombreUsuario) +
 			' AND password = ' + conn.escape(password);
 		conn.query(query, function(error, resultado){
 			if (error) {
@@ -138,6 +138,29 @@ modeloUsuario.resetPassword = function(datosUsuario, callback){
 			};
 		})
 	};
+};
+
+
+modeloUsuario.eliminarCuenta = function(idUsuario, callback){
+	if(conn){
+		var query = 'SELECT * FROM publicacion WHERE pagada = false AND idOfertaGanadora IS NOT NULL AND idUsuario = ' + idUsuario;
+		conn.query(query, function(error,resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				console.log(resultado.length);
+				if(resultado.length == 0){
+					conn.query('UPDATE usuario SET visible = false WHERE idUsuario = ' + idUsuario);
+					conn.query('UPDATE publicacion SET visible = false WHERE idUsuario = ' + idUsuario);		
+					callback(null,0);
+				}
+				else{
+					callback(null, 1);
+				}
+			}
+		});
+	}
 };
 
 module.exports = modeloUsuario;

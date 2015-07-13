@@ -1417,7 +1417,30 @@ router.post('/eliminarPublicacion/:idPublicacion', function(req, res, next){
 			res.redirect('/');
 		}
 	});
-})
+});
+
+router.post('/eliminarCuenta/:idUsuario', function(req, res, next){
+	if(req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario){
+		dbUsuario.eliminarCuenta(req.session.usuario.idUsuario, function(error, publicacionesConGanador){
+			if (error) {
+				res.render('error', {
+					mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			}
+			else{
+				if (publicacionesConGanador == 1) {
+					res.redirect('/');
+				}
+				else{
+					res.redirect('/cerrarSesion');
+				}
+			}
+		});
+	}
+});
 
 
 module.exports = router;
