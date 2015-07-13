@@ -262,4 +262,17 @@ modeloPublicacion.getPublicacionesPorFechaPago = function(desde, hasta, callback
 	};
 };
 
+modeloPublicacion.borrarPublicacionConId = function(id, callback){
+	if (conn) {	
+		conn.query("UPDATE publicacion SET visible = false where idPublicacion = " + id, function(error){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null);
+			}
+		});
+	}
+}
+
 module.exports = modeloPublicacion;

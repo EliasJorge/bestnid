@@ -1402,5 +1402,23 @@ router.post('/recuperarPassword', function(req, res, next){
 	});
 });
 
+
+router.post('/eliminarPublicacion/:idPublicacion', function(req, res, next){
+	dbPublicacion.borrarPublicacionConId(req.params.idPublicacion, function(error){
+		if (error) {
+			res.render('error', {
+				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		}
+		else{
+			res.redirect('/');
+		}
+	});
+})
+
+
 module.exports = router;
 
