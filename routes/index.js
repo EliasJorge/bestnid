@@ -423,7 +423,8 @@ router.get('/perfil/:id/estadisticas', function(req, res, next){
     		'<a href="/' + req.session.usuario.idUsuario +
     		'/usuariosRegistrados" class="btn btn-primary text-center" style="width:15em; margin-right:1em;">Usuarios Registrados</a>' +
     		'<a href="/' + req.session.usuario.idUsuario +
-    		'/pubsConcretadas" class="btn btn-primary text-center" style="width:15em;">Publicaciones Concretadas</a>' +
+    		'/pubsConcretadas" class="btn btn-primary text-center" style="width:15em; margin-right:1em;">Publicaciones Concretadas</a>' +
+    		'<a href="/usuarios" class="btn btn-primary text-center" style="width:15em;"> Administradores</a>'+
     		'</div>';
     	res.send(html);
     } else {
@@ -1492,6 +1493,72 @@ router.get('/eliminarOferta/:idUsuario/:idPublicacion/:idOferta', function(req,r
 		res.redirect('/');
 	}
 });
+
+router.get('/usuarios',function(req, res, next){
+	if (req.session.usuario != null && req.session.usuario.esAdmin == true){
+		dbUsuario.getUsarios(function(error, resultado){
+			if (error){
+				res.render('error', {
+				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+			} else {
+				var nuevoAdmin = req.session.nuevoAdmin;
+				var adminEliminado = req.session.adminEliminado;
+				req.session.adminEliminado = null;
+				req.session.nuevoAdmin = null;
+				res.render('listaUsuarios', {
+					sesionUsuario: req.session.usuario,
+					url:req.originalUrl,
+					usuarios: resultado,
+					nuevoAdmin: nuevoAdmin,
+					adminEliminado: adminEliminado
+				});
+			}
+		})
+	}
+	else {
+		res.redirect('/');
+	}
+});
+
+
+router.post('/hacerAdmin', function(req, res, next){
+	dbUsuario.setAdminAUsuario(req.body.idNuevoAdmin, function(error){
+		if (error) {
+			res.render('error', {
+				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		}
+		else{
+			req.session.nuevoAdmin = true;
+			res.redirect('/usuarios');
+		}
+	});
+});
+
+router.post('/sacarAdmin', function(req, res, next){
+	dbUsuario.setNoAdminAUsuario(req.body.idAdminEliminar, function(error){
+		if (error) {
+			res.render('error', {
+				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		}
+		else{
+			req.session.adminEliminado = true;
+			res.redirect('/usuarios');
+		}
+	});
+});
+
 
 module.exports = router;
 

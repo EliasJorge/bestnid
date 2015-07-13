@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<% include partials/head.ejs %>
+<body>
+	<% include partials/nav.ejs %>
+	 <!-- Page Content -->
+	<%if( typeof (nuevoAdmin) != 'undefined' && nuevoAdmin == true){%>
+		<div id="alerta"class="alert alert-success">
+			<p>El usuario ahora es administrador</p>
+		</div>
+	<%}%>
+	<%if( typeof (adminEliminado) != 'undefined' && adminEliminado == true){%>
+		<div id="alerta"class="alert alert-danger">
+			<p>El usuario ya no es mas administrador</p>
+		</div>
+	<%}%>
+  	<% if (usuarios.length) { %>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Usuario</th>
+					<th>Nombre</th>
+					<th>Apellido</th>
+					<th>Mail</th>
+					<th>Fecha Registro</th>
+					<th>Administrador</th>
+					<th> </th>
+				</tr>
+			</thead>
+			<tbody>	
+		    	<% usuarios.forEach(function(datos) { %> 
+		    		<% if(sesionUsuario.idUsuario != datos.idUsuario) {%>
+			    	<tr>
+			    	<%} else {%>
+			    	<tr class="alert alert-info">
+			    	<%}%>
+						<td><%= datos.nombreUsuario %></td>
+						<td><%= datos.nombre %></td>
+						<td><%= datos.apellido %></td>
+						<td><%= datos.mail %></td>
+						<td><%= datos.fechaRegistro %></td>
+						<td>
+							<% if(datos.esAdmin) {%>
+								<span class="glyphicon glyphicon-ok"></span>
+							<%} else {%>
+								<span class="glyphicon glyphicon-remove"></span>
+							<%}%>
+						</td>
+						<td>
+						<%if (sesionUsuario.idUsuario != datos.idUsuario){%>
+							<% if(datos.esAdmin) {%>
+								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#sacarAdministrador" style="width: 14em" data-idUsuario ="<%=datos.idUsuario%>" data-backdrop='static'>Sacar administrador
+                                </button>
+							<%} else {%>
+
+								<button type="button" class="btn btn-success" data-toggle="modal" data-target="#agregarAdministrador" style="width: 14em" data-idUsuario ="<%=datos.idUsuario%>" data-backdrop='static'>Agregar administrador
+                                </button>
+							<%}%>
+							<%}else {%>
+								<p>Esta es su cuenta<p>
+							<%}%>
+						</td>
+						<td>
+					</td>
+				</tr>
+			<% }); %>
+		</tbody>
+	</table>
+	<% }else{ %>
+		<div class="alert alert-danger">Actualmente no hay usuarios</div>
+	<% } %>
+    <!-- /.container -->
+
+		<div class="modal bs-example-modal-sm" id="agregarAdministrador" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-title">Atencion!</h4>
+                    </div>
+                    <div class="modal-body">
+                        ¿Esta seguro de que quiere hacer a este usuario administrador?
+                    </div>
+                    <div class="modal-footer">
+                        <form id="formAdmin" action="/hacerAdmin" method="POST">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <input id="idNuevoAdmin" name="idNuevoAdmin" type="number" style="display:none" required>
+                            <input id="submitHacerAdministrador" type="submit" value="Aceptar"class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal bs-example-modal-sm" id="sacarAdministrador" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-title">Atencion!</h4>
+                    </div>
+                    <div class="modal-body">
+                        ¿Esta seguro de que quiere sacar a este usuario de la administración?
+                    </div>
+                    <div class="modal-footer">
+                        <form id="formAdmin" action="/sacarAdmin" method="POST">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <input id="idNuevoAdmin" name="idAdminEliminar" type="number" style="display:none" required>
+                            <input id="submitSacarAdministrador" type="submit" value="Aceptar"class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+	<% include partials/footer.ejs %>
+	
+	<script src="/javascript/listaUsuarios.js"></script>
+</body>
+</html>

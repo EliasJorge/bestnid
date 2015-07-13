@@ -171,4 +171,43 @@ modeloUsuario.eliminarCuenta = function(idUsuario, callback){
 	}
 };
 
+modeloUsuario.getUsarios = function(callback){
+	if (conn) {
+		conn.query('SELECT * FROM usuario WHERE visible = true', function(error, resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null, resultado);
+			}
+		});
+	}
+}
+
+modeloUsuario.setAdminAUsuario = function(idUsuario, callback){
+	if(conn){
+		conn.query('UPDATE usuario SET esAdmin = true WHERE idUsuario = ' + idUsuario, function(error, resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null);
+			}
+		})
+	}
+}
+
+modeloUsuario.setNoAdminAUsuario = function(idUsuario, callback){
+	if(conn){
+		conn.query('UPDATE usuario SET esAdmin = false WHERE idUsuario = ' + idUsuario, function(error, resultado){
+			if (error) {
+				callback(error);
+			}
+			else{
+				callback(null);
+			}
+		})
+	}
+}
+
 module.exports = modeloUsuario;
