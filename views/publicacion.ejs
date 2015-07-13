@@ -97,7 +97,12 @@
                                             <!--No lo muestra si la publicacion ya termino-->
                                         <%if (publicacion.terminada != true) {%>
                                             <div class="text-right" style="">
-                                                <button type="button" class="btn btn-danger">Eliminar</button>
+                                                <a id="eliminarOferta" href="/eliminarOferta/<%=sesionUsuario.idUsuario%>/<%=publicacion.idPublicacion%>/<%=oferta.idOferta%>" type="button" class="btn btn-danger">Eliminar</a>
+                                                <script type="text/javascript">
+                                                $(document).ready(function() {
+                                                    $('#eliminarOferta').confirm({text:"¿Esta seguro de que desea eliminar la oferta?"});
+                                                });
+                                                </script>
                                             </div>
                                         <%}%>
                                     </div>
@@ -128,10 +133,10 @@
                                 <%if (typeof(sesionUsuario) != 'undefined' && datos.idUsuario == sesionUsuario.idUsuario && datos.idRespuesta == null ) {%>
                                     <%if (publicacion.terminada != true) {%>
                                         <div class="text-right">
-                                            <a id="eliminarPregunta" href="/eliminarPregunta/<%=datos.idUsuario%>/<%=publicacion.idPublicacion%>/<%=datos.idPregunta%>" type="button" class="btn btn-danger text-right" style="margin-top: 0.7em">Eliminar</a>
+                                            <a id="eliminarPregunta" href="/eliminarPregunta/<%=datos.idUsuario%>/<%=publicacion.idPublicacion%>/<%=datos.idPregunta%>" type="button" class="eliminarPregunta btn btn-danger text-right" style="margin-top: 0.7em">Eliminar</a>
                                             <script type="text/javascript">
                                             $(document).ready(function() {
-                                                $('#eliminarPregunta').confirm({text:"¿Esta seguro de que desea eliminar la pregunta?"});
+                                                $('.eliminarPregunta').confirm({text:"¿Esta seguro de que desea eliminar la pregunta?"});
                                             });
                                             </script>
                                         </div>
