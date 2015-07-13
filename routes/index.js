@@ -183,6 +183,10 @@ router.get('/categoria/:id/buscar/:busqueda', function(req,res,next){
 
 router.get('/perfil/:id', function(req, res, next){
 	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id) {
+		var puedeBorrar = req.session.puedeBorrar;
+		req.session.puedeBorrar = null;
+		var publicacionEliminada = req.session.publicacionEliminada;
+		req.session.publicacionEliminada = null;
 		res.render('perfil', {
 			sesionUsuario: req.session.usuario,
 			categoriaActiva: null,
@@ -194,7 +198,9 @@ router.get('/perfil/:id', function(req, res, next){
 			nombreUsuario: '',
 			nombre: '',
 			apellido: '',
-			mail: ''
+			mail: '',
+			puedeBorrar: puedeBorrar,
+			publicacionEliminada: publicacionEliminada
 		});
 	} else {
 		res.redirect('/');
@@ -1415,7 +1421,8 @@ router.post('/eliminarPublicacion/:idPublicacion', function(req, res, next){
 			});
 		}
 		else{
-			res.redirect('/');
+			req.session.publicacionEliminada = true;
+			res.redirect('/perfil/' + req.session.usuario.idUsuario);
 		}
 	});
 });
@@ -1436,20 +1443,8 @@ router.post('/eliminarCuenta/:idUsuario', function(req, res, next){
 					res.redirect('/cerrarSesion');
 				}
 				else{
-					res.render('perfil', {
-						sesionUsuario: req.session.usuario,
-						categoriaActiva: null,
-						url:req.originalUrl,
-						usuarioExistente: false,
-						passwordIncorrecta: false,
-						passwordCambiada: false,
-						datosCambiados: false,
-						nombreUsuario: '',
-						nombre: '',
-						apellido: '',
-						mail: '',
-						puedeBorrar: puedeBorrar
-					});					
+					req.session.puedeBorrar = puedeBorrar;
+					res.redirect('/perfil/' + req.session.usuario.idUsuario)			
 				}
 			}
 		});

@@ -128,7 +128,18 @@
 		            		</div>
 		            	</div>
 		            <% } %>
-		            <% if (typeof(puedeBorrar) != 'undefined' ) {%>
+
+		            <%if (typeof(publicacionEliminada) != 'undefined' && publicacionEliminada != null ){%>
+	            		<div class="col-md-12 alerta">
+		            		<div class="alert alert-danger">
+		            			<span>Ah eliminado correctamente su publicacion</span>
+		            		</div>
+		            	</div>
+		            <%}%>
+
+
+
+		            <% if (typeof(puedeBorrar) != 'undefined' && puedeBorrar != null ) {%>
 		            	<% if (puedeBorrar == 1 ){%>
 	                        <div class="col-md-12 alerta">
 			            		<div class="alert alert-danger">
