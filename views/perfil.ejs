@@ -89,8 +89,10 @@
                     <br/>
                     <br/>
                     <div class="">
-	                    <button type="button" class="pull-right btn btn-danger" data-toggle="modal" data-target="#modalEliminarCuenta" data-backdrop='static'>Eliminar cuenta
-	                    </button>
+                    	<%if (sesionUsuario.idUsuario != 0){%>
+		                    <button type="button" class="pull-right btn btn-danger" data-toggle="modal" data-target="#modalEliminarCuenta" data-backdrop='static'>Eliminar cuenta
+		                    </button>
+	                    <%}%>
                     </div>
 		            <div class="modal fade" id="modalEliminarCuenta" tabindex="-1" role="dialog" aria-labelledby="modalEliminarCuentalabel" aria-hidden="true">
 		            <div class="modal-dialog">
@@ -103,8 +105,8 @@
 		                    <div class="modal-body">¿Esta seguro que quiere eliminar su cuenta?</div>
 		                    <form id="formRespuesta" method="POST" action="/eliminarCuenta/<%=sesionUsuario.idUsuario%>" novalidate>
 		                        <div class="modal-footer">
-		                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-		                            <input type="submit" class="btn btn-primary" value="Eliminar">
+		                        	<input type="submit" class="btn btn-primary" value="Eliminar">
+		                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>     
 		                        </div>
 		                    </form>
 		                    <!--///////FORM DE ELIMINAR/////////-->
