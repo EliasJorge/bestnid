@@ -31,7 +31,7 @@
 			<tbody>	
 		    	<% usuarios.forEach(function(datos) { %> 
 		    		<% if(sesionUsuario.idUsuario != datos.idUsuario) {%>
-		    			<%if (datos.idUsuario != 0){%>
+		    			<%if (datos.idUsuario != 1){%>
 					    	<tr>
 					    	<%} else {%>
 					    	<tr class="alert alert-info">
