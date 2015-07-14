@@ -1011,8 +1011,6 @@ router.post('/preguntar/:idPublicacion/:idUsuario', function(req,res,next){
 
 	
 router.post('/responder/:idPublicacion', function(req, res, next){
-	console.log(req.body.idPregunta);
-	console.log(req.body.textoRespuesta);
 	dbRespuesta.insertarRespuesta(req.body.idPregunta, req.body.textoRespuesta, function(error, respuesta){
 		if (error) {
 			res.render('error', {
