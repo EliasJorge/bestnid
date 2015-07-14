@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+    $('.eliminarPregunta').confirm({text:"¿Esta seguro de que desea eliminar la pregunta?"});
+    $('#eliminarOferta').confirm({text:"¿Esta seguro de que desea eliminar la oferta?"});
 
     var validarSiOferto = function(event){
         // cancels the form submission
