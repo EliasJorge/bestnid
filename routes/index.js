@@ -219,22 +219,22 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 				var listadoHTML = '';
 				if (resultado.length > 0) {
 					for (var i = 0; i < resultado.length; i++) {
-	    				var tituloMostrar = '';
-	    				var descripcionMostrar = '';
-	    				if (resultado[i].titulo.length > 37) {
-	                        tituloMostrar = resultado[i].titulo.substring(0,35) + '...';
-	                    } else {
-	                        tituloMostrar = resultado[i].titulo;
-	                    }
-	                    if (resultado[i].descripcion.length > 65) {
-	                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ").substring(0,62) + '...';
-	                    } else {
-	                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ");
-	                    }
-	    				var thumbnail = '';
-	    				thumbnail = '<div class="col-sm-4 col-lg-4 col-md-4">';
 						if (resultado[i].visible == 1) {
-							thumbnail += '<div class="thumbnail" style="height: 22em;  word-wrap: break-word;">' + 
+		    				var tituloMostrar = '';
+		    				var descripcionMostrar = '';
+		    				if (resultado[i].titulo.length > 37) {
+		                        tituloMostrar = resultado[i].titulo.substring(0,35) + '...';
+		                    } else {
+		                        tituloMostrar = resultado[i].titulo;
+		                    }
+		                    if (resultado[i].descripcion.length > 65) {
+		                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ").substring(0,62) + '...';
+		                    } else {
+		                        descripcionMostrar = resultado[i].descripcion.replace("\n"," ");
+		                    }
+		    				var thumbnail = '';
+		    				thumbnail = '<div class="col-sm-4 col-lg-4 col-md-4">' +
+										'<div class="thumbnail" style="height: 22em;  word-wrap: break-word;">' + 
 										'<a href="/publicacion/' + resultado[i].idPublicacion + '">' +
 										'<div><img class="img-responsive" src ="' + resultado[i].foto + '" style="width: 18em; height: 12em;" alt="" >' +
 					                    '</div></a>' +
@@ -242,33 +242,25 @@ router.get('/perfil/:id/publicaciones', function(req, res, next){
 					                            '<h4><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
 					                                tituloMostrar +
 					                            '</a></h4>';
-						} else {
-							thumbnail += '<div class="thumbnail" style="height: 22em;  word-wrap: break-word; background-color: #eee;">' +
-											'<div style="opacity: 0.7; filter: alpha(opacity=70); background-color: #000;">' +
-												'<img class="img-responsive" src ="' + resultado[i].foto +
-													'" style="width: 18em; height: 12em; opacity: 0.7; filter: alpha(opacity=70);" alt="" >' +
-						                    '</div>' +
-						                        '<div class="caption-full">' +
-						                        '<h4>' + tituloMostrar + '</h4>';
-						};
-						if (resultado[i].terminada) {
-							if (resultado[i].idOfertaGanadora != null) {
-								if (resultado[i].pagada) {
-									thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Finalizada</p></div></div></div>';
+							if (resultado[i].terminada) {
+								if (resultado[i].idOfertaGanadora != null) {
+									if (resultado[i].pagada) {
+										thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Finalizada</p></div></div></div>';
+									} else {
+										thumbnail += '<p class="text-center alert alert-warning" style="font-size: 1.2em; padding-top: 1em;">Esperando pago</p></div></div></div>';
+									};
 								} else {
-									thumbnail += '<p class="text-center alert alert-warning" style="font-size: 1.2em; padding-top: 1em;">Esperando pago</p></div></div></div>';
+									thumbnail += '<div class="text-center"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+										'<button type="button" class="btn btn-success" style="margin-top: 1em;">Elegir Ganador</button></a></div></div></div></div>'
+									//thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Terminada</p></div></div></div>';
 								};
 							} else {
-								thumbnail += '<div class="text-center"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
-									'<button type="button" class="btn btn-success" style="margin-top: 1em;">Elegir Ganador</button></a></div></div></div></div>'
-								//thumbnail += '<p class="text-center alert alert-success" style="font-size: 1.2em; padding-top: 1em;">Terminada</p></div></div></div>';
+								thumbnail += '<p style="font-size: 0.9em;">' + descripcionMostrar + '</p></div></div></div>';
 							};
-						} else {
-							thumbnail += '<p style="font-size: 0.9em;">' + descripcionMostrar + '</p></div></div></div>';
-						};
-						
-						                            
-		                listadoHTML += thumbnail;
+							
+							                            
+			                listadoHTML += thumbnail;
+			            };
 	    			}
 				} else {
 					listadoHTML = '<div class="col-md-12">' +
@@ -300,37 +292,39 @@ router.get('/perfil/:id/ofertas', function(req, res, next){
 	            	listadoHTML = '<div class="col-md-12" style="height: 10em;  word-wrap: break-word;">' +
 	            		'<div class="panel-group">';
 	            	for (var i = 0; i < resultado.length; i++) {
-	            		var panelHeading = '<div class="panel panel-info" style="margin-bottom:2em">' +
-	            			'<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
-	            			resultado[i].titulo + '</a></div>';
-	            		if (resultado[i].idOfertaGanadora == resultado[i].idOferta) {
-	            			panelHeading = '<div class="panel panel-success" style="margin-bottom:2em">' +
-	            				'<div class="panel-heading">' +
-	            				'<a style="color:#004400;" href="/publicacion/' + resultado[i].idPublicacion + '">' +
-	            				resultado[i].titulo + '</a></div>';
-	            		};
-	            		listadoHTML += panelHeading +
-					    	'<div class="panel-body">' +
-					    		'<p><b>Descripción</b></p>' +
-					    		'<p>' + resultado[i].texto + '</p>' +
-					    		'<p><b>Monto:</b> $' + resultado[i].monto + '</p>' +
-					    		'<p><b>Fecha:</b> ' + fechaFormatoLocal(resultado[i].fechaOferta) + '</p>';
-					    if (resultado[i].idOfertaGanadora == resultado[i].idOferta) {
-					    	if (!resultado[i].pagada) {
-					    		listadoHTML += '<a href="/pagar/' +
-						    		resultado[i].idOfertaGanadora + '/' +
-						    		resultado[i].idPublicacion +
-						    		'">' +
-						    		'<button type="button" class="pull-right btn btn-success">' +
-						    		'Pagar</button></a>';
-						    } else {
-						    	listadoHTML += '<div class="alert alert-success pull-right" style="margin-bottom:0em"><span>Ya ha adquirido este producto, ' +
-						    		'<a href="/datosPublicador/' + resultado[i].idPublicacion + '" style="color:#00aa00;">' +
-						    		'<i>consulte los datos del publicador</i></a>' +
-						    		'</span></div>';
-						    };
+	            		if (resultado[i].visible == 1) {
+		            		var panelHeading = '<div class="panel panel-info" style="margin-bottom:2em">' +
+		            			'<div class="panel-heading"><a href="/publicacion/' + resultado[i].idPublicacion + '">' +
+		            			resultado[i].titulo + '</a></div>';
+		            		if (resultado[i].idOfertaGanadora == resultado[i].idOferta) {
+		            			panelHeading = '<div class="panel panel-success" style="margin-bottom:2em">' +
+		            				'<div class="panel-heading">' +
+		            				'<a style="color:#004400;" href="/publicacion/' + resultado[i].idPublicacion + '">' +
+		            				resultado[i].titulo + '</a></div>';
+		            		};
+		            		listadoHTML += panelHeading +
+						    	'<div class="panel-body">' +
+						    		'<p><b>Descripción</b></p>' +
+						    		'<p>' + resultado[i].texto + '</p>' +
+						    		'<p><b>Monto:</b> $' + resultado[i].monto + '</p>' +
+						    		'<p><b>Fecha:</b> ' + fechaFormatoLocal(resultado[i].fechaOferta) + '</p>';
+						    if (resultado[i].idOfertaGanadora == resultado[i].idOferta) {
+						    	if (!resultado[i].pagada) {
+						    		listadoHTML += '<a href="/pagar/' +
+							    		resultado[i].idOfertaGanadora + '/' +
+							    		resultado[i].idPublicacion +
+							    		'">' +
+							    		'<button type="button" class="pull-right btn btn-success">' +
+							    		'Pagar</button></a>';
+							    } else {
+							    	listadoHTML += '<div class="alert alert-success pull-right" style="margin-bottom:0em"><span>Ya ha adquirido este producto, ' +
+							    		'<a href="/datosPublicador/' + resultado[i].idPublicacion + '" style="color:#00aa00;">' +
+							    		'<i>consulte los datos del publicador</i></a>' +
+							    		'</span></div>';
+							    };
+							};
+						    listadoHTML += '</div></div>';
 						};
-					    listadoHTML += '</div></div>';
 	            	};
 	            	listadoHTML += '</div></div>';
 	            } else {

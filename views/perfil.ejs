@@ -102,7 +102,7 @@
 		                        <h4 class="modal-title" id="modalEliminarlabel">Atencion!</h4>
 		                    </div>
 		                    <!--///////FORM PARA ELIMINAR/////////-->
-		                    <div class="modal-body">¿Esta seguro que quiere eliminar su cuenta?</div>
+		                    <div class="modal-body">¿Esta seguro que quiere eliminar su cuenta? Todas sus publicaciones no finalizadas o sin ganador se eliminarán</div>
 		                    <form id="formRespuesta" method="POST" action="/eliminarCuenta/<%=sesionUsuario.idUsuario%>" novalidate>
 		                        <div class="modal-footer">
 		                        	<input type="submit" class="btn btn-primary" value="Eliminar">
@@ -133,8 +133,8 @@
 
 		            <%if (typeof(publicacionEliminada) != 'undefined' && publicacionEliminada != null ){%>
 	            		<div class="col-md-12 alerta">
-		            		<div class="alert alert-danger">
-		            			<span>Ah eliminado correctamente su publicacion</span>
+		            		<div class="alert alert-success">
+		            			<span>Ha eliminado correctamente su publicación</span>
 		            		</div>
 		            	</div>
 		            <%}%>
@@ -145,13 +145,13 @@
 		            	<% if (puedeBorrar == 1 ){%>
 	                        <div class="col-md-12 alerta">
 			            		<div class="alert alert-danger">
-			            			<span>No puede borrar su perfil ya que ha elegido ganadores en alguna de sus publicaciones</span>
+			            			<span>No puede borrar su perfil ya que tiene publicaciones activas</span>
 			            		</div>
 			            	</div>
 		            	<%} else {%>
 		            		<div class="col-md-12 alerta">
 			            		<div class="alert alert-danger">
-			            			<span>No puede borrar su perfil ya que fue elegido como ganador de una publicacion</span>
+			            			<span>No puede borrar su perfil ya que tiene productos pendientes por pagar</span>
 			            		</div>
 			            	</div>
 		            	<%}%>

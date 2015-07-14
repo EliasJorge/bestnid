@@ -98,11 +98,6 @@
                                         <%if (publicacion.terminada != true) {%>
                                             <div class="text-right" style="">
                                                 <a id="eliminarOferta" href="/eliminarOferta/<%=sesionUsuario.idUsuario%>/<%=publicacion.idPublicacion%>/<%=oferta.idOferta%>" type="button" class="btn btn-danger">Eliminar</a>
-                                                <script type="text/javascript">
-                                                $(document).ready(function() {
-                                                    $('#eliminarOferta').confirm({text:"¿Esta seguro de que desea eliminar la oferta?"});
-                                                });
-                                                </script>
                                             </div>
                                         <%}%>
                                     </div>
@@ -134,11 +129,6 @@
                                     <%if (publicacion.terminada != true) {%>
                                         <div class="text-right">
                                             <a id="eliminarPregunta" href="/eliminarPregunta/<%=datos.idUsuario%>/<%=publicacion.idPublicacion%>/<%=datos.idPregunta%>" type="button" class="eliminarPregunta btn btn-danger text-right" style="margin-top: 0.7em">Eliminar</a>
-                                            <script type="text/javascript">
-                                            $(document).ready(function() {
-                                                $('.eliminarPregunta').confirm({text:"¿Esta seguro de que desea eliminar la pregunta?"});
-                                            });
-                                            </script>
                                         </div>
                                     <%}%>
                                 <%}%>
@@ -268,7 +258,7 @@
                     </div>
                     <!--///////FORM PARA ELIMINAR/////////-->
                     <div class="modal-body">¿Esta seguro que quiere eliminar su publicacion?</div>
-                    <form id="formRespuesta" method="POST" action="/eliminarPublicacion/<%=publicacion.idPublicacion%>" novalidate>
+                    <form id="formEliminarPublicacion" method="POST" action="/eliminarPublicacion/<%=publicacion.idPublicacion%>" novalidate>
                         <div class="modal-footer">
                             <input type="submit" class="btn btn-primary" value="Eliminar">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
