@@ -1656,34 +1656,26 @@ router.post('/vaciarNotificaciones', function(req, res, next){
 
 router.post('/agregarCategoria', function(req, res, next){
 	dbCategoria.agregarCategoria(req.body.nombreCategoria, function(error, resultado){
-		if (error) {
-			res.render('error', {
-				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
-				sesionUsuario: req.session.usuario,
-				categoriaActiva: null,
-				url:req.originalUrl
-			});
-		} else {
-			dbCategoria.getCategorias(function(errorC, resultadoC){
-				if (errorC) {
-					res.render('administrarCategorias', {
-						sesionUsuario:req.session.usuario,
-						categoriaActiva: null,
-						url:req.originalUrl,
-						categorias: resultadoC,
-						catInsertada: false
-					});
-				} else {
-					res.render('administrarCategorias', {
-						sesionUsuario:req.session.usuario,
-						categoriaActiva: null,
-						url:req.originalUrl,
-						categorias: resultadoC,
-						catInsertada: true
-					});
-				};
-			});
-		}
+		dbCategoria.getCategorias(function(errorC, resultadoC){
+			if (errorC) {
+				res.render('error', {
+					mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+					sesionUsuario: req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl
+				});
+			} else {
+				var insertadoOk = true;
+				if (error) { insertadoOk = false };
+				res.render('administrarCategorias', {
+					sesionUsuario:req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl,
+					categorias: resultadoC,
+					catInsertada: insertadoOk
+				});
+			};
+		});
 	});
 });
 
