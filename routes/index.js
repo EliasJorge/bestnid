@@ -425,6 +425,9 @@ router.get('/perfil/:id/estadisticas', function(req, res, next){
     		'<a href="/' + req.session.usuario.idUsuario +
     		'/pubsConcretadas" class="btn btn-primary text-center" style="width:15em; margin-right:1em;">Publicaciones Concretadas</a>' +
     		'<a href="/usuarios" class="btn btn-primary text-center" style="width:15em;"> Administradores</a>'+
+    		'</br></br>' +
+    		'<a href="/' + req.session.usuario.idUsuario +
+    		'/administrarCategorias" class="btn btn-primary text-center" style="width:15em;"> Administrar categorias</a>'+
     		'</div>';
     	res.send(html);
     } else {
@@ -433,6 +436,72 @@ router.get('/perfil/:id/estadisticas', function(req, res, next){
             '</div>';
 		res.send(errorHTML);
     };
+});
+
+router.get('/:id/administrarCategorias', function(req,res,next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.id && req.session.usuario.esAdmin == 1) {
+		dbCategoria.getCategorias(function(error,resultado){
+			if (error){
+				res.render('error', {
+				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente de nuevo',
+				sesionUsuario:req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+				});
+			} else {
+				
+				var catEliminada = req.session.catEliminada;
+				req.session.catEliminada = null;
+				res.render('administrarCategorias', {
+					sesionUsuario:req.session.usuario,
+					categoriaActiva: null,
+					url:req.originalUrl,
+					categorias: resultado,
+					catEliminada: catEliminada
+				});
+			}
+		});
+	} else {
+		res.redirect('/');
+	}
+});
+
+router.get('/eliminarCategoria/:idCategoria/:idUsuario', function(req,res,next){
+	if (req.session.usuario != null && req.session.usuario.idUsuario == req.params.idUsuario) {
+		dbPublicacion.getPublicacionesByCategoria(req.params.idCategoria,1, function(errorP,resultadoP){
+			
+			if (errorP){
+				
+				res.render('error', {
+				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+			} else {				
+				if (!resultadoP.length){				
+					dbCategoria.eliminarCategoria(req.params.idCategoria, function(errorC,resultadoC){						
+						if (errorC){							
+							res.render('error', {
+								mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+								sesionUsuario: req.session.usuario,
+								categoriaActiva: null,
+								url:req.originalUrl
+							});
+						} else {
+							req.session.catEliminada = 1;
+							res.redirect('/' + req.params.idUsuario + '/administrarCategorias');						
+						}
+					});
+				} else {
+					req.session.catEliminada = 0;
+					res.redirect('/' + req.params.idUsuario + '/administrarCategorias');						
+				}
+			}
+		});
+	} else {
+		res.redirect('/');
+	}
 });
 
 router.get('/:id/usuariosRegistrados', function(req, res, next){

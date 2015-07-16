@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<% include partials/head.ejs %>
+<body>
+	<% include partials/nav.ejs %>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		setTimeout(function() {
+	        $(".alert").slideUp('fast');
+	    }, 6000);
+	});
+	</script>
+	<%if(  typeof (catEliminada) != 'undefined' && catEliminada == 1){%>
+		<div id="alerta" class="alert alert-success">
+			<p>La categoria fue eliminada</p>
+		</div>
+	<%}%>
+
+	<%if( typeof (catEliminada) != 'undefined' && catEliminada == 0){%>
+		<div id="alerta" class="alert alert-success">
+			<p>La categoria no puede ser eliminada ya que posee publicaciones</p>
+		</div>
+	<%}%>
+
+	<div class="col-md-12">
+  	<% if (categorias.length) { %>
+  		<div class="text-center"><h1>Administración de categorías</h1></div>
+		<table class="table" style="width:50%"  align="center">
+			<thead>
+				<tr>
+					<th> </th>
+					<th> </th>
+					<th> </th>
+				</tr>
+			</thead>
+			<tbody>	
+				<% categorias.forEach(function(datos) { %> 
+		    		<% if(sesionUsuario.idUsuario != datos.idUsuario) {%>		    			
+					    	<tr>					    	
+								<td><%= datos.nombre %></td>
+								<td>
+										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#sacarAdministrador" style="width: 14em" data-idUsuario ="<%=datos.idUsuario%>" data-backdrop='static'>Modificar
+		                                </button>
+								</td>
+								<td>
+										<a id="eliminarCategoria" type="button" href="/eliminarCategoria/<%=datos.idCategoria%>/<%=sesionUsuario.idUsuario%>" class="confirmarEliminar btn btn-danger" style="width: 14em" >Eliminar
+		                                </a>						
+		                                <script type="text/javascript">
+		                                $(document).ready(function(){
+		                                $('.confirmarEliminar').confirm({text:"¿Esta seguro de que desea eliminar la categoria?"});
+		                            	});
+		                                </script>
+								</td>
+							</tr>
+						<%}%>
+				<% }); %>
+				<tr>
+					<td>
+						</br>
+						<button type="button" class="btn btn-success" style="width: 14em" data-backdrop='static'>Agregar categoría
+			            </button>	
+		            </td>
+				</tr>
+
+			</tbody>
+		</table>
+	<% }else{ %>
+		<div class="alert alert-danger">Actualmente no hay categorías</div>
+	<% } %>
+	</div>
+
+
+
+		<% include partials/footer.ejs %>
+
+</body>	
+	<script src="/javascript/jquery-confirm.js"></script>
+	<script src="/javascript/jquery-confirm.min.js"></script>
+</html>

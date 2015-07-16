@@ -15,4 +15,17 @@ modeloCategoria.getCategorias = function(callback){
 	}
 };
 
+modeloCategoria.eliminarCategoria = function(id, callback){
+	if (conn){
+		var query = 'DELETE FROM categoria WHERE idCategoria = ' + id;
+		conn.query(query, function(error,resultado){
+			if (error){
+				callback(error);
+			} else {
+				callback(null,resultado);
+			};
+		});
+	}
+};
+
 module.exports = modeloCategoria;
