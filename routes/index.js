@@ -1560,6 +1560,7 @@ router.post('/chequearNotificaciones', function(req, res, next){
 		} else {
 			if (req.session.usuario != null) {
 				req.session.usuario = resultado[0];
+				req.session.usuario.fechaRegistro = fechaFormatoLocal(resultado[0].fechaRegistro);
 			}
 			res.send(resultado[0]);
 		}
