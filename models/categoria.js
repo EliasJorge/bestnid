@@ -63,6 +63,5 @@ modeloCategoria.agregarCategoria = function(nombre, callback){
 		});
 	}
 };
->>>>>>> origin/master
 
 module.exports = modeloCategoria;
