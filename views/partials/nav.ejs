@@ -57,7 +57,10 @@
                 </li>
                 <!-- para notificacion -->
                 <li role="presentation" >
-                    <a href="#">Notificaciones <span class="badge">0</span></a>
+                    <!-- <a href="#">Notificaciones <span class="badge">0</span></a> -->
+                    <a href="#">
+                        <span class="glyphicon glyphicon-bell" <% if (typeof hayNotificaciones != 'undefined' && hayNotificaciones) { %> style="color: yellow;" <%}%>></span>
+                    </a>
                 </li>
             <% } %>
                 
