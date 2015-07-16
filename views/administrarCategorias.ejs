@@ -34,6 +34,18 @@
 		</div>
 	<%}%>
 
+	<%if( typeof (catInsertada) != 'undefined' && catInsertada){%>
+		<div class="alert alert-success">
+			<p>La categoría ha sido agregada correctamente</p>
+		</div>
+	<%}%>
+
+	<%if( typeof (catInsertada) != 'undefined' && !catInsertada){%>
+		<div class="alert alert-danger">
+			<p>Ya existe una categoría con ese nombre</p>
+		</div>
+	<%}%>
+
 	<div class="col-md-12">
   	<% if (categorias.length) { %>
   		<div class="text-center"><h1>Administración de categorías</h1></div>
@@ -69,7 +81,7 @@
 				<tr>
 					<td>
 						</br>
-						<button type="button" class="btn btn-success" style="width: 14em" data-backdrop='static'>Agregar categoría
+						<button id="bAgregar" type="button" class="btn btn-success" style="width: 14em" data-backdrop='static' data-toggle="modal" data-target="#modalAgregarCategoria" data-whatever="@mdo">Agregar Categoría
 			            </button>	
 		            </td>
 				</tr>
@@ -107,9 +119,35 @@
         </div>
 
 		<% include partials/footer.ejs %>
+	<div class="modal fade" id="modalAgregarCategoria" tabindex="-1" role="dialog" aria-labelledby="modalAgregarLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalAgregarLabel">Crea una Categoría:</h4>
+                </div>
+                <!--///////FORM DE AGREGAR/////////-->
+                <form id="formAgregar" method="POST" action="/agregarCategoria">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Nombre de la Categoría:</label>
+                            <input id="nombreCategoria" name="nombreCategoria" form="formAgregar" maxlength="40" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" value="Agregar"></button>
+                    </div>
+                </form>
+                <!--///////FORM DE AGREGAR/////////-->
+            </div>
+        </div>
+    </div>
+
+	<% include partials/footer.ejs %>
 
 </body>	
 	<script src="/javascript/jquery-confirm.js"></script>
 	<script src="/javascript/administrarCategorias.js"></script>
 	<script src="/javascript/jquery-confirm.min.js"></script>
+	<script src="/javascript/chequeoNotificaciones.js"></script>
 </html>

@@ -51,5 +51,18 @@ modeloCategoria.modificarCategoria = function(idCategoria, nombreCategoria ,call
 		});
 	};
 }
+modeloCategoria.agregarCategoria = function(nombre, callback){
+	if (conn){
+		var query = 'INSERT INTO categoria (nombre) VALUES (' + conn.escape(nombre) + ')';
+		conn.query(query, function(error,resultado){
+			if (error){
+				callback(error);
+			} else {
+				callback(null,resultado);
+			};
+		});
+	}
+};
+>>>>>>> origin/master
 
 module.exports = modeloCategoria;
