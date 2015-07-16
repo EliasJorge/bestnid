@@ -10,7 +10,7 @@
 		</div>
 	<%}%>
 	<%if( typeof (adminEliminado) != 'undefined' && adminEliminado == true){%>
-		<div id="alerta"class="alert alert-danger">
+		<div id="alerta"class="alert alert-success">
 			<p>El usuario ya no es mas administrador</p>
 		</div>
 	<%}%>
@@ -32,10 +32,6 @@
 		    	<% usuarios.forEach(function(datos) { %> 
 		    		<% if(sesionUsuario.idUsuario != datos.idUsuario) {%>
 		    			<%if (datos.idUsuario != 1){%>
-					    	<tr>
-					    	<%} else {%>
-					    	<tr class="alert alert-info">
-					    	<%}%>
 								<td><%= datos.nombreUsuario %></td>
 								<td><%= datos.nombre %></td>
 								<td><%= datos.apellido %></td>
@@ -49,7 +45,6 @@
 									<%}%>
 								</td>
 								<td>
-								<%if (sesionUsuario.idUsuario != datos.idUsuario){%>
 									<% if(datos.esAdmin) {%>
 										<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#sacarAdministrador" style="width: 14em" data-idUsuario ="<%=datos.idUsuario%>" data-backdrop='static'>Sacar administrador
 		                                </button>
@@ -58,13 +53,11 @@
 										<button type="button" class="btn btn-success" data-toggle="modal" data-target="#agregarAdministrador" style="width: 14em" data-idUsuario ="<%=datos.idUsuario%>" data-backdrop='static'>Agregar administrador
 		                                </button>
 									<%}%>
-									<%}else {%>
-										<p>Esta es su cuenta<p>
-									<%}%>
 								</td>
 							</tr>
 						<%}%>
-				<% }); %>
+					<%}%>
+				<%});%>
 			</tbody>
 		</table>
 	<% }else{ %>
@@ -120,6 +113,5 @@
 	<% include partials/footer.ejs %>
 	
 	<script src="/javascript/listaUsuarios.js"></script>
-	<script src="/javascript/chequeoNotificaciones.js"></script>
 </body>
 </html>

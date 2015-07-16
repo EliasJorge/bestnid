@@ -181,7 +181,7 @@ modeloUsuario.eliminarCuenta = function(idUsuario, callback){
 
 modeloUsuario.getUsarios = function(callback){
 	if (conn) {
-		conn.query('SELECT * FROM usuario WHERE visible = true', function(error, resultado){
+		conn.query('SELECT * FROM usuario WHERE visible = true ORDER BY idUsuario', function(error, resultado){
 			if (error) {
 				callback(error);
 			}
