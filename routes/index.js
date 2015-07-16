@@ -1548,6 +1548,41 @@ router.post('/sacarAdmin', function(req, res, next){
 	});
 });
 
+router.post('/chequearNotificaciones', function(req, res, next){
+	dbUsuario.getUsuarioByID(req.body.idUsuario, function(error, resultado){
+		if (error) {
+			res.render('error', {
+				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		} else {
+			if (req.session.usuario != null) {
+				req.session.usuario.tieneNotificaciones = resultado[0].tieneNotificaciones;
+			}
+			res.send(resultado[0]);
+		}
+	});
+});
+
+router.post('/vaciarNotificaciones', function(req, res, next){
+	dbUsuario.setNotificacionesVistas(req.body.idUsuario, function(error, resultado){
+		if (error) {
+			res.render('error', {
+				mensaje:'Hubo un error al conectarse a la base de datos, por favor intente más tarde',
+				sesionUsuario: req.session.usuario,
+				categoriaActiva: null,
+				url:req.originalUrl
+			});
+		} else {
+			if (resultado.affectedRows == 1 && req.session.usuario != null) {
+				req.session.usuario.tieneNotificaciones = 0;
+			}
+			res.send(resultado);
+		}
+	});
+});
 
 module.exports = router;
 

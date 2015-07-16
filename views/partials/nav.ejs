@@ -58,8 +58,8 @@
                 <!-- para notificacion -->
                 <li role="presentation" >
                     <!-- <a href="#">Notificaciones <span class="badge">0</span></a> -->
-                    <a href="#">
-                        <span class="glyphicon glyphicon-bell" <% if (typeof hayNotificaciones != 'undefined' && hayNotificaciones) { %> style="color: yellow;" <%}%>></span>
+                    <a href="/perfil/<%=sesionUsuario.idUsuario%>">
+                        <span id="bNotificaciones" data-idUsuario="<%=sesionUsuario.idUsuario%>" class="glyphicon glyphicon-bell"></span>
                     </a>
                 </li>
             <% } %>

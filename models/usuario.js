@@ -210,4 +210,16 @@ modeloUsuario.setNoAdminAUsuario = function(idUsuario, callback){
 	}
 }
 
+modeloUsuario.setNotificacionesVistas = function(idUsuario, callback){
+	if (conn) {
+		conn.query("UPDATE usuario SET tieneNotificaciones=0 WHERE idUsuario = '" + idUsuario + "'", function(error, resultado){
+			if (error) {
+				callback(error);
+			} else {
+				callback(null, resultado);
+			};
+		});
+	};
+};
+
 module.exports = modeloUsuario;

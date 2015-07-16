@@ -152,6 +152,7 @@ CREATE TABLE `usuario` (
   `esAdmin` tinyint(1) NOT NULL DEFAULT 0,
   `tarjeta` varchar(20) DEFAULT NULL,
   `visible` tinyint(1) DEFAULT 1,
+  `tieneNotificaciones` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`idUsuario`),
   UNIQUE KEY `nombreUsuario_UNIQUE` (`nombreUsuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
