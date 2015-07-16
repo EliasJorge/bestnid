@@ -1559,7 +1559,7 @@ router.post('/chequearNotificaciones', function(req, res, next){
 			});
 		} else {
 			if (req.session.usuario != null) {
-				req.session.usuario.tieneNotificaciones = resultado[0].tieneNotificaciones;
+				req.session.usuario = resultado[0];
 			}
 			res.send(resultado[0]);
 		}

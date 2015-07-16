@@ -42,9 +42,16 @@ modeloOferta.insertarOferta = function(oferta, callback){
 		conn.query(query, function(error, resultado){
 			if (error) {
 				callback(error);
-			}
-			else{
-				callback(null, resultado);
+			} else {
+				var queryPub = "SELECT idUsuario FROM publicacion WHERE idPublicacion=" + oferta.idPublicacion;
+				var queryNotificacion = "UPDATE usuario SET tieneNotificaciones=1 WHERE idUsuario IN (" + queryPub + ")";
+				conn.query(queryNotificacion, function(errN, resN){
+					if (errN) {
+						callback(errN);
+					} else {
+						callback(null, resultado);
+					};
+				});
 			};
 		});
 	}

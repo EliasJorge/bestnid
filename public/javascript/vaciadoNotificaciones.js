@@ -9,4 +9,7 @@ $(function(){
 			$("#bNotificaciones").css("color", "yellow");
 		}
 	});
+
+	//Esto es solamente para que actualice los datos de la sesion
+	$.post("/chequearNotificaciones", data, function(res, status){});
 });

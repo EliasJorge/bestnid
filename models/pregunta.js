@@ -12,7 +12,15 @@ modeloPregunta.insertarPregunta = function(pregunta,callback){
 			if (error) {
 				callback(error);
 			} else {
-				callback(null,resultado);
+				var queryPub = "SELECT idUsuario FROM publicacion WHERE idPublicacion=" + pregunta.idPublicacion;
+				var queryNotificacion = "UPDATE usuario SET tieneNotificaciones=1 WHERE idUsuario IN (" + queryPub + ")";
+				conn.query(queryNotificacion, function(errN, resN){
+					if (errN) {
+						callback(errN);
+					} else {
+						callback(null, resultado);
+					};
+				});
 			};
 		});
 	};

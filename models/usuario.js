@@ -102,7 +102,15 @@ modeloUsuario.pagar = function(publicador, admin, callback){
 					if (errorA) {
 						callback(errorA);
 					} else {
-						callback(null, resultadoA);
+						var queryNotificacion = "UPDATE usuario SET tieneNotificaciones=1 WHERE idUsuario=" + publicador.id +
+							" OR idUsuario=" + admin.id;
+						conn.query(queryNotificacion, function(errN, resN){
+							if (errN) {
+								callback(errN);
+							} else {
+								callback(null, resultadoA);
+							};
+						});
 					};
 				});
 			};
@@ -191,7 +199,15 @@ modeloUsuario.setAdminAUsuario = function(idUsuario, callback){
 				callback(error);
 			}
 			else{
-				callback(null);
+				//Notificacion
+				var queryNotificacion = "UPDATE usuario SET tieneNotificaciones=1 WHERE idUsuario=" + idUsuario;
+				conn.query(queryNotificacion, function(errN, resN){
+					if (errN) {
+						callback(errN);
+					} else {
+						callback(null);
+					};
+				});
 			}
 		})
 	}
@@ -204,7 +220,15 @@ modeloUsuario.setNoAdminAUsuario = function(idUsuario, callback){
 				callback(error);
 			}
 			else{
-				callback(null);
+				//Notificacion
+				var queryNotificacion = "UPDATE usuario SET tieneNotificaciones=1 WHERE idUsuario=" + idUsuario;
+				conn.query(queryNotificacion, function(errN, resN){
+					if (errN) {
+						callback(errN);
+					} else {
+						callback(null);
+					};
+				});
 			}
 		})
 	}

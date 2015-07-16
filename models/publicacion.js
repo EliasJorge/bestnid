@@ -173,7 +173,16 @@ modeloPublicacion.setOfertaGanadora = function(idOfertaGanadora, idPublicacion, 
 				callback(error);
 			}
 			else{
-				callback(null)
+				//Notificacion
+				var queryUsr = "SELECT idUsuario FROM oferta WHERE idPublicacion=" + idPublicacion;
+				var queryNotificacion = "UPDATE usuario SET tieneNotificaciones=1 WHERE idUsuario IN (" + queryUsr + ")";
+				conn.query(queryNotificacion, function(errN, resN){
+					if (errN) {
+						callback(errN);
+					} else {
+						callback(null);
+					};
+				});
 			}
 		});
 	}
@@ -269,7 +278,16 @@ modeloPublicacion.borrarPublicacionConId = function(id, callback){
 				callback(error);
 			}
 			else{
-				callback(null);
+				//Notificacion
+				var queryUsr = "SELECT idUsuario FROM oferta WHERE idPublicacion=" + id;
+				var queryNotificacion = "UPDATE usuario SET tieneNotificaciones=1 WHERE idUsuario IN (" + queryUsr + ")";
+				conn.query(queryNotificacion, function(errN, resN){
+					if (errN) {
+						callback(errN);
+					} else {
+						callback(null);
+					};
+				});
 			}
 		});
 	}

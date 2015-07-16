@@ -17,7 +17,16 @@ modeloRespuesta.insertarRespuesta = function(idPregunta, respuesta, callback){
 					if (errorP) {
 						callback(errorP);
 					} else {
-						callback(null, resultado);
+						//Creo la notificacion
+						var queryPreg = "SELECT idUsuario FROM pregunta WHERE idPregunta=" + idPregunta;
+						var queryNotificacion = "UPDATE usuario SET tieneNotificaciones=1 WHERE idUsuario IN (" + queryPreg + ")";
+						conn.query(queryNotificacion, function(errN, resN){
+							if (errN) {
+								callback(errN);
+							} else {
+								callback(null, resultado);
+							};
+						});
 					};
 				});
 			};
