@@ -427,7 +427,7 @@ router.get('/perfil/:id/estadisticas', function(req, res, next){
     		'<a href="/usuarios" class="btn btn-primary text-center" style="width:15em;"> Administradores</a>'+
     		'</br></br>' +
     		'<a href="/' + req.session.usuario.idUsuario +
-    		'/administrarCategorias" class="btn btn-primary text-center" style="width:15em;"> Administrar categorias</a>'+
+    		'/administrarCategorias" class="btn btn-primary text-center" style="width:15em;"> Administrar Categorias</a>'+
     		'</div>';
     	res.send(html);
     } else {
@@ -449,7 +449,7 @@ router.get('/:id/administrarCategorias', function(req,res,next){
 				url:req.originalUrl
 				});
 			} else {
-				
+
 				var catEliminada = req.session.catEliminada;
 				req.session.catEliminada = null;
 				res.render('administrarCategorias', {
