@@ -16,6 +16,18 @@
 		</div>
 	<%}%>
 
+	<%if(  typeof (categoriaCambiada) != 'undefined' && categoriaCambiada == true){%>
+		<div id="alerta" class="alert alert-success">
+			<p>La categoria fue cambiada</p>
+		</div>
+	<%}%>
+
+	<%if(  typeof (categoriaCambiada) != 'undefined' && categoriaCambiada == false){%>
+		<div id="alerta" class="alert alert-danger">
+			<p>Hubo un error al cambiar la categoria, intente mas tarde</p>
+		</div>
+	<%}%>
+
 	<%if( typeof (catEliminada) != 'undefined' && catEliminada == 0){%>
 		<div id="alerta" class="alert alert-danger">
 			<p>La categoria no puede ser eliminada ya que posee publicaciones</p>
@@ -39,7 +51,7 @@
 					    	<tr>					    	
 								<td><%= datos.nombre %></td>
 								<td>
-										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#sacarAdministrador" style="width: 14em" data-idUsuario ="<%=datos.idUsuario%>" data-backdrop='static'>Modificar
+										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalModificar" style="width: 14em" data-idCategoria ="<%=datos.idCategoria%>" data-nombreCategoria="<%=datos.nombre%>" data-backdrop='static'>Modificar
 		                                </button>
 								</td>
 								<td>
@@ -69,11 +81,35 @@
 	<% } %>
 	</div>
 
-
+		<div class="modal fade" id="modalModificar" tabindex="-1" role="dialog" aria-labelledby="modalModificarLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalOfertaLabel">Modificar Categoria</h4>
+                    </div>
+                    <!--///////FORM DE MODIFICAR/////////-->
+                    <form id="formModificar" method="POST" action="/modificarCategoria">
+                        <div id="formModificarBody" class="modal-body">
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Nuevo nombre:</label>
+                                <input id="newNombreCategoria" name="newNombreCategoria" form="formModificar" maxlength="100" class="form-control" required/>
+                                <input id="idCategoriaModificada" name="idCategoriaModificada" style="display:none" type="number" value="" required>
+                	        </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" value="Aceptar"></button>
+                        </div>
+                    </form>
+                    <!--///////FORM DE MODIFICAR/////////-->
+                </div>
+            </div>
+        </div>
 
 		<% include partials/footer.ejs %>
 
 </body>	
 	<script src="/javascript/jquery-confirm.js"></script>
+	<script src="/javascript/administrarCategorias.js"></script>
 	<script src="/javascript/jquery-confirm.min.js"></script>
 </html>

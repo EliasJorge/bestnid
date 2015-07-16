@@ -449,7 +449,8 @@ router.get('/:id/administrarCategorias', function(req,res,next){
 				url:req.originalUrl
 				});
 			} else {
-
+				var categoriaCambiada = req.session.categoriaCambiada;
+				req.session.categoriaCambiada = null;
 				var catEliminada = req.session.catEliminada;
 				req.session.catEliminada = null;
 				res.render('administrarCategorias', {
@@ -457,7 +458,8 @@ router.get('/:id/administrarCategorias', function(req,res,next){
 					categoriaActiva: null,
 					url:req.originalUrl,
 					categorias: resultado,
-					catEliminada: catEliminada
+					catEliminada: catEliminada,
+					categoriaCambiada: categoriaCambiada
 				});
 			}
 		});
@@ -1653,6 +1655,32 @@ router.post('/vaciarNotificaciones', function(req, res, next){
 		}
 	});
 });
+
+
+router.get('/existeCategoria/:nombreCategoria', function(req, res, next){
+	dbCategoria.existeCategoriaConNombre(req.params.nombreCategoria, function(error, resultado){
+		if (error) {
+			res.send('dbError');
+		}
+		else{
+			res.send(resultado.length == 0);
+		}
+	});
+});
+
+router.post('/modificarCategoria', function(req, res, next){
+	dbCategoria.modificarCategoria(req.body.idCategoriaModificada, req.body.newNombreCategoria, function(error){
+		if (error) {
+			res.redirect('/' + req.session.usuario.idUsuario + '/administrarCategorias');
+			req.session.categoriaCambiada = false;
+		}
+		else{
+			req.session.categoriaCambiada = true;
+			res.redirect('/' + req.session.usuario.idUsuario + '/administrarCategorias');
+		}
+	});
+});
+
 
 module.exports = router;
 
