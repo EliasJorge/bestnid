@@ -79,7 +79,7 @@ Sistema operativo Android 4.4 KitKat.",
 
 insert into publicacion set 
 	titulo = 'Ovejeros Alemanes Cachorros Cria De Seleccion',
-	descripcion = "LOS PADRES CON DCF '0', DE ESPLENDIDO CARACTER Y TEMPERAMENTO.
+	descripcion = "LOS PADRES CON DCF 0, DE ESPLENDIDO CARACTER Y TEMPERAMENTO.
 AMBOS ESTAN SELECCIONADOS.
 SON 5 CACHORROS MACHOS NACIDOS EL 24/03/15
 PROVIENEN DE UNA MUY BUENA LINEA DE SANGRE ESTAN TATUADOS, VACUNADOS Y DESPARASITADOS ACORDE A SU EDAD.
@@ -92,7 +92,7 @@ SON SANOS, ACTIVOS Y JUGUETONES.",
 
 insert into publicacion set 
 	titulo = 'Gatos Peterbald ~ Peterbald Sphynx ~ Chamoise Y Velour',
-	descripcion = "'Hermosos ejemplares de raza Peterbald' (fotos ilustrativas) La raza Peterbald es una raza relativamente nueva, con no mas de 15 años de historia.Son Gatos con expresion gradual de alopecia. CMC Cattery es el 'primer criadero' de la raza en el hemisferio sur, en América Latina y A. de Sur y en Argentina! Estamos orgullosos de haber sido parte fundamental dentro de los criadores formadores en el proyecto de 'raza PETERBALD' a nivel mundial. Desde sus inicios hemos empezado en un trabajo arduo en base a F1, ayudando a que los mimos logren su reconocimiento de raza y colaborando para lleguen el status de campeonato dentro de TICA, para que luego sea tambien aceptados en CFA, FIFe y otras asociaciones.",
+	descripcion = "Hermosos ejemplares de raza Peterbald (fotos ilustrativas) La raza Peterbald es una raza relativamente nueva, con no mas de 15 años de historia.Son Gatos con expresion gradual de alopecia. CMC Cattery es el primer criadero de la raza en el hemisferio sur, en América Latina y A. de Sur y en Argentina! Estamos orgullosos de haber sido parte fundamental dentro de los criadores formadores en el proyecto de raza PETERBALD a nivel mundial. Desde sus inicios hemos empezado en un trabajo arduo en base a F1, ayudando a que los mimos logren su reconocimiento de raza y colaborando para lleguen el status de campeonato dentro de TICA, para que luego sea tambien aceptados en CFA, FIFe y otras asociaciones.",
 	foto = '/foto/gato.jpg',
 	fechaInicio = curdate(),
 	fechaFin = curdate() + interval 15 day,
@@ -101,7 +101,7 @@ insert into publicacion set
 
 insert into publicacion set 
 	titulo = 'Llamas De La Mejor Calidad',
-	descripcion = "'Hermosos ejemplares de raza Peterbald' LLAMAS DE TODAS LAS EDADES A ELECCION.
+	descripcion = "Hermosos ejemplares de raza Peterbald LLAMAS DE TODAS LAS EDADES A ELECCION.
 EXCELENTES ANIMALES DE COMPAÑIA.
 VARIOS COLORES.
 FLETE A CARGO DEL OFERTADOR.",
@@ -113,7 +113,7 @@ FLETE A CARGO DEL OFERTADOR.",
 
 insert into publicacion set 
 	titulo = 'Samsung Galaxy S4 Mini Dual Core Libre',
-	descripcion = "'SAMSUNG S4 PARA MOVISTAR CON CAJA EN PERFECTO ESTADO 16GB 
+	descripcion = "SAMSUNG S4 PARA MOVISTAR CON CAJA EN PERFECTO ESTADO 16GB 
 CONTENIDO DE LA OFERTA :
 CELULAR SAMSUNG S4 GRANDE ORIGINAL 
 CAJA ORIGINAL CON MANUALES
