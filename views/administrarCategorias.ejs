@@ -40,12 +40,6 @@
 		</div>
 	<%}%>
 
-	<%if( typeof (catInsertada) != 'undefined' && !catInsertada){%>
-		<div class="alert alert-danger">
-			<p>Ya existe una categoría con ese nombre</p>
-		</div>
-	<%}%>
-
 	<div class="col-md-12">
   	<% if (categorias.length) { %>
   		<div class="text-center"><h1>Administración de categorías</h1></div>
@@ -105,7 +99,7 @@
                         <div id="formModificarBody" class="modal-body">
                             <div class="form-group">
                                 <label for="message-text" class="control-label">Nuevo nombre:</label>
-                                <input id="newNombreCategoria" name="newNombreCategoria" form="formModificar" maxlength="100" class="form-control" required/>
+                                <input id="newNombreCategoria" name="newNombreCategoria" form="formModificar" maxlength="40" class="form-control" required/>
                                 <input id="idCategoriaModificada" name="idCategoriaModificada" style="display:none" type="number" value="" required>
                 	        </div>
                         </div>
@@ -128,7 +122,7 @@
                 </div>
                 <!--///////FORM DE AGREGAR/////////-->
                 <form id="formAgregar" method="POST" action="/agregarCategoria">
-                    <div class="modal-body">
+                    <div id="formAgregarBody" class="modal-body">
                         <div class="form-group">
                             <label for="message-text" class="control-label">Nombre de la Categoría:</label>
                             <input id="nombreCategoria" name="nombreCategoria" form="formAgregar" maxlength="40" class="form-control" required />
