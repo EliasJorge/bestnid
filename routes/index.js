@@ -529,6 +529,7 @@ router.get('/tablaUsuarios/:id/:desde/:hasta', function(req, res, next){
 			} else {
 				if (resultado.length > 0) {
 					var tablaHtml = '<div class="col-md-12" style="margin-bottom:2em;">' +
+						'<div class="text-center"><h3>Cantidad de usuarios: ' + resultado.length + '</h3></div>' +
 			           	'<table><th>Nombre de Usuario</th><th>Nombre</th><th>Apellido</th><th>E-Mail</th><th>Fecha de Registro</th>';
 			        for (var i = 0; i < resultado.length; i++) {
 			        	tablaHtml += '<tr><td>' + resultado[i].nombreUsuario + '</td>' +
@@ -576,6 +577,7 @@ router.get('/tablaPublicaciones/:id/:desde/:hasta', function(req, res, next){
 			} else {
 				if (pubsConPublicador.length > 0) {
 					var tablaHtml = '<div class="col-md-12" style="margin-bottom:2em;">' +
+						'<div class="text-center"><h3>Cantidad de publicaciones: ' + pubsConPublicador.length + '</h3></div>' +
 			           	'<table><th>Titulo</th><th>Publicador</th><th>Ganador</th><th>Fecha de Pago</th><th>Ganancias</th>';
 			        for (var i = 0; i < pubsConPublicador.length; i++) {
 			        	tablaHtml += '<tr><td><a href="/publicacion/' + pubsConPublicador[i].idPublicacion +
